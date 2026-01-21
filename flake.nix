@@ -6,6 +6,7 @@
     shared.url = "path:./shared";
     nixos-system.url = "path:./nixos-system";
     darwin-system.url = "path:./darwin-system";
+    wsl-system.url = "path:./wsl-system";
   };
 
   outputs = {
@@ -13,11 +14,16 @@
     shared,
     nixos-system,
     darwin-system,
+    wsl-system,
     ...
   }: {
 
     # Native NixOS Home Server (x86_64-linux)
     nixosConfigurations.rflxn-server = nixos-system.mkSystem {
+      inherit shared;
+    };
+
+    nixosConfigurations.rflxn-wsl = wsl-system.mkSystem {
       inherit shared;
     };
 

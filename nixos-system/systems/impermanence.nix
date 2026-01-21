@@ -33,7 +33,7 @@
       "/var/lib/docker"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
-      "/var/lib/tailscale"
+      "/var/lib/tailscale"  # for persist tailscale ip
     ];
 
     files = [

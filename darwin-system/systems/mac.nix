@@ -59,8 +59,8 @@
         { app = "/System/Applications/Messages.app"; }
         { app = "/Applications/Discord.app"; }
         { app = "/Applications/Spotify.app"; }
-        { app = "/Applications/kitty.app"; }
-        { app = "/Applications/Visual Studio Code.app"; }
+        { app = "/Applications/Nix Apps/kitty.app"; }
+        { app = "/Applications/Nix Apps/Visual Studio Code.app"; }
         { app = "/System/Applications/App Store.app"; }
       ];
     };

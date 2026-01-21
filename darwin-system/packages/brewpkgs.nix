@@ -25,29 +25,17 @@
     ];
 
     casks = [
-      "kitty"
-
-      "stats"
-      "aldente"
-      "alt-tab"
-      "karabiner-elements"
       "keka"
       "kekaexternalhelper"
 
       "font-fira-code"
-
-      # editor/ide
-      "webstorm"
-      "pycharm"
-      "intellij-idea"
-      "jetbrains-gateway"
-      "visual-studio-code"
 
       # etc.
       "microsoft-edge"
       "spotify"
       "discord"
       "iina"
+      "karabiner-elements"
     ];
   };
 }

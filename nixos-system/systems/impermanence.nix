@@ -33,6 +33,7 @@
       "/var/lib/docker"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
+      "/var/lib/tailscale"
     ];
 
     files = [

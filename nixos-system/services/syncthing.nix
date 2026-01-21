@@ -4,13 +4,15 @@
       enable = true;
 
       settings = {
-        devices = {};
+        devices = {
+          "rflxn-macbook" = { id = "UUNNXI2-S5LHREV-GVIDWMB-RBZ5PSO-EQ7LRSY-TDQP3BG-EQAK3XK-ZXEFTQF"; };
+        };
 
-        foldcers = {
+        folders = {
           "development" = {
             id = "development";
             path = "~/development";
-            devices = [];
+            devices = [ "rflxn-macbook" ];
           };
         };
       };

@@ -6,7 +6,7 @@
       settings = {
         devices = {};
 
-        foldcers = {
+        folders = {
           "development" = {
             id = "development";
             path = "~/development";

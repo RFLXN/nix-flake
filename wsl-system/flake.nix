@@ -8,7 +8,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, impermanence, vscode-server, home-manager, ... }: {
+  outputs = { self, nixpkgs, nixos-wsl, home-manager, ... }: {
     # Export system builder function
     mkSystem = { shared }: nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";

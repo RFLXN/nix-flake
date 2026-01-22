@@ -23,6 +23,8 @@
         ] ++ [
           ./systems
           ./services
+          ./packages
+          ./programs
         ];
       };
   };

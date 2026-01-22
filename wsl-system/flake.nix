@@ -20,7 +20,6 @@
           nixos-wsl.nixosModules.default
           home-manager.nixosModules.home-manager
           shared.modules
-          { wsl.enable = true; }
         ] ++ [
           ./systems
           ./services

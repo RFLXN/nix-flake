@@ -1,5 +1,5 @@
 { hostNames, ... }: {
-  networking.hostName = hostNames.desktop;
+  networking.hostName = hostNames.wsl;
   networking.firewall.enable = false;
   networking.nameservers = [
     "1.1.1.1"

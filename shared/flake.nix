@@ -11,7 +11,7 @@
       hostNames = {
         home-server = "rflxn-server";
         macbook = "rflxn-macbook";
-        desktop = "rflxn-wsl";
+        wsl = "rflxn-wsl";
       };
     };
 

@@ -15,6 +15,12 @@
             path = "~/development";
             devices = [ "rflxn-macbook" "rflxn-server" ];
           };
+
+          "data" = {
+            id = "data";
+            path = "~/data";
+            devices = [ "rflxn-macbook" "rflxn-server" ];
+          };
         };
       };
     };

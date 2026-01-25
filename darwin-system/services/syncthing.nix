@@ -15,6 +15,11 @@
             path = "~/development";
             devices = [ "rflxn-server" "rflxn-wsl" ];
           };
+          "data" = {
+            id = "data";
+            path = "~/data";
+            devices = [ "rflxn-server" "rflxn-wsl" ];
+          };
         };
       };
     };

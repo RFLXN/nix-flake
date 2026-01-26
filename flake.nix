@@ -6,7 +6,6 @@
     shared.url = "path:./shared";
     nixos-system.url = "path:./nixos-system";
     darwin-system.url = "path:./darwin-system";
-    wsl-system.url = "path:./wsl-system";
     desktop-system.url = "path:./desktop-system";
   };
 
@@ -15,7 +14,6 @@
     shared,
     nixos-system,
     darwin-system,
-    wsl-system,
     desktop-system,
     ...
   }: {

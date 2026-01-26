@@ -25,10 +25,7 @@
       inherit shared;
     };
 
-    nixosConfigurations.rflxn-wsl = wsl-system.mkSystem {
-      inherit shared;
-    };
-
+    # Native NixOS Desktop
     nixosConfigurations.rflxn-desktop = desktop-system.mkSystem {
       inherit shared;
     };

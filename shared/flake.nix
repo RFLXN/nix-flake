@@ -12,6 +12,7 @@
         home-server = "rflxn-server";
         macbook = "rflxn-macbook";
         wsl = "rflxn-wsl";
+        desktop = "rflxn-desktop";
       };
     };
 

@@ -7,6 +7,7 @@
     nixos-system.url = "path:./nixos-system";
     darwin-system.url = "path:./darwin-system";
     wsl-system.url = "path:./wsl-system";
+    desktop-system.url = "path:./desktop-system";
   };
 
   outputs = {
@@ -15,6 +16,7 @@
     nixos-system,
     darwin-system,
     wsl-system,
+    desktop-system,
     ...
   }: {
 
@@ -24,6 +26,10 @@
     };
 
     nixosConfigurations.rflxn-wsl = wsl-system.mkSystem {
+      inherit shared;
+    };
+
+    nixosConfigurations.rflxn-desktop = desktop-system.mkSystem {
       inherit shared;
     };
 

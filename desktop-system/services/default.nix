@@ -4,5 +4,6 @@
     ./sound.nix
     ./docker.nix
     ./syncthing.nix
+    ./keyd.nix
   ];
 }

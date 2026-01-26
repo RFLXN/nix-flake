@@ -5,8 +5,10 @@
 
     # terminal
     kitty
-
-    fira-code
+    
+    # etc.
+    spotify
+    discord
 
     os-prober
   ];

@@ -5,5 +5,6 @@
     ./docker.nix
     ./syncthing.nix
     ./keyd.nix
+    ./lact.nix
   ];
 }

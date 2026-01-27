@@ -38,6 +38,11 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
+  fileSystems."/mnt/shared" =
+    { device = "/dev/disk/by-uuid/0137990C6EBBA61A";
+      fsType = "ntfs3";
+    };
+
   swapDevices =
     [
       {

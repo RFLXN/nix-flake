@@ -1,7 +1,7 @@
 { lib, ... }: {
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     mkdir /btrfs_tmp
-    mount /dev/disk/by-uuid/29f7cd79-b677-4d59-a8f1-db6a9cbdc69f /btrfs_tmp
+    mount /dev/disk/by-uuid/78b6199d-0161-42e2-9dbd-34c69d72d54e /btrfs_tmp
     if [[ -e /btrfs_tmp/@root ]]; then
         mkdir -p /btrfs_tmp/old_roots
         timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/@root)" "+%Y-%m-%-d_%H:%M:%S")

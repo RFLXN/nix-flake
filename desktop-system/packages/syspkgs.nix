@@ -5,7 +5,7 @@
 
     # terminal
     kitty
-    
+
     # etc.
     spotify
     discord
@@ -16,10 +16,16 @@
     protonup-qt
     gamescope
     wine
-    
+    r2modman
+
+    # system
     os-prober
     ntfs3g
+    kdePackages.sddm-kcm  # SDDM configuration module for KDE System Settings
+    wayland-utils
+    wl-clipboard
   ] ++ (with pkgs-unstable; [
     protonplus
+    ayugram-desktop
   ]);
 }

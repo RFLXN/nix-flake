@@ -28,7 +28,11 @@
     # etc
     spotify
     ayugram-desktop
-    vesktop
+    
+    (discord.override {
+      # withOpenASAR = true; # can do this here too
+      withVencord = true;
+    })
 
     #gaming
     r2modman

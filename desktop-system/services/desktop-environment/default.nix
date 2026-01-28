@@ -5,6 +5,11 @@
 
   # Enable KDE Plasma 6 (uses Wayland by default)
   services.desktopManager.plasma6.enable = true;
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    kate
+    konsole
+    okular
+  ];
 
   security.rtkit.enable = true;
 

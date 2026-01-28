@@ -39,8 +39,8 @@
     };
 
   fileSystems."/mnt/shared" =
-    { device = "/dev/disk/by-uuid/0137990C6EBBA61A";
-      fsType = "ntfs3";
+    { device = "/dev/disk/by-uuid/d12aaa25-103d-446f-acc4-8814fabc8300";
+      fsType = "ext4";
     };
 
   swapDevices =

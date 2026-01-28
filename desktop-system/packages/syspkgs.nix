@@ -3,17 +3,22 @@
     # terminal
     kitty
 
+    # desktop environment
+    kdePackages.kolourpaint
+    kdePackages.kcalc
+    kdePackages.sddm-kcm  # SDDM configuration module for KDE System Settings
+    wayland-utils
+    wl-clipboard
+    hardinfo2
+
     # gaming
     lact
-    wine
+    wineWowPackages.waylandFull
 
     # system
     os-prober
     ntfs3g
-    kdePackages.sddm-kcm  # SDDM configuration module for KDE System Settings
-    wayland-utils
-    wl-clipboard
-
+    
   ] ++ (with pkgs-unstable; [
     # pkgs from unstable channel
 

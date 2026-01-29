@@ -10,6 +10,8 @@
     wayland-utils
     wl-clipboard
     hardinfo2
+    smplayer
+    
     # gaming
     lact
     wineWowPackages.waylandFull

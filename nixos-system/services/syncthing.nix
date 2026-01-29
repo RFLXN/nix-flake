@@ -2,7 +2,8 @@
   services.syncthing = {
     enable = true;
 
-    dataDir = "/persist/syncthing";
+    configDir = "/persist/syncthing/config";
+    databaseDir = "/persist/syncthing/db";
     user = username;
 
     settings = {

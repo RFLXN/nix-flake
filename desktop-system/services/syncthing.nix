@@ -16,7 +16,7 @@
           };
           "data" = {
             id = "data";
-            path = "~/data";
+            path = "/mnt/shared/Data";
             devices = [ "rflxn-server" ];
           };
         };

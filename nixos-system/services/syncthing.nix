@@ -6,7 +6,7 @@
       settings = {
         devices = {
           "rflxn-macbook" = { id = "UUNNXI2-S5LHREV-GVIDWMB-RBZ5PSO-EQ7LRSY-TDQP3BG-EQAK3XK-ZXEFTQF"; };
-          "rflxn-desktop" = { id = "VPLZV5I-NZ3TUQB-DXFHFVG-DJV4UM2-ND4PDQV-QSNH2QB-HF2P6WI-KLLL2Q7"; };
+          "rflxn-desktop" = { id = "63DJZE5-GC3RSIV-UANZZEE-O4JL4EV-4CDOGPD-HCSDGHP-ZX4XFRI-ZA47DAM"; };
         };
 
         folders = {

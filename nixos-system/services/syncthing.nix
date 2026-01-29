@@ -2,6 +2,9 @@
   services.syncthing = {
     enable = true;
 
+    dataDir = "/persist/syncthing";
+    user = username;
+
     settings = {
       devices = {
         "rflxn-macbook" = { id = "UUNNXI2-S5LHREV-GVIDWMB-RBZ5PSO-EQ7LRSY-TDQP3BG-EQAK3XK-ZXEFTQF"; };
@@ -11,13 +14,13 @@
       folders = {
         "development" = {
           id = "development";
-          path = "~/development";
+          path = "/home/${username}/development";
           devices = [ "rflxn-macbook" "rflxn-desktop" ];
         };
 
         "data" = {
           id = "data";
-          path = "~/data";
+          path = "/home/${username}/data";
           devices = [ "rflxn-desktop" ];
         };
       };

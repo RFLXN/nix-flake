@@ -10,7 +10,9 @@
     wayland-utils
     wl-clipboard
     hardinfo2
-    smplayer
+
+    # multimedia
+    haruna
     
     # gaming
     lact

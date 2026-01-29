@@ -5,7 +5,7 @@
 
       settings = {
         devices = {
-          "rflxn-server" = { id = "IFPCOTB-SSBDOLC-EWEAKI3-QWPXICY-JYLR4XU-PGYKYCH-T6NMQOR-KTWDWAK"; };
+          "rflxn-server" = { id = "J2RQDV7-7RSZ3HX-YQJLCRM-7UUPUH4-MYKG4KN-VZYGJKZ-MX5HGX6-7QN3BQR"; };
         };
 
         folders = {

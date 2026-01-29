@@ -10,7 +10,6 @@
     wayland-utils
     wl-clipboard
     hardinfo2
-
     # gaming
     lact
     wineWowPackages.waylandFull
@@ -18,6 +17,8 @@
     # system
     os-prober
     ntfs3g
+    dmidecode
+    lm_sensors
     
   ] ++ (with pkgs-unstable; [
     # pkgs from unstable channel

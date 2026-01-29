@@ -33,6 +33,7 @@
       "/var/lib/docker"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
+      "/var/lib/sbctl"      # for lanzaboote (secure boot)
       "/etc/NetworkManager/system-connections"
       "/var/lib/tailscale"  # for persist tailscale ip
     ];

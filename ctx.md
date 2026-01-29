@@ -1,85 +1,70 @@
-# Context: SDDM Dual Monitor Configuration - Wayland Migration
+# AMD Ryzen UCLK/FCLK Monitoring on Linux
 
 ## Problem
-- Dual monitor setup with vertical sub monitor
-- Main monitor: DP-3 (1920x1080 @ 200Hz, primary)
-- Sub monitor: HDMI-A-1 (1080x1920, rotated left for vertical use)
-- Works well in KDE Plasma desktop environment
-- SDDM login screen shows same display on both monitors (mirrored)
-- Goal: Match SDDM display configuration with Plasma desktop settings
+Need to check UCLK (Unified Memory Controller Clock) and FCLK (Fabric Clock) on AMD Ryzen 7 9700X (Zen 5) running NixOS, similar to HWiNFO64 on Windows.
 
-## Root Cause Discovery
-- Was using Wayland sessions by default but configured X11-specific settings
-- X11 xrandr commands don't work on Wayland SDDM
-- Different sessions (X11 vs Wayland) maintain separate desktop settings
-- KDE Plasma 6 defaults to Wayland
+## What Doesn't Work
+- **`dmidecode --type 17`**: Only shows static memory specs from SMBIOS (Speed: 5600 MT/s, Configured: 6000 MT/s), not runtime clocks
+- **`lm-sensors`**: Shows temperatures and GPU clocks, but doesn't expose CPU memory controller clocks (UCLK/FCLK)
+- **zenmonitor**: Not updated for Zen 5, won't work
 
-## Solution: Declarative Wayland Configuration
+## Current Configuration
+System: AMD Ryzen 7 9700X, 2x16GB DDR5-6000, NixOS with kernel 6.12.67
 
-### Root Issue
-The initial Wayland migration enabled SDDM Wayland support but didn't deploy the display configuration to SDDM's config directory (`/var/lib/sddm/.config/`), causing SDDM to use default mirrored display settings.
-
-### Files Changed
-
-1. **Created** `/home/rflxn/nix/desktop-system/services/kwinoutputconfig.json`:
-   - Stores the dual monitor configuration declaratively in the Nix config
-   - Contains display settings for DP-3 (1920x1080@200Hz) and HDMI-A-1 (1080x1920@60Hz, Rotated90)
-
-2. **Modified** `/home/rflxn/nix/desktop-system/services/desktop-environment.nix`:
-
+Already configured in `/home/rflxn/nix/desktop-system/systems/amd.nix`:
 ```nix
-{ pkgs, ... }: {
-  # Enable X server (still needed for XWayland compatibility)
-  services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
-
-  # Enable KDE Plasma 6 (uses Wayland by default)
-  services.desktopManager.plasma6.enable = true;
-
-  # Configure SDDM with Wayland
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;  # Enable Wayland for SDDM
-  };
-
-  # Deploy SDDM display configuration declaratively
-  systemd.tmpfiles.rules = [
-    # Create SDDM config directory
-    "d /var/lib/sddm/.config 0755 sddm sddm -"
-    # Copy KWin output configuration for dual monitor setup
-    "C /var/lib/sddm/.config/kwinoutputconfig.json 0644 sddm sddm - ${./kwinoutputconfig.json}"
-  ];
-
-  security.rtkit.enable = true;
+{ ... }: {
+  hardware.amdgpu.overdrive.enable = true;
+  hardware.cpu.amd.ryzen-smu.enable = true;
 }
 ```
 
-### How It Works
-- `systemd-tmpfiles` runs on boot and `nixos-rebuild switch`
-- Automatically creates `/var/lib/sddm/.config/` with correct ownership
-- Deploys `kwinoutputconfig.json` from Nix store to SDDM's config directory
-- Fully declarative - no manual file management needed
+## Current Status
+- `ryzen-smu` module is enabled in config but not yet loaded (needs reboot)
+- Module exists in NixOS packages for kernel 6.12
 
-**Nix Store Behavior:**
-- `${./kwinoutputconfig.json}` copies the file to Nix store (e.g., `/nix/store/abc123...-kwinoutputconfig.json`)
-- The systemd tmpfiles rule references the Nix store path, not the source directory
-- Changes to source file only take effect after `nixos-rebuild switch`
-- This ensures reproducibility and immutability
+## After Reboot - How to Check UCLK/FCLK
 
-### Deployment
+### 1. Verify module is loaded:
 ```bash
-sudo nixos-rebuild switch
+lsmod | grep ryzen_smu
+ls /sys/kernel/ryzen_smu_drv/
 ```
 
-### Technical Details
-- **Wayland SDDM** uses KWin as compositor
-- **Display config location**: `/var/lib/sddm/.config/kwinoutputconfig.json`
-- **Config format**: JSON array with "outputs" (display properties) and "setups" (layout/positioning)
-- **SDDM config**: `/etc/sddm.conf` (NixOS-managed symlink to `/etc/static/sddm.conf`)
+### 2. Install ryzenadj (if not already installed):
+Add to `/home/rflxn/nix/desktop-system/packages/syspkgs.nix`:
+```nix
+ryzenadj  # AMD Ryzen power management and monitoring tool
+```
 
-### Updating Display Configuration
-If you change display settings in KDE:
-1. Export config: `cat ~/.config/kwinoutputconfig.json > ~/nix/desktop-system/services/kwinoutputconfig.json`
-2. Rebuild: `sudo nixos-rebuild switch`
+Then rebuild: `sudo nixos-rebuild switch`
 
-**Reference:** [Arch Wiki - SDDM Match Plasma display configuration](https://wiki.archlinux.org/title/SDDM#Match_Plasma_display_configuration)
+### 3. Read UCLK/FCLK:
+```bash
+sudo ryzenadj --info
+```
+
+This should show:
+- **FCLK** (Infinity Fabric Clock)
+- **UCLK** (Memory Controller Clock)
+- **MCLK** (Memory Clock)
+
+Expected values for DDR5-6000:
+- MCLK: ~3000 MHz (6000 MT/s ÷ 2)
+- UCLK: ~3000 MHz (1:1 ratio with MCLK)
+- FCLK: ~2000-2400 MHz (depending on BIOS settings)
+
+### Alternative: Check via sysfs
+After module loads, explore:
+```bash
+find /sys/kernel/ryzen_smu_drv -type f
+cat /sys/kernel/ryzen_smu_drv/pm_table
+```
+
+## Memory Configuration Summary (from dmidecode)
+- 2x 16GB DDR5 modules (JUHOR JHE6800U3416JGRGB)
+- Slots: DIMM 1 Channel A, DIMM 1 Channel B
+- Speed: 5600 MT/s (JEDEC spec)
+- Configured Speed: 6000 MT/s (XMP/EXPO profile)
+- Voltage: 1.1V
+- Dual channel configuration

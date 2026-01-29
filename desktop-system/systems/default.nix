@@ -10,6 +10,6 @@
     ./fonts.nix
     ./ime.nix
     ./bluetooth.nix
-    ./gpu.nix
+    ./amd.nix
   ];
 }

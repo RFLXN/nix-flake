@@ -7,9 +7,11 @@
     impermanence.url = "github:nix-community/impermanence";
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.url = "github:nix-community/lanzaboote/v1.0.0";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, impermanence, home-manager, ... }: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, impermanence, home-manager, lanzaboote, ... }: {
     # Export system builder function
     mkSystem = { shared }: let
       system = "x86_64-linux";
@@ -27,6 +29,7 @@
       modules = [
         impermanence.nixosModules.impermanence
         home-manager.nixosModules.home-manager
+        lanzaboote.nixosModules.lanzaboote
         shared.modules  # Import shared module configurations
       ] ++ [
         ./systems

@@ -11,6 +11,8 @@
     wl-clipboard
     hardinfo2
 
+    rnnoise-plugin
+
     # multimedia
     haruna
     
@@ -23,6 +25,7 @@
     ntfs3g
     dmidecode
     lm_sensors
+    pciutils
     
   ] ++ (with pkgs-unstable; [
     # pkgs from unstable channel

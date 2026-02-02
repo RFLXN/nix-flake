@@ -6,7 +6,6 @@
     };
 
     loader.efi.canTouchEfiVariables = true;
-    # Enable early KMS for AMD GPU - smoother transitions, no black screen
     initrd.kernelModules = [ "amdgpu" ];
 
     kernelParams = [];

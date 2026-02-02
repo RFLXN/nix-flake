@@ -11,7 +11,15 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, impermanence, home-manager, lanzaboote, ... }: {
+  outputs = {
+    self,
+    nixpkgs,
+    nixpkgs-unstable,
+    impermanence,
+    home-manager,
+    lanzaboote,
+    ...
+  }: {
     # Export system builder function
     mkSystem = { shared }: let
       system = "x86_64-linux";

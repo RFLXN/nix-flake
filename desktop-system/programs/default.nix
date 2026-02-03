@@ -4,5 +4,6 @@
     ./kitty
     ./gaming
     ./nix-ld.nix
+    ./jetbrains.nix
   ];
 }

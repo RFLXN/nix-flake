@@ -32,6 +32,7 @@
 
     # editor/ide
     vscode
+    jetbrains.webstorm
 
     # etc
     spotify
@@ -48,5 +49,7 @@
     protonup-qt
     lutris
     gamescope
+    lsfg-vk
+    lsfg-vk-ui
   ]);
 }

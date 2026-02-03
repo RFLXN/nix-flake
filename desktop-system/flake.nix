@@ -9,6 +9,9 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote/v1.0.0";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    plasma-manager.url = "github:nix-community/plasma-manager";
+    plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
+    plasma-manager.inputs.home-manager.follows = "home-manager";
   };
 
   outputs = {
@@ -18,6 +21,7 @@
     impermanence,
     home-manager,
     lanzaboote,
+    plasma-manager,
     ...
   }: {
     # Export system builder function
@@ -40,6 +44,7 @@
         lanzaboote.nixosModules.lanzaboote
         shared.modules  # Import shared module configurations
       ] ++ [
+        { home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ]; }
         ./systems
         ./services
         ./packages

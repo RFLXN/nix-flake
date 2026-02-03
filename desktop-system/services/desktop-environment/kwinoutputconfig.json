@@ -76,6 +76,7 @@
                             "x": 1080,
                             "y": 607
                         },
+                        "primary": true,
                         "priority": 0,
                         "replicationSource": ""
                     },
@@ -86,6 +87,7 @@
                             "x": 0,
                             "y": 0
                         },
+                        "primary": false,
                         "priority": 1,
                         "replicationSource": ""
                     }

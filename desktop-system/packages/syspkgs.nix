@@ -26,6 +26,7 @@
     dmidecode
     lm_sensors
     pciutils
+    fastfetch
     
   ] ++ (with pkgs-unstable; [
     # pkgs from unstable channel

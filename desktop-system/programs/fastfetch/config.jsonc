@@ -6,7 +6,7 @@
   "modules": [
     {
       "type": "custom",
-      "format": "RFLXN's desktop-system from Nix flakes",
+      "format": "RFLXN's Desktop",
       "outputColor": "light_green"
     },
     {

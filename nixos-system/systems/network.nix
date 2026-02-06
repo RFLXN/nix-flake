@@ -1,6 +1,14 @@
 { hostNames, ... }: {
   networking.hostName = hostNames.home-server;
-  networking.firewall.enable = false;
+
+  # Enable firewall but allow all traffic (needed for iptables to load)
+  networking.firewall = {
+    enable = true;
+    allowedTCPPortRanges = [ { from = 1; to = 65535; } ];
+    allowedUDPPortRanges = [ { from = 1; to = 65535; } ];
+    trustedInterfaces = [ "docker0" ];
+  };
+
   networking.nameservers = [
     "1.1.1.1"
     "1.0.0.1"

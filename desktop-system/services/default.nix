@@ -8,5 +8,6 @@
     ./lact.nix
     ./openrazer.nix
     ./gpu-screen-recorder.nix
+    ./linux-wallpaperengine.nix
   ];
 }

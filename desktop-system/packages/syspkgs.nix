@@ -8,8 +8,10 @@
     kdePackages.kcalc
     kdePackages.sddm-kcm  # SDDM configuration module for KDE System Settings
     wayland-utils
+    linux-wallpaperengine
     wl-clipboard
     hardinfo2
+
 
     rnnoise-plugin
 

@@ -27,6 +27,16 @@ in
         windowDecorations.theme = "__aurorae__svg__leaf-dark";
         splashScreen.theme = "None";
       };
+
+      kwin = {
+        cornerBarrier = false;
+        edgeBarrier = 0;
+
+        effects.blur = {
+          enable = true;
+          strength = 5;
+        };
+      };
     };
   };
 }

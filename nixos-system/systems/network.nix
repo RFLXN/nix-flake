@@ -3,7 +3,7 @@
 
   # Enable firewall but allow all traffic (needed for iptables to load)
   networking.firewall = {
-    enable = true;
+    enable = false;
     allowedTCPPortRanges = [ { from = 1; to = 65535; } ];
     allowedUDPPortRanges = [ { from = 1; to = 65535; } ];
     trustedInterfaces = [ "docker0" ];

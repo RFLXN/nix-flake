@@ -1,7 +1,7 @@
 # This service requires Wallpaper Engine Installation from Steam
 { pkgs, username, ... }: let
   main-screen = "DP-3";
-  main-bg = "3455304967";
+  main-bg = "2798192282";
 
   sub-screen = "HDMI-A-1";
   sub-bg = "2897249674";

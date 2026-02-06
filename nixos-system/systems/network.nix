@@ -6,6 +6,9 @@
     "1.0.0.1"
   ];
 
+  # Enable IP forwarding for Docker
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+
   # Networking: systemd-networkd for wired DHCP
   networking.useDHCP = false;
   systemd.network = {

@@ -17,5 +17,6 @@
     ./plasma-6/shortcuts.nix
     ./plasma-6/visual.nix
     ./plasma-6/mice.nix
+    ./plasma-6/panels.nix
   ];
 }

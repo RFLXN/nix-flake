@@ -26,7 +26,8 @@ in {
     systemd.user.services.linux-wallpaperengine = {
       Unit = {
         Description = "Linux Wallpaper Engine";
-        After = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" "plasma-plasmashell.service" ];
+        BindsTo = [ "plasma-plasmashell.service" ];
         PartOf = [ "graphical-session.target" ];
       };
 

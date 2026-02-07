@@ -5,8 +5,24 @@
 
   sub-screen = "HDMI-A-1";
   sub-bg = "2897249674";
+
+  restart-wallpaper = pkgs.writeShellScriptBin "restart-wallpaper" ''
+    systemctl --user restart linux-wallpaperengine
+  '';
+
+  restart-wallpaper-desktop = pkgs.makeDesktopItem {
+    name = "restart-wallpaper";
+    desktopName = "Restart Wallpaper Engine";
+    exec = "${restart-wallpaper}/bin/restart-wallpaper";
+    icon = "preferences-desktop-wallpaper";
+    terminal = false;
+    type = "Application";
+    categories = [ "Utility" ];
+  };
 in {
   home-manager.users.${username} = {
+    home.packages = [ restart-wallpaper restart-wallpaper-desktop ];
+
     systemd.user.services.linux-wallpaperengine = {
       Unit = {
         Description = "Linux Wallpaper Engine";

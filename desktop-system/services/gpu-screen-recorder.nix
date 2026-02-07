@@ -27,6 +27,17 @@
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "gsr-save-replay" ''
       ${pkgs.killall}/bin/killall -SIGUSR1 gpu-screen-recorder
+      ${pkgs.libnotify}/bin/notify-send "GPU Screen Recorder" "Replay saved!" -i media-record
     '')
+
+    (pkgs.makeDesktopItem {
+      name = "gsr-save-replay";
+      desktopName = "GPU Screen Recorder Save Replay";
+      exec = "gsr-save-replay";
+      icon = "media-record";
+      terminal = false;
+      type = "Application";
+      categories = [ "Utility" ];
+    })
   ];
 }

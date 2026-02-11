@@ -44,6 +44,12 @@
       username = "rflxn";
       timezone = "Asia/Seoul";
       locale = "en_US.UTF-8";
+
+      syncthing-devices = {
+        rflxn-server = { id = "JNGCZR6-FO3YDYU-Q6NHJ4D-5Z33GVM-DLKEVPZ-VLP2GFK-GXCZDTL-UADU7A7"; };
+        rflxn-desktop = { id = "63DJZE5-GC3RSIV-UANZZEE-O4JL4EV-4CDOGPD-HCSDGHP-ZX4XFRI-ZA47DAM"; };
+        rflxn-asahi = { id = "BBTTEGG-W5SCDBV-ZTBI4ZZ-FQQR3AE-HEAJJGN-NAN7CM2-WFYEV37-YOEDIA3"; };
+      };
     };
 
     # Import host's mkSystem

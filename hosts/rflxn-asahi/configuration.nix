@@ -1,4 +1,4 @@
-{ config, lib, pkgs, shared, modules, ... }: {
+{ config, lib, pkgs, username, shared, modules, ... }: {
   imports =
     # Desktop
     (with modules.desktop; [
@@ -17,7 +17,17 @@
       (useHomeManager {})
       (useDocker { isBtrfs = true; isRootless = true; })
       (useTailscale {})
-      (useSyncthing { serviceLevel = "user"; })
+      (useSyncthing {
+        serviceLevel = "user";
+        devices = { inherit (shared.syncthing-devices) rflxn-server; };
+        folders = {
+          "development" = {
+            id = "development";
+            path = "/home/${username}/development";
+            devices = [ "rflxn-server" ];
+          };
+        };
+      })
       (useKeyd { settings = import ./keyd-configs.nix; })
     ]) ++
 

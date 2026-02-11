@@ -1,4 +1,4 @@
-{ config, lib, pkgs, shared, modules, ... }: {
+{ config, lib, pkgs, username, shared, modules, ... }: {
   imports = (with modules.services; [
     (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
     (useDocker {
@@ -19,6 +19,19 @@
     (useSsh { allowPasswordLogin = true; })
     (useSyncthing {
       serviceLevel = "system";
+      devices = { inherit (shared.syncthing-devices) rflxn-desktop rflxn-asahi; };
+      folders = {
+        "development" = {
+          id = "development";
+          path = "/home/${username}/development";
+          devices = [ "rflxn-asahi" "rflxn-desktop" ];
+        };
+        "data" = {
+          id = "data";
+          path = "/home/${username}/data";
+          devices = [ "rflxn-desktop" ];
+        };
+      };
     })
     (useTailscale {})
     (useJetbrainsRemote { ides = with pkgs.jetbrains; [ webstorm idea ]; })

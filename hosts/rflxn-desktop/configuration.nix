@@ -1,4 +1,4 @@
-{ config, lib, pkgs, shared, modules, ... }: {
+{ config, lib, pkgs, username, shared, modules, ... }: {
   imports = (with modules.desktop; [
     (plasma6.usePlasma6 { excludePackages = with pkgs.kdePackages; [ kate konsole okular ]; enableSddmIntegration = true; })
     (plasma6.theme.useLeaf {})
@@ -18,7 +18,22 @@
     (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
     (useDocker { isBtrfs = true; isRootless = true; })
     (useTailscale {})
-    (useSyncthing { serviceLevel = "user"; })
+    (useSyncthing {
+      serviceLevel = "user";
+      devices = { inherit (shared.syncthing-devices) rflxn-server; };
+      folders = {
+        "development" = {
+          id = "development";
+          path = "/home/${username}/development";
+          devices = [ "rflxn-server" ];
+        };
+        "data" = {
+          id = "data";
+          path = "/mnt/shared/Data";
+          devices = [ "rflxn-server" ];
+        };
+      };
+    })
     (useKeyd { settings = import ./keyd-configs.nix; })
     (useGpuScreenRecorder { window = "DP-3"; })
     (useLinuxWallpaperengine {

@@ -49,6 +49,7 @@
     # Import host's mkSystem
     rflxn-asahi = import ./hosts/rflxn-asahi;
     rflxn-desktop = import ./hosts/rflxn-desktop;
+    rflxn-server = import ./hosts/rflxn-server;
   in {
     nixosConfigurations = {
       rflxn-asahi = rflxn-asahi.mkSystem {
@@ -56,6 +57,9 @@
       };
       rflxn-desktop = rflxn-desktop.mkSystem {
         inherit nixpkgs nixpkgs-unstable modules impermanence home-manager plasma-manager lanzaboote shared;
+      };
+      rflxn-server = rflxn-server.mkSystem {
+        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager vscode-server shared;
       };
     };
   };

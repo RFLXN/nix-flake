@@ -21,7 +21,7 @@
       serviceLevel = "system";
     })
     (useTailscale {})
-    (useJetbrainsRemote { ides = with pkgs.jetbrains; [ webstorm idea-ultimate ]; })
+    (useJetbrainsRemote { ides = with pkgs.jetbrains; [ webstorm idea ]; })
     (useVscodeServer {})
 
   ]) ++ (with modules.programs; [

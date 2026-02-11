@@ -40,6 +40,7 @@
         f10 = "mute";
         f11 = "volumedown";
         f12 = "volumeup";
+        "3" = "print";
       };
     };
   };

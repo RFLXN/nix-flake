@@ -20,7 +20,7 @@
     (useTailscale {})
     (useSyncthing {
       serviceLevel = "user";
-      devices = { inherit (shared.syncthing-devices) rflxn-server; };
+      /* devices = { inherit (shared.syncthing-devices) rflxn-server; };
       folders = {
         "development" = {
           id = "development";
@@ -32,7 +32,7 @@
           path = "/mnt/shared/Data";
           devices = [ "rflxn-server" ];
         };
-      };
+      }; */
     })
     (useKeyd { settings = import ./keyd-configs.nix; })
     (useGpuScreenRecorder { window = "DP-3"; })

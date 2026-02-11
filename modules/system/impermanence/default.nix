@@ -1,4 +1,4 @@
-{ rootUuid, persistPath ? null }:
+{ rootUuid, persistPath ? null, directories ? [], files ? [] }:
 { lib, impermanence, defaultPersistPath ? null, ... }:
 let
   path = if persistPath != null then persistPath else defaultPersistPath;
@@ -38,7 +38,7 @@ in
       "/var/log"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
-    ];
-    files = [ "/etc/machine-id" ];
+    ] ++ directories;
+    files = [ "/etc/machine-id" ] ++ files;
   };
 }

@@ -4,6 +4,10 @@
     # System monitoring
     htop
     btop
+    iotop
+    smartmontools
+    lm_sensors
+    dmidecode
 
     # Search & text processing
     ripgrep
@@ -32,6 +36,7 @@
     bind          # dig, nslookup
     curl
     wget
+    net-tools
 
     # System utilities
     iproute2      # ip, ss

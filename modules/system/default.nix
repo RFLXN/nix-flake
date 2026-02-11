@@ -1,5 +1,5 @@
 {
-  useSystemdBoot = import ./systemd-boot;
+  boot = import ./boot;
   nix = import ./nix;
   useNetworkManager = import ./network-manager;
   useZram = import ./zram;

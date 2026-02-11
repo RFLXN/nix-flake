@@ -15,4 +15,8 @@
   useHaruna = import ./haruna;
   useKcalc = import ./kcalc;
   useKolourpaint = import ./kolourpaint;
+  useLact = import ./lact;
+  gaming = import ./gaming;
+  useWaylandUtils = import ./wayland-utils;
+  useAyugram = import ./ayugram;
 }

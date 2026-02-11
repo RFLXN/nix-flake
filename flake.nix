@@ -27,9 +27,14 @@
       url = "github:nix-community/nixos-vscode-server";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, apple-silicon, impermanence, home-manager, plasma-manager, vscode-server, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, apple-silicon, impermanence, home-manager, plasma-manager, vscode-server, lanzaboote, ... }:
   let
     # Import module library (not executed, just imported)
     modules = import ./modules;
@@ -43,10 +48,14 @@
 
     # Import host's mkSystem
     rflxn-asahi = import ./hosts/rflxn-asahi;
+    rflxn-desktop = import ./hosts/rflxn-desktop;
   in {
     nixosConfigurations = {
       rflxn-asahi = rflxn-asahi.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager vscode-server shared;
+        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager shared;
+      };
+      rflxn-desktop = rflxn-desktop.mkSystem {
+        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager plasma-manager lanzaboote shared;
       };
     };
   };

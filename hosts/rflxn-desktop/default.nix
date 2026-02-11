@@ -1,7 +1,7 @@
 {
-  mkSystem = { nixpkgs, nixpkgs-unstable, modules, apple-silicon, impermanence, home-manager, plasma-manager, shared }:
+  mkSystem = { nixpkgs, nixpkgs-unstable, modules, impermanence, home-manager, plasma-manager, lanzaboote, shared }:
     let
-      system = "aarch64-linux";
+      system = "x86_64-linux";
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
@@ -10,13 +10,12 @@
       inherit system;
 
       specialArgs = {
-        inherit shared modules pkgs-unstable plasma-manager impermanence home-manager;
+        inherit shared modules pkgs-unstable plasma-manager impermanence home-manager lanzaboote;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };
 
       modules = [
-        apple-silicon.nixosModules.apple-silicon-support
         ./configuration.nix
       ];
     };

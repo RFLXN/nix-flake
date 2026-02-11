@@ -11,7 +11,8 @@
 
     # Services
     (with modules.services; [
-      (usePipewire {})
+      (pipewire.usePipewire {})
+      (useRtkit {})
       (useLibinput {})
       (useHomeManager {})
       (useDocker { isBtrfs = true; isRootless = true; })
@@ -55,7 +56,8 @@
 
     # System
     (with modules.system; [
-      (useSystemdBoot { canTouchEfiVariables = false; consoleMode = "0"; configurationLimit = 15; })
+      (boot.useSystemdBoot { consoleMode = "0"; configurationLimit = 15; })
+      (boot.useEfiBoot { canTouchEfiVariables = false; })
       (useImpermanence { rootUuid = "4493ff63-f4f8-48af-b74b-df4434b45fff"; })
       (nix.useUnfreePackage {})
       (nix.useExperimentalFeatures {})

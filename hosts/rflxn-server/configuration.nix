@@ -19,7 +19,7 @@
     (useSsh { allowPasswordLogin = true; })
     (useSyncthing {
       serviceLevel = "system";
-      /* devices = { inherit (shared.syncthing-devices) rflxn-desktop rflxn-asahi; };
+      devices = { inherit (shared.syncthing-devices) rflxn-desktop rflxn-asahi; };
       folders = {
         "development" = {
           id = "development";
@@ -31,7 +31,7 @@
           path = "/home/${username}/data";
           devices = [ "rflxn-desktop" ];
         };
-      }; */
+      };
     })
     (useTailscale {})
     (useJetbrainsRemote { ides = with pkgs.jetbrains; [ webstorm idea ]; })

@@ -46,9 +46,9 @@
       locale = "en_US.UTF-8";
 
       syncthing-devices = {
-        rflxn-server = { id = "JOLVNXJF-K72AXIA-WPPXCKO-4UQIVAJ-YNFRLLH-RV5UXL5-ENMRFYQ-WACO5QD"; };
-        rflxn-desktop = { id = "63DJZE5-GC3RSIV-UANZZEE-O4JL4EV-4CDOGPD-HCSDGHP-ZX4XFRI-ZA47DAM"; };
-        rflxn-asahi = { id = "BBTTEGG-W5SCDBV-ZTBI4ZZ-FQQR3AE-HEAJJGN-NAN7CM2-WFYEV37-YOEDIA3"; };
+        rflxn-server = { id = "TWGALLT-3IIATII-6SL3P34-L5RTUHA-KDIJHHP-CV3F5XL-77R3272-FKASKAN"; };
+        rflxn-desktop = { id = "5G6J27Y-LHS63PQ-CO42X5W-LJY5D7X-GLITAWP-SQHKCTV-B5F47CS-3PRN5AA"; };
+        rflxn-asahi = { id = "EKTGOJY-6UF4WT2-VZXY3GI-UV7KI5N-XYOS6OQ-Z6FZSYK-D47SBBC-JKDNLAW"; };
       };
     };
 

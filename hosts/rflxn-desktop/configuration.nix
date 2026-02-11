@@ -1,23 +1,31 @@
 { config, lib, pkgs, username, shared, modules, ... }: {
   imports = (with modules.desktop; [
-    (plasma6.usePlasma6 { excludePackages = with pkgs.kdePackages; [ kate konsole okular ]; enableSddmIntegration = true; })
-    (plasma6.theme.useLeaf {})
-    (plasma6.kwin.useBlur {})
     (plasma6.kwin.disableWindowBarrier {})
-    (plasma6.shortcuts.useKitty { key = "Meta+R"; })
+    (plasma6.kwin.useBlur {})
     (plasma6.shortcuts.useGsrSaveReplay { key = "Alt+F9"; })
+    (plasma6.shortcuts.useKitty { key = "Meta+R"; })
     (plasma6.shortcuts.useRestartWallpaper { key = "Meta+\\"; })
-    (useXdgPortal { enableKdeSupport = true; })
+    (plasma6.theme.useLeaf {})
+    (plasma6.usePlasma6 { excludePackages = with pkgs.kdePackages; [ kate konsole okular ]; enableSddmIntegration = true; })
     (useSddm {})
+    (useXdgPortal { enableKdeSupport = true; })
 
   ]) ++ (with modules.services; [
-    (pipewire.usePipewire {})
-    (pipewire.useLowLatency {})
     (pipewire.useDenoisedMic {})
-    (useRtkit {})
-    (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
+    (pipewire.useLowLatency {})
+    (pipewire.usePipewire {})
     (useDocker { isBtrfs = true; isRootless = true; })
-    (useTailscale {})
+    (useGpuScreenRecorder { window = "DP-3"; })
+    (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
+    (useKeyd { settings = import ./keyd-configs.nix; })
+    (useLinuxWallpaperengine {
+      fps = 60;
+      wallpapers = [
+        { screen = "DP-3"; wallpaper = "2798192282"; }
+        { screen = "HDMI-A-1"; wallpaper = "2897249674"; }
+      ];
+    })
+    (useRtkit {})
     (useSyncthing {
       serviceLevel = "user";
       devices = { inherit (shared.syncthing-devices) rflxn-server; };
@@ -34,67 +42,59 @@
         };
       };
     })
-    (useKeyd { settings = import ./keyd-configs.nix; })
-    (useGpuScreenRecorder { window = "DP-3"; })
-    (useLinuxWallpaperengine {
-      fps = 60;
-      wallpapers = [
-        { screen = "DP-3"; wallpaper = "2798192282"; }
-        { screen = "HDMI-A-1"; wallpaper = "2897249674"; }
-      ];
-    })
+    (useTailscale {})
 
   ]) ++ (with modules.programs; [
+    (gaming.useLsfgVk {})
+    (gaming.useR2modman {})
+    (gaming.useSteam {})
+    (gaming.useWine { isWayland = true; })
+    (jetbrains.useIntellij { enableZshAlias = true; })
+    (jetbrains.useWebstorm { enableZshAlias = true; })
     (shell.useShell {})
     (shell.useZsh {})
-    (useFirefox {})
-    (useVscode {})
+    (useAyugram {})
     (useClaudeCode {})
-    (useKitty {})
-    (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
+    (useCommonTools {})
+    (useDirenv {})
+    (useDiscord {})
     (useFastfetch {
       beforeModules = [
         { type = "custom"; format = "RFLXN's Desktop"; outputColor = "light_green"; }
         { type = "custom"; format = "https://github.com/RFLXN/nix-flake"; outputColor = "dim_white"; }
       ];
     })
-    (useDiscord {})
-    (useSpotify {})
-    (useNixIndex {})
-    (useDirenv {})
-    (useCommonTools {})
-    (jetbrains.useWebstorm { enableZshAlias = true; })
-    (jetbrains.useIntellij { enableZshAlias = true; })
+    (useFirefox {})
+    (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
     (useHaruna {})
     (useKcalc { enableWindowsAlias = true; })
+    (useKitty {})
     (useKolourpaint { enableWindowsAlias = true; })
     (useLact {})
-    (gaming.useSteam {})
-    (gaming.useR2modman {})
-    (gaming.useLsfgVk {})
-    (gaming.useWine { isWayland = true; })
+    (useNixIndex {})
+    (useSpotify {})
+    (useVscode {})
     (useWaylandUtils {})
-    (useAyugram {})
 
   ]) ++ (with modules.hardware; [
     (useAmdGpu { enableOverdrive = true; })
     (useBluetooth {})
-    
+
   ]) ++ (with modules.system; [
-    (boot.useSystemdBoot { configurationLimit = 10; })
     (boot.useEfiBoot { canTouchEfiVariables = true; })
     (boot.useLanzaboote {})
     (boot.usePlymouth {})
-    (useImpermanence { rootUuid = "78b6199d-0161-42e2-9dbd-34c69d72d54e"; })
-    (nix.useUnfreePackage {})
+    (boot.useSystemdBoot { configurationLimit = 10; })
     (nix.useExperimentalFeatures {})
     (nix.useGc { dates = "Wed 05:00"; })
     (nix.useOptimise { dates = [ "Wed 05:00" ]; })
+    (nix.useUnfreePackage {})
+    (useCjkFonts {})
+    (useFcitx5 {})
+    (useImpermanence { rootUuid = "78b6199d-0161-42e2-9dbd-34c69d72d54e"; })
+    (useMe { hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword"; })
     (useNetworkManager {})
     (useZram {})
-    (useMe { hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword"; })
-    (useFcitx5 {})
-    (useCjkFonts {})
 
   ]) ++ [
       ./hardware-configuration.nix

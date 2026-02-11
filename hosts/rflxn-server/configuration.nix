@@ -1,6 +1,5 @@
 { config, lib, pkgs, username, shared, modules, ... }: {
   imports = (with modules.services; [
-    (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
     (useDocker {
       isBtrfs = true;
       containersAsService = {
@@ -16,6 +15,8 @@
         };
       };
     })
+    (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
+    (useJetbrainsRemote { ides = with pkgs.jetbrains; [ webstorm idea ]; })
     (useSsh { allowPasswordLogin = true; })
     (useSyncthing {
       serviceLevel = "system";
@@ -34,26 +35,25 @@
       };
     })
     (useTailscale {})
-    (useJetbrainsRemote { ides = with pkgs.jetbrains; [ webstorm idea ]; })
     (useVscodeServer {})
 
   ]) ++ (with modules.programs; [
     (shell.useShell {})
     (shell.useZsh {})
     (useClaudeCode {})
+    (useCommonTools {})
+    (useDirenv {})
     (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
     (useNixIndex {})
-    (useDirenv {})
-    (useCommonTools {})
 
   ]) ++ (with modules.system; [
-    (boot.useSystemdBoot {})
     (boot.useEfiBoot { canTouchEfiVariables = true; })
-    (useImpermanence { rootUuid = "e5d418a8-3c68-48ff-aecd-e94874b879c8"; })
-    (nix.useUnfreePackage {})
+    (boot.useSystemdBoot {})
     (nix.useExperimentalFeatures {})
     (nix.useGc { dates = "Wed 05:00"; })
     (nix.useOptimise { dates = [ "Wed 05:00" ]; })
+    (nix.useUnfreePackage {})
+    (useImpermanence { rootUuid = "e5d418a8-3c68-48ff-aecd-e94874b879c8"; })
     (useMe { hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword"; })
 
   ]) ++ [

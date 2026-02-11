@@ -2,21 +2,21 @@
   imports =
     # Desktop
     (with modules.desktop; [
-      (plasma6.usePlasma6 { excludePackages = with pkgs.kdePackages; [ kate konsole okular ]; })
-      (plasma6.theme.useLeaf {})
       (plasma6.kwin.useBlur {})
       (plasma6.shortcuts.useKitty { key = "Meta+R"; })
+      (plasma6.theme.useLeaf {})
+      (plasma6.usePlasma6 { excludePackages = with pkgs.kdePackages; [ kate konsole okular ]; })
       (useSddm { enableHidpi = true; })
     ]) ++
 
     # Services
     (with modules.services; [
       (pipewire.usePipewire {})
-      (useRtkit {})
-      (useLibinput {})
-      (useHomeManager {})
       (useDocker { isBtrfs = true; isRootless = true; })
-      (useTailscale {})
+      (useHomeManager {})
+      (useKeyd { settings = import ./keyd-configs.nix; })
+      (useLibinput {})
+      (useRtkit {})
       (useSyncthing {
         serviceLevel = "user";
         devices = { inherit (shared.syncthing-devices) rflxn-server; };
@@ -28,56 +28,56 @@
           };
         };
       })
-      (useKeyd { settings = import ./keyd-configs.nix; })
+      (useTailscale {})
     ]) ++
 
     # Programs
     (with modules.programs; [
+      (jetbrains.useIntellij { enableZshAlias = true; })
+      (jetbrains.useWebstorm { enableZshAlias = true; })
       (shell.useShell {})
       (shell.useZsh {})
-      (useFirefox {})
-      (useVscode {})
       (useClaudeCode {})
-      (useKitty {})
-      (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
+      (useCommonTools {})
+      (useDirenv {})
+      (useDiscord {})
       (useFastfetch {
         beforeModules = [
           { type = "custom"; format = "RFLXN's Asahi Linux Macbook"; outputColor = "light_green"; }
           { type = "custom"; format = "https://github.com/RFLXN/nix-flake"; outputColor = "dim_white"; }
         ];
       })
-      (useDiscord {})
-      (useSpotify {})
-      (useNixIndex {})
-      (useDirenv {})
-      (useCommonTools {})
-      (jetbrains.useWebstorm { enableZshAlias = true; })
-      (jetbrains.useIntellij { enableZshAlias = true; })
+      (useFirefox {})
+      (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
       (useHaruna {})
       (useKcalc { enableWindowsAlias = true; })
+      (useKitty {})
       (useKolourpaint { enableWindowsAlias = true; })
+      (useNixIndex {})
+      (useSpotify {})
+      (useVscode {})
     ]) ++
 
     # Hardware
     (with modules.hardware; [
-      (useGraphics {})
       (useBluetooth {})
+      (useGraphics {})
     ]) ++
 
     # System
     (with modules.system; [
-      (boot.useSystemdBoot { consoleMode = "0"; configurationLimit = 15; })
       (boot.useEfiBoot { canTouchEfiVariables = false; })
-      (useImpermanence { rootUuid = "4493ff63-f4f8-48af-b74b-df4434b45fff"; })
-      (nix.useUnfreePackage {})
+      (boot.useSystemdBoot { consoleMode = "0"; configurationLimit = 15; })
       (nix.useExperimentalFeatures {})
       (nix.useGc { dates = "Wed 05:00"; })
       (nix.useOptimise { dates = [ "Wed 05:00" ]; })
+      (nix.useUnfreePackage {})
+      (useCjkFonts {})
+      (useFcitx5 {})
+      (useImpermanence { rootUuid = "4493ff63-f4f8-48af-b74b-df4434b45fff"; })
+      (useMe { hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword"; })
       (useNetworkManager { useWifi = true; })
       (useZram {})
-      (useMe { hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword"; })
-      (useFcitx5 {})
-      (useCjkFonts {})
     ]) ++
 
     # Host-specific

@@ -1,3 +1,4 @@
-flake.lock
-.claude
+ctx.md
 claude.md
+.claude
+TODO.md

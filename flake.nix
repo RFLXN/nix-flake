@@ -1,36 +1,53 @@
 {
-  description = "RFLXN's Unified Multi-System Nix Configuration";
+  description = "RFLXN's NixOS Configuration";
 
   inputs = {
-    # Sub-flakes (local)
-    shared.url = "path:./shared";
-    nixos-system.url = "path:./nixos-system";
-    darwin-system.url = "path:./darwin-system";
-    desktop-system.url = "path:./desktop-system";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    apple-silicon = {
+      url = "github:nix-community/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    impermanence.url = "github:nix-community/impermanence";
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
+    vscode-server = {
+      url = "github:nix-community/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = {
-    self,
-    shared,
-    nixos-system,
-    darwin-system,
-    desktop-system,
-    ...
-  }: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, apple-silicon, impermanence, home-manager, plasma-manager, vscode-server, ... }:
+  let
+    # Import module library (not executed, just imported)
+    modules = import ./modules;
 
-    # Native NixOS Home Server (x86_64-linux)
-    nixosConfigurations.rflxn-server = nixos-system.mkSystem {
-      inherit shared;
+    # Shared configuration across all hosts
+    shared = {
+      username = "rflxn";
+      timezone = "Asia/Seoul";
+      locale = "en_US.UTF-8";
     };
 
-    # Native NixOS Desktop
-    nixosConfigurations.rflxn-desktop = desktop-system.mkSystem {
-      inherit shared;
-    };
-
-    # nix-darwin Macbook (aarch64-darwin)
-    darwinConfigurations.rflxn-macbook = darwin-system.mkSystem {
-      inherit shared;
+    # Import host's mkSystem
+    rflxn-asahi = import ./hosts/rflxn-asahi;
+  in {
+    nixosConfigurations = {
+      rflxn-asahi = rflxn-asahi.mkSystem {
+        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager vscode-server shared;
+      };
     };
   };
 }

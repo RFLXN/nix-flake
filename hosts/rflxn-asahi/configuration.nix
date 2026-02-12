@@ -72,6 +72,7 @@
       (nix.useGc { dates = "Wed 05:00"; })
       (nix.useOptimise { dates = [ "Wed 05:00" ]; })
       (nix.useUnfreePackage {})
+      (nix.useCache {})
       (useCjkFonts {})
       (useFcitx5 {})
       (useImpermanence { rootUuid = "4493ff63-f4f8-48af-b74b-df4434b45fff"; })

@@ -160,7 +160,8 @@ Each host imports modules via `with` blocks:
 
 #### Other program modules
 
-- **useFirefox** `{ }`
+- **useFirefox** `{ enableWidevine ? false }`
+  - Set `enableWidevine = true` to play DRM-protected contents (e.g., streaming services) on aarch64 systems
 - **useVscode** `{ }`
 - **useClaudeCode** `{ }`
 - **useKitty** `{ }`

@@ -88,6 +88,12 @@
   # Host-specific configuration
   networking.hostName = "rflxn-asahi";
 
+  # Apple keyboard: F1-F12 as function keys by default, Fn+F1-F12 for media
+  # Note: Asahi Linux inverts the meaning, so fnmode=2 gives us function keys by default
+  boot.extraModprobeConfig = ''
+    options hid_apple fnmode=2
+  '';
+
   networking.nameservers = [
     "1.1.1.1"
     "1.0.0.1"

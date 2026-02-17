@@ -97,8 +97,9 @@ in
   ]) ++ (with modules.programs; [
     (gaming.useLsfgVk {})
     (gaming.useR2modman {})
-    (gaming.useSteam {})
+    (gaming.useSteam { enableGamescope = true; })
     (gaming.useWine { isWayland = true; })
+    (gaming.useProtonplus {})
     (jetbrains.useIntellij { enableZshAlias = true; })
     (jetbrains.useWebstorm { enableZshAlias = true; })
     (shell.useShell {})
@@ -134,6 +135,7 @@ in
   ]) ++ (with modules.hardware; [
     (useAmdGpu { enableOverdrive = true; })
     (useBluetooth {})
+    (useGraphics {})
 
   ]) ++ (with modules.system; [
     (boot.useEfiBoot { canTouchEfiVariables = true; })

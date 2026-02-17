@@ -27,6 +27,8 @@
     XMODIFIERS = "@im=fcitx";
   };
 
+  services.xserver.enable = enableXWayland;
+
   home-manager.users.${username}.wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = false;

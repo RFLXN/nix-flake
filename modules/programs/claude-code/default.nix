@@ -1,12 +1,13 @@
 { }:
-{ pkgs, pkgs-unstable, username, ... }:
+{ nixpkgs, pkgs, lib, claude-code, username, ... }:
 let
   claude-powerline-wrapper = pkgs.writeShellScript "claude-powerline" ''
     export PATH="${pkgs.nodejs_22}/bin:$PATH"
     exec ${pkgs.nodejs_22}/bin/npx -y @owloops/claude-powerline@latest --style=powerline --theme=tokyo-night
   '';
 in {
-  environment.systemPackages = [ pkgs-unstable.claude-code ];
+  nixpkgs.overlays = [ claude-code.overlays.default ];
+  environment.systemPackages = [ pkgs.claude-code ];
 
   home-manager.users.${username} = {
     programs.claude-code = {

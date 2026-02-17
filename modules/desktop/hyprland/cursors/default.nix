@@ -1,0 +1,3 @@
+{
+  useRosePineCursor = import ./rose-pine;
+}

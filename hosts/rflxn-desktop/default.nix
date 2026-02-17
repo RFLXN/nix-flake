@@ -1,5 +1,5 @@
 {
-  mkSystem = { nixpkgs, nixpkgs-unstable, modules, impermanence, home-manager, plasma-manager, lanzaboote, shared }:
+  mkSystem = { nixpkgs, nixpkgs-unstable, modules, impermanence, home-manager, lanzaboote, claude-code, astal, ags, shared }:
     let
       system = "x86_64-linux";
       pkgs-unstable = import nixpkgs-unstable {
@@ -10,7 +10,7 @@
       inherit system;
 
       specialArgs = {
-        inherit shared modules pkgs-unstable plasma-manager impermanence home-manager lanzaboote;
+        inherit nixpkgs shared modules pkgs-unstable impermanence home-manager lanzaboote claude-code astal ags;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };

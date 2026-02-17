@@ -17,6 +17,11 @@
   useKolourpaint = import ./kolourpaint;
   useLact = import ./lact;
   gaming = import ./gaming;
+  useThunar = import ./thunar;
   useWaylandUtils = import ./wayland-utils;
   useAyugram = import ./ayugram;
+  useBlueman = import ./blueman;
+  useNmApplet = import ./nm-applet;
+  useCodex = import ./codex;
+  useDolphin = import ./dolphin;
 }

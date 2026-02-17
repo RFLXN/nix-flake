@@ -34,6 +34,13 @@
     };
 
     aarch64-widevine.url = "github:epetousis/nixos-aarch64-widevine";
+
+    claude-code.url = "github:sadjow/claude-code-nix";
+
+    astal.url = "github:aylur/astal";
+
+    ags.url = "github:aylur/ags";
+
   };
 
   outputs = {
@@ -47,6 +54,9 @@
     vscode-server,
     lanzaboote,
     aarch64-widevine,
+    claude-code,
+    astal,
+    ags,
     ...
   }: let
     # Import module library (not executed, just imported)
@@ -72,13 +82,13 @@
   in {
     nixosConfigurations = {
       rflxn-asahi = rflxn-asahi.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine shared;
+        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code shared;
       };
       rflxn-desktop = rflxn-desktop.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager plasma-manager lanzaboote shared;
+        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager lanzaboote claude-code astal ags shared;
       };
       rflxn-server = rflxn-server.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager vscode-server shared;
+        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager vscode-server claude-code shared;
       };
     };
   };

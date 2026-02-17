@@ -1,0 +1,56 @@
+:root {
+    --border-color: rgba(33, 32, 46, 0.7);
+    --border-color-active: rgb(235, 188, 186);
+    --border-gradient-active: rgb(196, 167, 231);
+
+    --bg-color: rgba(20, 20, 20, 0.8);
+    --bg-color-hover: rgba(40, 40, 50, 1);
+
+    --border-radius: 6px;
+    --border-size: 2px;
+    --border-style: solid;
+
+    --text-color: rgb(224, 222, 244);
+
+    --window-padding: 1px;
+}
+
+.window {
+}
+
+
+.monitor {
+}
+
+.workspace {
+}
+
+.client {
+}
+
+.client-image {
+}
+
+.launcher {
+}
+
+.launcher-input {
+}
+
+.launcher-results {
+}
+
+.launcher-item {
+}
+
+.launcher-exec {
+}
+
+.launcher-key {
+}
+
+.launcher-plugins {
+}
+
+.launcher-plugin {
+}

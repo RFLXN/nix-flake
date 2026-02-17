@@ -69,6 +69,8 @@ in
 
     packages = with pkgs; [
       fira-code
+      nerd-fonts.fira-code
+      nerd-fonts.symbols-only
       nanum
       noto-fonts
       noto-fonts-cjk-sans

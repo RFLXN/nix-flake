@@ -49,6 +49,7 @@
   ]) ++ (with modules.system; [
     (boot.useEfiBoot { canTouchEfiVariables = true; })
     (boot.useSystemdBoot {})
+    (nix.useCache {})
     (nix.useExperimentalFeatures {})
     (nix.useGc { dates = "Wed 05:00"; })
     (nix.useOptimise { dates = [ "Wed 05:00" ]; })

@@ -1,14 +1,71 @@
-{ config, lib, pkgs, username, shared, modules, ... }: {
+{ config, lib, pkgs, username, shared, modules, ... }:
+let
+  agsInstance = "ags";
+in
+{
   imports = (with modules.desktop; [
-    (plasma6.kwin.disableWindowBarrier {})
-    (plasma6.kwin.useBlur {})
-    (plasma6.shortcuts.useGsrSaveReplay { key = "Alt+F9"; })
-    (plasma6.shortcuts.useKitty { key = "Meta+R"; })
-    (plasma6.shortcuts.useRestartWallpaper { key = "Meta+\\"; })
-    (plasma6.theme.useLeaf {})
-    (plasma6.usePlasma6 { excludePackages = with pkgs.kdePackages; [ kate konsole okular ]; enableSddmIntegration = true; })
-    (useSddm {})
-    (useXdgPortal { enableKdeSupport = true; })
+    (hyprland.useHyprland {
+      followMouse = 0;
+      pointerSpeed = -0.25;
+      enableMouseAcceleration = false;
+      monitors = [
+        "DP-3, 1920x1080@200, 1080x220, 1"
+        "HDMI-A-1, 1920x1080@60, 0x0, 1, transform, 1"
+      ];
+      workspaces = [
+        "1, monitor:DP-3, default:true, persistent:true"
+        "2, monitor:DP-3, persistent:true"
+        "3, monitor:DP-3, persistent:true"
+        "4, monitor:DP-3, persistent:true"
+        "5, monitor:DP-3, persistent:true"
+        "6, monitor:HDMI-A-1, default:true, persistent:true"
+      ];
+    })
+    (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
+    (gtk.theme.useRosePine {
+      variant = "main";
+      windowOpacity = 0.6;
+    })
+    (qt.theme.useRosePine {
+      variant = "main";
+      accent = "rose";
+      kvantumReduceWindowOpacity = 40;
+    })
+    (hyprland.cursors.useRosePineCursor {})
+    (hyprland.windowRules.useDefaults {})
+    (hyprland.windowRules.useFixedVesktop { workspace = "6"; })
+    (hyprland.windowRules.useFixedSpotify { workspace = "6"; })
+    (hyprland.keybinds.useDefaults {})
+    (hyprland.keybinds.useKitty {})
+    (hyprland.keybinds.useAgsLauncher {})
+    (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
+    (hyprland.keybinds.useGsrSaveReplay {})
+    (hyprland.keybinds.usePrintscreen {})
+    (hyprland.appearance {
+      borderSize = 1;
+      activeBorderColor = "rgb(888888)";
+      inactiveBorderColor = "rgb(444444)";
+      activeOpacity = 0.95;
+      inactiveOpacity = 0.85;
+      fullscreenOpacity = 1.0;
+      blurSize = 10;
+      blurPasses = 3;
+    })
+    (hyprland.useHyprshell {})
+    (hyprland.useHyprpaper {
+      wallpaper = "/home/${username}/Pictures/wallpaper.jpg";
+      wallpapers = [
+        { monitor = "DP-3"; path = "/home/${username}/Pictures/main-wallpaper.jpg"; }
+        { monitor = "HDMI-A-1"; path = "/home/${username}/Pictures/sub-wallpaper.jpg"; }
+      ];
+      monitors = [ "DP-3" "HDMI-A-1" ];
+    })
+    (hyprland.useAgs {})
+    (hyprland.useTrayBridge {})
+    (hyprland.useHyprpolkit {})
+    (hyprland.useHyprbars {})
+    (useGreetd { primaryMonitor = { name = "DP-3"; res = "1920x1080"; }; })
+    (useXdgPortal { enableHyprlandSupport = true; })
 
   ]) ++ (with modules.services; [
     (pipewire.useDenoisedMic {})
@@ -18,13 +75,6 @@
     (useGpuScreenRecorder { window = "DP-3"; })
     (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
     (useKeyd { settings = import ./keyd-configs.nix; })
-    (useLinuxWallpaperengine {
-      fps = 60;
-      wallpapers = [
-        { screen = "DP-3"; wallpaper = "2798192282"; }
-        { screen = "HDMI-A-1"; wallpaper = "2897249674"; }
-      ];
-    })
     (useRtkit {})
     (useSyncthing {
       serviceLevel = "user";
@@ -58,6 +108,7 @@
     (useCommonTools {})
     (useDirenv {})
     (useDiscord {})
+    (useDolphin {})
     (useFastfetch {
       beforeModules = [
         { type = "custom"; format = "RFLXN's Desktop"; outputColor = "light_green"; }
@@ -73,8 +124,12 @@
     (useLact {})
     (useNixIndex {})
     (useSpotify {})
+    (useThunar {})
     (useVscode {})
     (useWaylandUtils {})
+    (useBlueman {})
+    (useNmApplet {})
+    (useCodex {})
 
   ]) ++ (with modules.hardware; [
     (useAmdGpu { enableOverdrive = true; })
@@ -85,6 +140,7 @@
     (boot.useLanzaboote {})
     (boot.usePlymouth {})
     (boot.useSystemdBoot { configurationLimit = 10; })
+    (nix.useCache {})
     (nix.useExperimentalFeatures {})
     (nix.useGc { dates = "Wed 05:00"; })
     (nix.useOptimise { dates = [ "Wed 05:00" ]; })
@@ -93,7 +149,7 @@
     (useFcitx5 {})
     (useImpermanence { rootUuid = "78b6199d-0161-42e2-9dbd-34c69d72d54e"; })
     (useMe { hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword"; })
-    (useNetworkManager {})
+    (useNetworkManager { useWifi = true; })
     (useZram {})
 
   ]) ++ [

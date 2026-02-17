@@ -13,7 +13,10 @@ lib.mkMerge [
     users.users.${username}.extraGroups = [ "networkmanager" ];
   }
   (lib.mkIf (path != null) {
-    environment.persistence.${path}.directories = [ "/var/lib/NetworkManager" ];
+    environment.persistence.${path}.directories = [
+      "/var/lib/NetworkManager"
+      "/etc/NetworkManager/system-connections"
+    ];
   })
   (lib.mkIf useWifi {
     networking.networkmanager.wifi = {

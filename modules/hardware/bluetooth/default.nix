@@ -1,5 +1,5 @@
 { persistPath ? null }:
-{ lib, defaultPersistPath ? null, ... }:
+{ lib, pkgs, defaultPersistPath ? null, ... }:
 let
   path = if persistPath != null then persistPath else defaultPersistPath;
 in
@@ -17,6 +17,9 @@ lib.mkMerge [
         Policy.AutoEnable = true;
       };
     };
+
+    services.upower.enable = lib.mkDefault true;
+    environment.systemPackages = [ pkgs.upower ];
   }
   (lib.mkIf (path != null) {
     environment.persistence.${path}.directories = [ "/var/lib/bluetooth" ];

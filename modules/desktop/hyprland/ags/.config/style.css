@@ -1,0 +1,1697 @@
+@define-color primary rgb(245, 183, 12);
+@define-color primary-1 rgb(221, 165, 11);
+@define-color dark rgb(24, 18, 1);
+@define-color dark-1 rgb(49, 37, 2);
+@define-color base rgb(25, 23, 36);
+@define-color overlay rgb(38, 35, 58);
+@define-color surface rgb(31, 29, 46);
+@define-color muted rgb(144, 140, 170);
+@define-color text rgb(224, 222, 244);
+@define-color highlight-med rgb(64, 61, 82);
+@define-color highlight-high rgb(82, 79, 103);
+@define-color rose rgb(235, 188, 186);
+@define-color love rgb(235, 111, 146);
+@define-color iris rgb(196, 167, 231);
+@define-color pine rgb(49, 116, 143);
+
+* {
+  font-family: "FiraCode Nerd Font", "Symbols Nerd Font", "Noto Sans";
+  font-size: 13px;
+}
+
+*:focus,
+*:focus-visible {
+  outline-color: @muted;
+}
+
+window.bar {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+.bar-inner {
+  margin: 0;
+  padding: 6px 4px 0px 4px;
+}
+
+.widget {
+  background: alpha(@overlay, 0.45);
+  color: #e6e1e9;
+  padding: 8px 9px;
+  margin: 0 2px;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background-color 120ms ease;
+}
+
+.widget.notification {
+  padding-left: 6px;
+  padding-right: 8px;
+}
+
+.widget.volume {
+}
+
+.widget.network {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.widget.bluetooth {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.widget.clock {
+  padding-left: 11px;
+  padding-right: 11px;
+}
+
+menubutton.bluetooth {
+  padding: 0;
+}
+
+menubutton.bluetooth > label,
+menubutton.bluetooth > box {
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.bluetooth > button,
+menubutton.bluetooth > button:hover,
+menubutton.bluetooth > button:focus,
+menubutton.bluetooth > button:active {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.notification {
+  padding: 0;
+}
+
+menubutton.notification > label,
+menubutton.notification > box {
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.notification > button,
+menubutton.notification > button:hover,
+menubutton.notification > button:focus,
+menubutton.notification > button:active {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.volume {
+  padding: 0;
+}
+
+menubutton.volume > label,
+menubutton.volume > box {
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.volume > button,
+menubutton.volume > button:hover,
+menubutton.volume > button:focus,
+menubutton.volume > button:active {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0 6px;
+  margin: 0;
+}
+
+menubutton.volume {
+  min-width: 60px;
+}
+
+menubutton.network {
+  padding: 0;
+}
+
+menubutton.network > label,
+menubutton.network > box {
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.network > button,
+menubutton.network > button:hover,
+menubutton.network > button:focus,
+menubutton.network > button:active {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.clock {
+  padding: 0;
+}
+
+menubutton.clock > label,
+menubutton.clock > box {
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.clock > button,
+menubutton.clock > button:hover,
+menubutton.clock > button:focus,
+menubutton.clock > button:active {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+.widget.workspaces {
+  padding-left: 10px;
+  padding-right: 13px;
+}
+
+button.widget {
+  background: alpha(@overlay, 0.45);
+}
+
+button.widget,
+button.widget:hover,
+button.widget:focus,
+button.widget:focus-visible,
+button.widget:active {
+  outline: none;
+  outline-offset: 0;
+  outline-width: 0;
+  outline-style: none;
+  outline-color: transparent;
+  border: 0;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+button.launcher {
+  padding: 0px 7px;
+}
+
+.launcher-window {
+  background: transparent;
+}
+
+.launcher-shell {
+  background: transparent;
+}
+
+.launcher-menu {
+  background: alpha(@surface, 0.9);
+  color: @text;
+  border-radius: 8px;
+  border: 1px solid alpha(@muted, 0.5);
+  padding: 12px;
+  min-width: 34em;
+  max-width: 40em;
+}
+
+.launcher-menu-header {
+  margin-bottom: 2px;
+}
+
+.launcher-menu-icon {
+  min-width: 18px;
+  font-size: 18px;
+  color: @iris;
+}
+
+.launcher-title {
+  font-weight: 700;
+  font-size: 12px;
+  color: @text;
+  opacity: 0.85;
+}
+
+.launcher-subtitle {
+  font-size: 10px;
+  color: @muted;
+  opacity: 0.62;
+}
+
+.launcher-search {
+  border-radius: 4px;
+  border: 1px solid alpha(@highlight-high, 0.75);
+  background: @base;
+  color: @text;
+  padding: 6px 8px;
+}
+
+.launcher-separator {
+  min-height: 1px;
+  background-color: alpha(@muted, 0.62);
+}
+
+.launcher-scroll,
+.launcher-scroll > box,
+.launcher-scroll > .frame,
+.launcher-scroll > .scrolledwindow,
+.launcher-scroll > .scrollbar {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.launcher-item,
+.launcher-item:hover,
+.launcher-item:focus,
+.launcher-item:active {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  background-image: none;
+  padding: 0;
+  margin: 0;
+}
+
+.launcher-item-inner {
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: background-color 120ms ease;
+}
+
+.launcher-item:hover .launcher-item-inner,
+.launcher-item:focus .launcher-item-inner {
+  background: alpha(@highlight-high, 0.96);
+  color: @text;
+}
+
+.launcher-item-icon {
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.launcher-item-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: @text;
+}
+
+.launcher-item-desc {
+  font-size: 10px;
+  color: @muted;
+  opacity: 0.72;
+}
+
+.launcher-empty {
+  padding: 6px 4px 2px;
+  color: @muted;
+  opacity: 0.7;
+  font-size: 11px;
+}
+
+.launcher-footer {
+  margin-top: 2px;
+}
+
+.launcher-actions {
+  margin-top: 2px;
+}
+
+.launcher-action,
+.launcher-action:hover,
+.launcher-action:focus,
+.launcher-action:active {
+  border: 1px solid alpha(@muted, 0.62);
+  box-shadow: none;
+  background: alpha(@base, 0.9);
+  color: @text;
+  background-image: none;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0;
+  min-width: 28px;
+  min-height: 28px;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.launcher-action-glyph {
+  font-size: 14px;
+}
+
+.launcher-action:hover,
+.launcher-action:focus {
+  background: alpha(@highlight-high, 0.96);
+  border-color: alpha(@highlight-high, 1);
+  color: @text;
+}
+
+.launcher-action:active {
+  background: alpha(@highlight-med, 0.98);
+  border-color: alpha(@highlight-high, 1);
+  color: @text;
+}
+
+.launcher-action-logout {
+  color: @rose;
+}
+
+.launcher-action-shutdown {
+  color: @love;
+}
+
+.launcher-confirm-window {
+  background: transparent;
+}
+
+.launcher-confirm-shell {
+  background: alpha(@base, 0.9);
+}
+
+.launcher-confirm-stage {
+  background: transparent;
+}
+
+.launcher-confirm-content {
+  background: transparent;
+  padding: 8px 12px;
+  min-width: 24em;
+  min-height: 12em;
+  align-items: center;
+}
+
+.launcher-confirm-title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: @text;
+}
+
+.launcher-confirm-subtitle {
+  font-size: 13px;
+  opacity: 0.88;
+  color: alpha(@text, 0.82);
+}
+
+.launcher-confirm-choices {
+  margin-top: 8px;
+}
+
+button.launcher-confirm-circle {
+  border: 1px solid alpha(@muted, 0.72);
+  box-shadow: none;
+  background-color: alpha(@surface, 0.92);
+  background: alpha(@surface, 0.92);
+  background-image: none;
+  border-radius: 999px;
+  padding: 0;
+  margin: 0;
+  min-width: 78px;
+  min-height: 78px;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+button.launcher-confirm-circle:hover,
+button.launcher-confirm-circle:focus,
+button.launcher-confirm-circle:active {
+  background-image: none;
+  box-shadow: none;
+}
+
+button.launcher-confirm-circle-cancel {
+  background-color: alpha(@surface, 0.92);
+  background: alpha(@surface, 0.92);
+  border-color: alpha(@muted, 0.72);
+  color: @text;
+}
+
+button.launcher-confirm-circle-cancel:hover {
+  background-color: alpha(@rose, 0.3);
+  background: alpha(@rose, 0.3);
+  border-color: alpha(@rose, 0.9);
+  color: @rose;
+}
+
+button.launcher-confirm-circle-cancel:focus {
+  border-color: alpha(@rose, 1);
+}
+
+button.launcher-confirm-circle-cancel:active {
+  background-color: alpha(@rose, 0.2);
+  background: alpha(@rose, 0.2);
+  border-color: alpha(@rose, 0.82);
+  color: @text;
+}
+
+button.launcher-confirm-circle-accept {
+  background-color: alpha(@iris, 0.34);
+  background: alpha(@iris, 0.34);
+  border-color: alpha(@iris, 0.9);
+  color: @text;
+}
+
+button.launcher-confirm-circle-accept:hover {
+  background-color: alpha(@iris, 0.5);
+  background: alpha(@iris, 0.5);
+  border-color: alpha(@iris, 1);
+  color: #f3efff;
+}
+
+button.launcher-confirm-circle-accept:focus {
+  border-color: alpha(@iris, 1);
+}
+
+button.launcher-confirm-circle-accept:active {
+  background-color: alpha(@iris, 0.4);
+  background: alpha(@iris, 0.4);
+  border-color: alpha(@iris, 0.95);
+  color: @text;
+}
+
+button.launcher-confirm-circle-cancel:hover .launcher-confirm-circle-icon {
+  color: @rose;
+}
+
+.launcher-confirm-circle-icon {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.launcher-confirm-choice-label {
+  font-size: 10px;
+  color: alpha(@text, 0.86);
+  opacity: 0.84;
+}
+
+.launcher-confirm-choice-label-accept {
+  color: @text;
+  opacity: 0.95;
+}
+
+
+.widget:hover {
+  background: alpha(@surface, 0.9);
+}
+
+.workspaces .workspace {
+  min-width: 12px;
+  min-height: 12px;
+}
+
+.workspaces .workspace.occupied,
+.workspaces .workspace.empty {
+  font-size: 12px;
+}
+
+.workspaces .workspace.active {
+  font-size: 13px;
+}
+
+.workspaces button.workspace {
+  background: transparent;
+  padding: 0;
+  border-radius: 999px;
+  margin: 0 2px;
+}
+
+.workspaces button.workspace:hover {
+  transform: scale(1.12);
+}
+
+.workspaces button.workspace {
+  transition: transform 120ms ease;
+}
+
+.workspaces button.workspace,
+.workspaces button.workspace:hover,
+.workspaces button.workspace:focus,
+.workspaces button.workspace:focus-visible,
+.workspaces button.workspace:active {
+  outline: none;
+  outline-offset: 0;
+  outline-width: 0;
+  outline-style: none;
+  outline-color: transparent;
+  border: 0;
+  border-color: transparent;
+  box-shadow: none;
+  background-image: none;
+}
+
+.tray-item {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  min-width: 16px;
+  min-height: 16px;
+  border-radius: 4px;
+}
+
+.volume-popover,
+popover.volume-popover,
+popover.volume-popover > box,
+popover.volume-popover > .popover-contents,
+popover.volume-popover > .popover-content,
+popover.volume-popover > contents,
+.volume-popover > box {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  min-width: 0;
+  min-height: 0;
+}
+
+.volume-popover > arrow {
+  min-width: 12px;
+  min-height: 12px;
+  background: alpha(@dark, 0.9);
+  border: 0;
+  box-shadow: none;
+}
+
+.notification-popover,
+popover.notification-popover,
+popover.notification-popover > .background,
+popover.notification-popover > .frame,
+popover.notification-popover > box,
+popover.notification-popover > .popover-contents,
+popover.notification-popover > .popover-content,
+popover.notification-popover > contents,
+popover.notification-popover > box > .background,
+popover.notification-popover > box > .frame,
+popover.notification-popover > box > .popover-contents,
+popover.notification-popover > box > .popover-content,
+popover.notification-popover > box > contents,
+.notification-popover > box {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  outline: none;
+  background: transparent;
+  background-image: none;
+  min-width: 0;
+  min-height: 0;
+}
+
+.notification-popover > arrow {
+  min-width: 12px;
+  min-height: 12px;
+  background: alpha(@dark, 0.9);
+  border: 0;
+  box-shadow: none;
+}
+
+.network-popover,
+popover.network-popover,
+popover.network-popover > box,
+popover.network-popover > .popover-contents,
+popover.network-popover > .popover-content,
+popover.network-popover > contents,
+.network-popover > box {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  background-image: none;
+  min-width: 0;
+  min-height: 0;
+}
+
+.network-popover > arrow {
+  min-width: 12px;
+  min-height: 12px;
+  background: alpha(@dark, 0.9);
+  border: 0;
+  box-shadow: none;
+}
+
+.network-wifi-popover,
+popover.network-wifi-popover,
+popover.network-wifi-popover > box,
+popover.network-wifi-popover > .popover-contents,
+popover.network-wifi-popover > .popover-content,
+popover.network-wifi-popover > contents,
+.network-wifi-popover > box {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  background-image: none;
+  min-width: 0;
+  min-height: 0;
+}
+
+.network-wifi-popover > arrow {
+  min-width: 10px;
+  min-height: 10px;
+  background: alpha(@dark, 0.9);
+  border: 0;
+  box-shadow: none;
+}
+
+.network-wifi-popover-inner {
+  background: alpha(@dark, 0.9);
+  color: #e6e1e9;
+  border-radius: 4px;
+  padding: 10px 10px;
+  margin: 0;
+  min-width: 16em;
+}
+
+.network-wifi-popover-title {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.network-wifi-popover-label {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.network-wifi-popover-entry {
+  padding: 4px 6px;
+  border-radius: 3px;
+  border: 1px solid alpha(@dark-1, 0.6);
+  background: @base;
+  color: #e6e1e9;
+}
+
+.network-wifi-popover-connect {
+  padding: 4px 8px;
+  border-radius: 3px;
+  border: 1px solid alpha(@muted, 0.62);
+  background: alpha(@base, 0.88);
+  color: #e6e1e9;
+  box-shadow: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.network-wifi-popover-connect:hover {
+  background: alpha(@highlight-high, 0.96);
+  border-color: alpha(@highlight-high, 1);
+  color: #ece8ff;
+}
+
+.network-wifi-popover-connect:active,
+.network-wifi-popover-connect:checked {
+  background: alpha(@base, 1);
+  border-color: alpha(@muted, 0.8);
+  color: #e6e1e9;
+}
+
+.clock-popover,
+popover.clock-popover,
+popover.clock-popover > box,
+popover.clock-popover > .popover-contents,
+popover.clock-popover > .popover-content,
+popover.clock-popover > contents,
+.clock-popover > box {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  background-image: none;
+  min-width: 0;
+  min-height: 0;
+}
+
+.clock-popover > arrow {
+  min-width: 12px;
+  min-height: 12px;
+  background: alpha(@dark, 0.9);
+  border: 0;
+  box-shadow: none;
+}
+
+.clock-menu {
+  background: alpha(@surface, 0.9);
+  color: #e6e1e9;
+  border-radius: 4px;
+  padding: 10px 10px;
+  margin: 0;
+  min-width: 18em;
+}
+
+.clock-menu.open.anim-a,
+.clock-menu.open.anim-b {
+  animation: clock-menu-in 160ms ease;
+}
+
+@keyframes clock-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.clock-calendar-header-row {
+  margin-bottom: 8px;
+}
+
+.clock-calendar-title {
+  min-width: 10em;
+}
+
+.clock-calendar-year {
+  font-size: 10px;
+  opacity: 0.72;
+}
+
+.clock-calendar-month {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.clock-calendar-nav {
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0;
+  margin: 0;
+  border-radius: 4px;
+  border: 1px solid alpha(@dark-1, 0.7);
+  background: alpha(@dark, 0.65);
+  box-shadow: none;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.clock-calendar-nav:hover {
+  background: @primary-1;
+  border-color: @primary-1;
+  color: #14110a;
+}
+
+.clock-calendar-separator {
+  min-height: 1px;
+  background-color: alpha(@muted, 0.62);
+}
+
+.clock-calendar {
+  margin-top: 8px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.clock-calendar .day-name {
+  opacity: 0.72;
+  font-size: 10px;
+}
+
+.clock-calendar .day-number {
+  font-size: 11px;
+}
+
+.clock-calendar .day-number.today {
+  color: #14110a;
+  background: @primary;
+  border-radius: 999px;
+}
+
+.network-menu {
+  background: alpha(@surface, 0.9);
+  color: #e6e1e9;
+  border-radius: 4px;
+  padding: 12px 12px;
+  margin: 0;
+  min-width: 28em;
+}
+
+.network-menu.open.anim-a,
+.network-menu.open.anim-b {
+  animation: network-menu-in 160ms ease;
+}
+
+@keyframes network-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.network-header {
+  margin-bottom: 8px;
+}
+
+.network-header-title {
+  font-weight: 700;
+}
+
+.network-header separator {
+  min-height: 1px;
+  background-color: alpha(@muted, 0.62);
+}
+
+.network-interface {
+  background: @base;
+  border: 1px solid alpha(@muted, 0.62);
+  border-radius: 6px;
+  padding: 8px 6px;
+  margin: 4px 0;
+}
+
+.network-interface-title {
+  font-weight: 600;
+}
+
+.network-interface-meta {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.network-wifi {
+  margin-top: 8px;
+}
+
+.network-wifi-title {
+  font-weight: 700;
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.network-wifi-list {
+  margin-top: 2px;
+}
+
+.network-wifi-row {
+  padding: 0;
+  margin: 0;
+}
+
+.network-wifi-scroll,
+.network-wifi-scroll > box,
+.network-wifi-scroll > .frame,
+.network-wifi-scroll > .scrolledwindow,
+.network-wifi-scroll > .scrollbar {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.network-wifi-item {
+  padding: 2px 0;
+  border-radius: 4px;
+  transition: background-color 120ms ease;
+}
+
+.network-wifi-item:hover {
+  background: alpha(@highlight-high, 0.96);
+}
+
+menubutton.network-wifi-item,
+menubutton.network-wifi-item > label,
+menubutton.network-wifi-item > box {
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.network-wifi-item > button,
+menubutton.network-wifi-item > button:hover,
+menubutton.network-wifi-item > button:focus,
+menubutton.network-wifi-item > button:active {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+button.network-wifi-item-button,
+button.network-wifi-item-button:hover,
+button.network-wifi-item-button:focus,
+button.network-wifi-item-button:active {
+  background: transparent;
+  background-image: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+.network-wifi-icon {
+  min-width: 16px;
+  padding-left: 2px;
+}
+
+.network-wifi-name {
+  font-size: 11px;
+}
+
+.network-wifi-status {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.network-wifi-lock {
+  font-size: 11px;
+  opacity: 0.8;
+  padding-right: 8px;
+}
+
+.network-wifi-password {
+  margin: 4px 0 6px 18px;
+}
+
+.network-wifi-password > box {
+  margin: 0;
+}
+
+.network-wifi-password-inner {
+  background: transparent;
+  background-image: none;
+  color: #e6e1e9;
+  border-radius: 4px;
+  padding: 10px 10px;
+  border: 0;
+  min-width: 16em;
+}
+
+.notification-menu {
+  background: alpha(@surface, 0.9);
+  color: #e6e1e9;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin: 0;
+  min-width: 26em;
+  border: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+.notification-menu.open.anim-a,
+.notification-menu.open.anim-b {
+  animation: none;
+}
+
+.notification-menu.open.anim-a {
+  animation: notification-menu-in-a 160ms ease;
+}
+
+.notification-menu.open.anim-b {
+  animation: notification-menu-in-b 160ms ease;
+}
+
+@keyframes notification-menu-in-a {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes notification-menu-in-b {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notification-header {
+  margin-bottom: 8px;
+}
+
+.notification-header-spacer {
+  min-width: 4.5em;
+}
+
+.notification-header-title {
+  font-weight: 700;
+}
+
+.notification-header-action {
+  padding: 2px 6px;
+  min-width: 4.5em;
+  min-height: 0;
+  margin: 0;
+  border-radius: 3px;
+  border: 1px solid alpha(@dark-1, 0.6);
+  background: transparent;
+  box-shadow: none;
+  font-size: 11px;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.notification-header-action:hover {
+  background: @primary-1;
+  border-color: @primary-1;
+  color: #14110a;
+}
+
+.notification-header-action:disabled {
+  opacity: 0.4;
+}
+
+.notification-header separator {
+  min-height: 1px;
+  background-color: alpha(@muted, 0.62);
+}
+
+.notification-empty {
+  padding: 8px 0;
+  opacity: 0.65;
+}
+
+.notification-item {
+  background: @base;
+  border: 1px solid alpha(@muted, 0.62);
+  border-radius: 6px;
+  padding: 8px 6px;
+  margin: 4px 0;
+  min-width: 24em;
+  min-height: 96px;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.notification-item.has-actions {
+  min-height: 120px;
+}
+
+.notification-toast-window {
+  background: transparent;
+}
+
+.notification-toast-container {
+  margin: 12px;
+}
+
+.notification-toast-container .notification-item {
+  margin: 0;
+}
+
+.notification-item-icon {
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.notification-item-app {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.notification-item-time {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-right: 4px;
+}
+
+.notification-item-close {
+  padding: 0 5px;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  box-shadow: none;
+  transition: background-color 120ms ease;
+}
+
+.notification-item-close:hover {
+  background: @primary;
+}
+
+.notification-item-title {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.notification-item-sep {
+  min-height: 1px;
+  background-color: alpha(@muted, 0.62);
+}
+
+.notification-item-body {
+  opacity: 0.75;
+  font-size: 11px;
+}
+
+.notification-item-actions {
+  margin-top: 4px;
+}
+
+.notification-item-action {
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid alpha(@muted, 0.62);
+  background: alpha(@base, 0.88);
+  color: #e6e1e9;
+  box-shadow: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.notification-item-action:hover {
+  background: alpha(@highlight-high, 0.96);
+  border-color: alpha(@highlight-high, 1);
+  color: #ece8ff;
+}
+
+.notification-item-action:active,
+.notification-item-action:checked {
+  background: alpha(@base, 1);
+  border-color: alpha(@muted, 0.8);
+  color: #e6e1e9;
+}
+
+.notification-item.dismissing {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.volume-menu {
+  background: alpha(@surface, 0.9);
+  color: #e6e1e9;
+  border-radius: 4px;
+  padding: 12px 12px;
+  margin: 0;
+  min-width: 30em;
+}
+
+.volume-header {
+  margin-bottom: 8px;
+}
+
+.volume-section + .volume-section {
+  margin-top: 12px;
+}
+
+.volume-header-title {
+  font-weight: 700;
+}
+
+.volume-header separator {
+  min-height: 1px;
+  background-color: alpha(@muted, 0.62);
+}
+
+.volume-menu.open.anim-a,
+.volume-menu.open.anim-b {
+  animation: volume-menu-in 160ms ease;
+}
+
+@keyframes volume-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.volume-device {
+  padding: 0;
+  margin: 4px 0;
+  border-radius: 2px;
+}
+
+.volume-device-row {
+  padding: 0;
+  margin: 0;
+}
+
+.volume-slider {
+  margin-top: 0;
+}
+
+.volume-slider-row {
+  margin-top: 6px;
+}
+
+.volume-menu .volume-slider trough > highlight,
+.volume-menu .volume-slider trough > fill {
+  background-color: alpha(@iris, 0.95);
+  background-image: none;
+  border-radius: 999px;
+}
+
+.volume-menu .volume-slider trough {
+  border-radius: 999px;
+  background: alpha(@highlight-high, 0.45);
+}
+
+.volume-menu .volume-slider slider {
+  background: @text;
+  border: 1px solid alpha(@muted, 0.7);
+  border-radius: 999px;
+}
+
+.volume-device-default,
+.volume-device-default-toggle,
+.volume-device-mute {
+  padding: 0 2px;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  border-radius: 2px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.volume-device-default-toggle {
+  padding: 0;
+  margin-right: 4px;
+}
+
+.volume-device-default-toggle,
+.volume-device-default-toggle:checked,
+.volume-device-default-toggle:hover,
+.volume-device-default-toggle:focus,
+.volume-device-default-toggle:active {
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+}
+
+.volume-device-default-toggle check,
+.volume-device-default-toggle indicator {
+  padding: 0;
+  margin: 0;
+  min-width: 12px;
+  min-height: 12px;
+  border-radius: 999px;
+  border: 1px solid alpha(@muted, 0.72);
+  background: alpha(@base, 0.9);
+  background-image: none;
+}
+
+.volume-device-default-toggle check:checked,
+.volume-device-default-toggle indicator:checked {
+  background-color: alpha(@base, 0.9);
+  background-image: radial-gradient(circle, alpha(@iris, 0.98) 0 40%, transparent 44%);
+  border-image: none;
+  border-color: alpha(@iris, 0.9);
+}
+
+.volume-device-percent {
+  min-width: 3em;
+}
+
+.volume-device-default:hover,
+.volume-device-mute:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+
+.volume-empty {
+  padding: 2px 4px;
+  color: #c9c2b8;
+}
+
+menubutton.tray-item > button {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+menubutton.tray-item > button > image,
+button.tray-item > image {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  margin: 0;
+}
+
+.widget.tray {
+  padding: 1px 1px;
+}
+
+.tray-item:hover {
+  background: rgba(45, 45, 45, 0.5);
+}
+
+.tray-toggle {
+  outline: none;
+  box-shadow: none;
+}
+
+button.tray-toggle,
+button.tray-toggle:hover,
+button.tray-toggle:focus,
+button.tray-toggle:focus-visible,
+button.tray-toggle:active {
+  outline: none;
+  outline-offset: 0;
+  outline-width: 0;
+  outline-style: none;
+  outline-color: transparent;
+  border: 0;
+  border-color: transparent;
+  box-shadow: none;
+  background-image: none;
+}
+
+.bluetooth-menu {
+  background: alpha(@surface, 0.9);
+  color: #e6e1e9;
+  border-radius: 4px;
+  padding: 12px 12px;
+  margin: 0;
+  min-width: 26em;
+}
+
+.bluetooth-menu.open.anim-a,
+.bluetooth-menu.open.anim-b {
+  animation: bluetooth-menu-in 160ms ease;
+}
+
+@keyframes bluetooth-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bluetooth-header {
+  margin-bottom: 8px;
+}
+
+.bluetooth-header-title {
+  font-weight: 700;
+}
+
+.bluetooth-subheader {
+  margin: 8px 0 6px;
+}
+
+.bluetooth-subtitle {
+  font-weight: 600;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.bluetooth-header-action {
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid alpha(@muted, 0.62);
+  background: alpha(@base, 0.88);
+  color: #e6e1e9;
+  box-shadow: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.bluetooth-header-action:hover {
+  background: alpha(@highlight-high, 0.96);
+  border-color: alpha(@highlight-high, 1);
+  color: #ece8ff;
+}
+
+.bluetooth-header-action:active,
+.bluetooth-header-action:checked {
+  background: alpha(@base, 1);
+  border-color: alpha(@muted, 0.8);
+  color: #e6e1e9;
+}
+
+.bluetooth-empty {
+  padding: 6px 0;
+  opacity: 0.8;
+  font-size: 11px;
+}
+
+.bluetooth-scroll,
+.bluetooth-scroll > box,
+.bluetooth-scroll > .frame,
+.bluetooth-scroll > .scrolledwindow,
+.bluetooth-scroll > .scrollbar {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.bluetooth-device {
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.bluetooth-device-header {
+  padding: 0;
+}
+
+.bluetooth-device-toggle {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.bluetooth-device-toggle:hover .bluetooth-device {
+  background: alpha(@highlight-high, 0.96);
+}
+
+.bluetooth-device-row {
+  padding: 2px 0 6px;
+  border-radius: 4px;
+}
+
+.bluetooth-device-icon {
+  min-width: 16px;
+}
+
+.bluetooth-device-name {
+  font-size: 11px;
+}
+
+.bluetooth-device-forget {
+  padding: 0 4px;
+  border-radius: 3px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: color 120ms ease, background-color 120ms ease;
+}
+
+.bluetooth-device-forget:hover {
+  color: #f0d6a6;
+  background: rgba(198, 70, 70, 0.2);
+}
+
+.bluetooth-device-controls {
+  margin-left: 22px;
+}
+
+.bluetooth-device-action {
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid alpha(@muted, 0.62);
+  background: alpha(@base, 0.88);
+  color: #e6e1e9;
+  box-shadow: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.bluetooth-device-action.compact {
+  padding: 1px 6px;
+  font-size: 10px;
+}
+
+.bluetooth-device-action:hover {
+  background: alpha(@highlight-high, 0.96);
+  border-color: alpha(@highlight-high, 1);
+  color: #ece8ff;
+}
+
+.bluetooth-device-action:active,
+.bluetooth-device-action:checked {
+  background: alpha(@base, 1);
+  border-color: alpha(@muted, 0.8);
+  color: #e6e1e9;
+}
+
+.bluetooth-device-action.danger:hover {
+  background: rgba(198, 70, 70, 0.8);
+  border-color: rgba(198, 70, 70, 0.8);
+  color: #14110a;
+}
+
+.bluetooth-device-trust {
+  padding: 0;
+  margin: 0 16px 0 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 10px;
+}
+
+.bluetooth-device-trust check,
+.bluetooth-device-trust indicator {
+  padding: 0;
+  margin: 0 6px 0 0;
+  min-width: 12px;
+  min-height: 12px;
+  border-radius: 3px;
+  border: 1px solid alpha(@muted, 0.72);
+  background: alpha(@base, 0.9);
+  background-image: none;
+}
+
+.bluetooth-device-trust check:checked,
+.bluetooth-device-trust indicator:checked {
+  background-color: alpha(@base, 0.9);
+  background-image: linear-gradient(alpha(@iris, 0.98), alpha(@iris, 0.98));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 7px 7px;
+  border-image: none;
+  border-color: alpha(@iris, 0.9);
+}
+
+/* Tray context menu (GtkPopoverMenu) */
+popover.menu,
+popover.menu > contents,
+popover.menu > box,
+popover.menu > .frame,
+popover.menu > .background {
+  background: alpha(@surface, 0.96);
+  color: @text;
+  border: 1px solid alpha(@muted, 0.62);
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+popover.menu modelbutton {
+  padding: 5px 8px;
+  margin: 1px 2px;
+  color: @text;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+popover.menu modelbutton:hover,
+popover.menu modelbutton:focus,
+popover.menu modelbutton:selected {
+  background: alpha(@highlight-high, 1);
+  border-color: alpha(@iris, 0.72);
+  color: @text;
+}
+
+popover.menu modelbutton:active {
+  background: alpha(@highlight-med, 0.98);
+  border-color: alpha(@highlight-high, 1);
+  color: @text;
+}
+
+/* Non-clickable or disabled rows */
+popover.menu modelbutton:disabled {
+  color: alpha(@muted, 0.72);
+  background: transparent;
+  border-color: transparent;
+  opacity: 0.72;
+}
+
+popover.menu modelbutton:disabled:hover,
+popover.menu modelbutton:disabled:focus {
+  background: transparent;
+  border-color: transparent;
+}
+
+/* Keep flat rows readable, but still hoverable if selectable */
+popover.menu modelbutton.flat {
+  color: @text;
+  font-weight: 500;
+}
+
+popover.menu modelbutton.flat:hover,
+popover.menu modelbutton.flat:focus,
+popover.menu modelbutton.flat:selected {
+  background: alpha(@highlight-high, 1);
+  border-color: alpha(@iris, 0.72);
+  color: @text;
+}
+
+popover.menu > contents > box > label,
+popover.menu > box > label {
+  color: alpha(@muted, 0.92);
+  font-weight: 600;
+  padding: 4px 8px 2px;
+}
+
+popover.menu accelerator {
+  color: alpha(@muted, 0.82);
+  font-size: 11px;
+}
+
+popover.menu check,
+popover.menu radio {
+  min-width: 12px;
+  min-height: 12px;
+  margin-right: 6px;
+  border: 1px solid alpha(@muted, 0.72);
+  background: alpha(@base, 0.9);
+}
+
+popover.menu check {
+  border-radius: 3px;
+}
+
+popover.menu radio {
+  border-radius: 999px;
+}
+
+popover.menu check:checked {
+  background-color: alpha(@base, 0.9);
+  background-image: linear-gradient(alpha(@iris, 0.98), alpha(@iris, 0.98));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 6px 6px;
+  border-color: alpha(@iris, 0.9);
+}
+
+popover.menu radio:checked {
+  background-color: alpha(@base, 0.9);
+  background-image: radial-gradient(circle, alpha(@iris, 0.98) 0 40%, transparent 44%);
+  border-color: alpha(@iris, 0.9);
+}
+
+popover.menu separator {
+  background-color: alpha(@muted, 0.62);
+  min-height: 1px;
+}

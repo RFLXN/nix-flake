@@ -1,5 +1,5 @@
 {
-  mkSystem = { nixpkgs, nixpkgs-unstable, modules, impermanence, home-manager, vscode-server, shared }:
+  mkSystem = { nixpkgs, nixpkgs-unstable, modules, impermanence, home-manager, vscode-server, claude-code, shared }:
     let
       system = "x86_64-linux";
       pkgs-unstable = import nixpkgs-unstable {
@@ -10,7 +10,7 @@
       inherit system;
 
       specialArgs = {
-        inherit shared modules pkgs-unstable impermanence home-manager vscode-server;
+        inherit nixpkgs shared modules pkgs-unstable impermanence home-manager vscode-server claude-code;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };

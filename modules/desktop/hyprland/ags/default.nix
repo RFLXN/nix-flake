@@ -1,5 +1,5 @@
-{ configDir ? null, sourceDir ? ./.config }:
-{ ags, lib, pkgs, username, ... }:
+{ sourceDir ? null }:
+{ ags, pkgs, username, ... }:
 let
   system = pkgs.stdenv.hostPlatform.system;
   astalPackagesSet = ags.inputs.astal.packages.${system};
@@ -17,28 +17,26 @@ let
   ];
 
   agsPackage = ags.packages.${system}.default;
-
-  managedConfigDir = pkgs.runCommand "ags-config" { } ''
-    mkdir -p "$out"
-    cp -R "${sourceDir}/." "$out/"
-  '';
-
-  effectiveConfigDir = if configDir == null then managedConfigDir else configDir;
+  agsSourceDir =
+    if sourceDir == null then
+      "/home/${username}/nix/my-ags"
+    else
+      toString sourceDir;
 in
 {
   home-manager.sharedModules = [ ags.homeManagerModules.default ];
   environment.systemPackages = [ agsPackage ];
 
-  home-manager.users.${username} = {
+  home-manager.users.${username} = { config, ... }: {
     wayland.windowManager.hyprland.settings.exec-once = [ "ags run" ];
     home.packages = astalPackages;
 
-    programs.ags =
-      {
-        enable = true;
-        # Default to the managed config snapshot; override `configDir` for a custom path/symlink.
-        configDir = effectiveConfigDir;
-        extraPackages = astalPackages;
-      };
+    # Keep AGS on its default path (~/.config/ags) for live local iteration.
+    #xdg.configFile."ags".source = config.lib.file.mkOutOfStoreSymlink agsSourceDir;
+
+    programs.ags = {
+      enable = true;
+      extraPackages = astalPackages;
+    };
   };
 }

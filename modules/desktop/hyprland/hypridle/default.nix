@@ -1,4 +1,4 @@
-{ }:
+{ timeToScreenOff ? 600, timeToLock ? 900, timeToSuspend ? 1800 }:
 { username, ... }:
 {
   home-manager.users.${username}.services.hypridle = {

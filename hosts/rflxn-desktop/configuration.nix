@@ -60,10 +60,15 @@
     (hyprland.useTrayBridge {})
     (hyprland.useHyprpolkit {})
     (hyprland.useHyprbars {})
+    (hyprland.useHyprlock {})
+    (hyprland.useHypridle {
+      timeToScreenOff = 1799;
+      timeToLock = 1800;
+      timeToSuspend = 3600;
+    })
     (useGreetd {
-      enableRegreet = true;
-      regreetCompositor = "hyprland";
-      regreetPrimaryMonitor = { name = "DP-3"; res = "1920x1080"; };
+      enableAutoLogin = true;
+      autoLoginSession = "uwsm-hyprland";
     })
     (useXdgPortal { enableHyprlandSupport = true; })
 

@@ -1,14 +1,26 @@
 {
-  compositor ? "hyprland",
-  primaryMonitor,
+  enableRegreet ? false,
+  regreetCompositor ? "hyprland",
+  regreetPrimaryMonitor ? null,
+  enableAutoLogin ? false,
+  autoLoginSession ? "uwsm-hyprland",
 }:
-{ pkgs, lib, ... }:
+{ pkgs, lib, username, ... }:
 let
   regreetPkg = pkgs.regreet;
+  resolvedAutoLoginCommand = {
+    "uwsm-hyprland" = "${lib.getExe pkgs.uwsm} start -F -- /run/current-system/sw/bin/Hyprland";
+    "hyprland" = "/run/current-system/sw/bin/Hyprland";
+  }.${autoLoginSession} or autoLoginSession;
+
+  regreetSessionCommand =
+    if regreetCompositor == "hyprland" then "Hyprland -c /etc/greetd/hyprland.conf"
+    else if regreetCompositor == "cage" then "${lib.getExe pkgs.cage} -s -- ${lib.getExe regreetPkg}"
+    else regreetCompositor;
 
   greeterHyprlandConfig = ''
-    monitor = ${primaryMonitor.name}, ${primaryMonitor.res}, 0x0, 1
-    monitor = , disable
+    ${lib.optionalString (regreetPrimaryMonitor != null) "monitor = ${regreetPrimaryMonitor.name}, ${regreetPrimaryMonitor.res}, 0x0, 1"}
+    ${lib.optionalString (regreetPrimaryMonitor != null) "monitor = , disable"}
 
     misc {
       force_default_wallpaper = 0
@@ -17,29 +29,39 @@ let
 
     exec-once = ${lib.getExe regreetPkg}; hyprctl dispatch exit
   '';
-
-  sessionCommand = {
-    hyprland = "Hyprland -c /etc/greetd/hyprland.conf";
-    cage = "${lib.getExe pkgs.cage} -s -- ${lib.getExe regreetPkg}";
-  }.${compositor};
 in {
-  environment.etc."greetd/hyprland.conf".text = greeterHyprlandConfig;
+  assertions = [
+    {
+      assertion = enableRegreet || enableAutoLogin;
+      message = "useGreetd requires enableRegreet=true or enableAutoLogin=true.";
+    }
+  ];
+
+  environment.etc = lib.mkMerge [
+    (lib.mkIf (enableRegreet && regreetCompositor == "hyprland") {
+      "greetd/hyprland.conf".text = greeterHyprlandConfig;
+    })
+    (lib.mkIf enableRegreet {
+      "greetd/regreet.toml".text = ''
+        [commands]
+        reboot = ["systemctl", "reboot"]
+        poweroff = ["systemctl", "poweroff"]
+      '';
+    })
+  ];
 
   services.greetd = {
     enable = true;
     settings = {
-      default_session = {
-        command = sessionCommand;
+      default_session = if enableAutoLogin then {
+        command = resolvedAutoLoginCommand;
+        user = username;
+      } else {
+        command = regreetSessionCommand;
         user = "greeter";
       };
     };
   };
 
-  environment.systemPackages = [ regreetPkg ];
-
-  environment.etc."greetd/regreet.toml".text = ''
-    [commands]
-    reboot = ["systemctl", "reboot"]
-    poweroff = ["systemctl", "poweroff"]
-  '';
+  environment.systemPackages = lib.optionals enableRegreet [ regreetPkg ];
 }

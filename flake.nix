@@ -82,7 +82,7 @@
   in {
     nixosConfigurations = {
       rflxn-asahi = rflxn-asahi.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code shared;
+        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code ags shared;
       };
       rflxn-desktop = rflxn-desktop.mkSystem {
         inherit nixpkgs nixpkgs-unstable modules impermanence home-manager lanzaboote claude-code astal ags shared;

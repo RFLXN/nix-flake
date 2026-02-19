@@ -14,4 +14,7 @@
   useTrayBridge = import ./tray-bridge.nix;
   windowRules = import ./window-rules;
   useHyprbars = import ./hyprbars.nix;
+  touchpad = import ./touchpad;
+  useHypridle = import ./hypridle;
+  useHyprlock = import ./hyprlock;
 }

@@ -2,11 +2,63 @@
   imports =
     # Desktop
     (with modules.desktop; [
-      (plasma6.kwin.useBlur {})
-      (plasma6.shortcuts.useKitty { key = "Meta+R"; })
-      (plasma6.theme.useLeaf {})
-      (plasma6.usePlasma6 { excludePackages = with pkgs.kdePackages; [ kate konsole okular ]; })
-      (useSddm { enableHidpi = true; })
+      (hyprland.useHyprland {
+        followMouse = 0;
+        pointerSpeed = -0.25;
+        enableMouseAcceleration = false;
+        monitors = [
+          "eDP-1, 3456x2160@60, 0x0, 1.6"
+        ];
+        workspaces = [
+          "1, monitor:eDP-1, default:true, persistent:true"
+          "2, monitor:eDP-1, persistent:true"
+          "3, monitor:eDP-1, persistent:true"
+          "4, monitor:eDP-1, persistent:true"
+          "5, monitor:eDP-1, persistent:true"
+        ];
+      })
+      (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
+      (gtk.theme.useRosePine {
+        variant = "main";
+        windowOpacity = 0.6;
+      })
+      (qt.theme.useRosePine {
+        variant = "main";
+        accent = "rose";
+        kvantumReduceWindowOpacity = 40;
+      })
+      (hyprland.cursors.useRosePineCursor {})
+      (hyprland.windowRules.useDefaults {})
+      (hyprland.touchpad.useDefaults {})
+      (hyprland.touchpad.gestures.useWorkspaces {})
+      (hyprland.useHyprlock {})
+      (hyprland.useHypridle {})
+      (logind.useLogind {})
+      (hyprland.keybinds.useDefaults {})
+      (hyprland.keybinds.useKitty {})
+      (hyprland.keybinds.useAgsLauncher {})
+      (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
+      (hyprland.keybinds.usePrintscreen {})
+      (hyprland.appearance {
+        borderSize = 1;
+        activeBorderColor = "rgb(888888)";
+        inactiveBorderColor = "rgb(444444)";
+        activeOpacity = 0.95;
+        inactiveOpacity = 0.85;
+        fullscreenOpacity = 1.0;
+        blurSize = 10;
+        blurPasses = 3;
+      })
+      (hyprland.useHyprshell {})
+      (hyprland.useAgs {})
+      (hyprland.useTrayBridge {})
+      (hyprland.useHyprpolkit {})
+      (hyprland.useHyprbars {})
+      (useGreetd {
+        enableAutoLogin = true;
+        autoLoginSession = "uwsm-hyprland";
+      })
+      (useXdgPortal { enableHyprlandSupport = true; })
     ]) ++
 
     # Services
@@ -56,12 +108,13 @@
       (useNixIndex {})
       (useSpotify {})
       (useVscode {})
+      (useCodex {})
     ]) ++
 
     # Hardware
     (with modules.hardware; [
       (useBluetooth {})
-      (useGraphics {})
+      (useGraphics { enable32Bit = false; })
     ]) ++
 
     # System

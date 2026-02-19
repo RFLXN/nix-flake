@@ -1,8 +1,4 @@
-{ config, lib, pkgs, username, shared, modules, ... }:
-let
-  agsInstance = "ags";
-in
-{
+{ config, lib, pkgs, username, shared, modules, ... }: {
   imports = (with modules.desktop; [
     (hyprland.useHyprland {
       followMouse = 0;
@@ -64,7 +60,11 @@ in
     (hyprland.useTrayBridge {})
     (hyprland.useHyprpolkit {})
     (hyprland.useHyprbars {})
-    (useGreetd { primaryMonitor = { name = "DP-3"; res = "1920x1080"; }; })
+    (useGreetd {
+      enableRegreet = true;
+      regreetCompositor = "hyprland";
+      regreetPrimaryMonitor = { name = "DP-3"; res = "1920x1080"; };
+    })
     (useXdgPortal { enableHyprlandSupport = true; })
 
   ]) ++ (with modules.services; [

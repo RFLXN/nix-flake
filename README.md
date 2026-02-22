@@ -269,4 +269,3 @@ ln -sfn /home/rflxn/nix/my-ags ~/.config/ags
 ```
 
 Declarative snapshot also exists at `modules/desktop/hyprland/ags/.config/`, but active development is expected to happen in `my-ags/` and then be synced intentionally.
-

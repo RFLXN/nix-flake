@@ -9,8 +9,8 @@
 let
   regreetPkg = pkgs.regreet;
   resolvedAutoLoginCommand = {
-    "uwsm-hyprland" = "${lib.getExe pkgs.uwsm} start -F -- /run/current-system/sw/bin/Hyprland";
-    "hyprland" = "/run/current-system/sw/bin/Hyprland";
+    "uwsm-hyprland" = "${lib.getExe pkgs.uwsm} start -F -- /run/current-system/sw/bin/start-hyprland";
+    "hyprland" = "/run/current-system/sw/bin/start-hyprland";
   }.${autoLoginSession} or autoLoginSession;
 
   regreetSessionCommand =

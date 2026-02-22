@@ -4,6 +4,7 @@
       followMouse = 0;
       pointerSpeed = -0.25;
       enableMouseAcceleration = false;
+      disableHardwareCursors = true;
       monitors = [
         "DP-3, 1920x1080@200, 1080x220, 1"
         "HDMI-A-1, 1920x1080@60, 0x0, 1, transform, 1"
@@ -22,11 +23,13 @@
       variant = "main";
       windowOpacity = 0.6;
     })
+    (gtk.theme.usePapirusIcon {})
     (qt.theme.useRosePine {
       variant = "main";
       accent = "rose";
       kvantumReduceWindowOpacity = 40;
     })
+    (qt.theme.usePapirusIcon {})
     (hyprland.cursors.useRosePineCursor {})
     (hyprland.windowRules.useDefaults {})
     (hyprland.windowRules.useFixedVesktop { workspace = "6"; })
@@ -36,7 +39,7 @@
     (hyprland.keybinds.useAgsLauncher {})
     (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
     (hyprland.keybinds.useGsrSaveReplay {})
-    (hyprland.keybinds.usePrintscreen {})
+    (hyprland.keybinds.useSpectacle {})
     (hyprland.appearance {
       borderSize = 1;
       activeBorderColor = "rgb(888888)";
@@ -48,18 +51,17 @@
       blurPasses = 3;
     })
     (hyprland.useHyprshell {})
-    (hyprland.useHyprpaper {
+    /* (hyprland.useHyprpaper {
       wallpaper = "/home/${username}/Pictures/wallpaper.jpg";
       wallpapers = [
         { monitor = "DP-3"; path = "/home/${username}/Pictures/main-wallpaper.jpg"; }
         { monitor = "HDMI-A-1"; path = "/home/${username}/Pictures/sub-wallpaper.jpg"; }
       ];
       monitors = [ "DP-3" "HDMI-A-1" ];
-    })
+    }) */
     (hyprland.useAgs {})
     (hyprland.useTrayBridge {})
     (hyprland.useHyprpolkit {})
-    (hyprland.useHyprbars {})
     (hyprland.useHyprlock {})
     (hyprland.useHypridle {
       timeToScreenOff = 1799;
@@ -77,6 +79,7 @@
     (pipewire.useLowLatency {})
     (pipewire.usePipewire {})
     (useDocker { isBtrfs = true; isRootless = true; })
+    (useFlatpak {})
     (useGpuScreenRecorder { window = "DP-3"; })
     (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
     (useKeyd { settings = import ./keyd-configs.nix; })
@@ -98,6 +101,14 @@
       };
     })
     (useTailscale {})
+    /* (useLinuxWallpaperengine {
+      wallpapers = [
+        { screen = "DP-3"; wallpaper = "2798192282"; }
+        { screen = "HDMI-A-1"; wallpaper = "2897249674"; }
+      ];
+      bindToUwsmHyprland = true;
+      uwsmSessionId = "start-hyprland";
+      }) */
 
   ]) ++ (with modules.programs; [
     (gaming.useLsfgVk {})
@@ -136,6 +147,7 @@
     (useBlueman {})
     (useNmApplet {})
     (useCodex {})
+    (useSpectacle {})
 
   ]) ++ (with modules.hardware; [
     (useAmdGpu { enableOverdrive = true; })

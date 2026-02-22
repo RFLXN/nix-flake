@@ -1,5 +1,5 @@
 {
-  mkSystem = { nixpkgs, nixpkgs-unstable, modules, apple-silicon, impermanence, home-manager, plasma-manager, aarch64-widevine, claude-code, ags, shared }:
+  mkSystem = { nixpkgs, nixpkgs-unstable, modules, apple-silicon, impermanence, home-manager, plasma-manager, aarch64-widevine, claude-code, ags, hyprland, hyprshell, shared }:
     let
       system = "aarch64-linux";
       pkgs-unstable = import nixpkgs-unstable {
@@ -10,7 +10,7 @@
       inherit system;
 
       specialArgs = {
-        inherit nixpkgs shared modules pkgs-unstable plasma-manager impermanence home-manager aarch64-widevine claude-code ags;
+        inherit nixpkgs shared modules pkgs-unstable plasma-manager impermanence home-manager aarch64-widevine claude-code ags hyprland hyprshell;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };

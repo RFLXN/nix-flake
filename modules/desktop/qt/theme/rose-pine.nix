@@ -1,7 +1,6 @@
 {
   variant ? "main",
   accent ? "rose",
-  iconTheme ? null,
   useOverlay ? true,
   kvantumTranslucentWindows ? true,
   kvantumBlurring ? true,
@@ -114,33 +113,28 @@ in
 
       # Keep qtct configs explicit so style applies consistently.
       qt5ctSettings = {
-        Appearance =
-          {
-            style = "kvantum";
-          }
-          // lib.optionalAttrs (iconTheme != null) {
-            icon_theme = iconTheme;
-          };
+        Appearance = {
+          style = "kvantum";
+        };
       };
 
       qt6ctSettings = {
-        Appearance =
-          {
-            style = "kvantum";
-          }
-          // lib.optionalAttrs (iconTheme != null) {
-            icon_theme = iconTheme;
-          };
+        Appearance = {
+          style = "kvantum";
+        };
       };
     };
 
-    xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
+    home.file = {
+      ".config/Kvantum/kvantum.kvconfig".text = ''
       [General]
       theme=${kvantumTheme}
     '';
-    xdg.configFile."Kvantum/${kvantumTheme}" = {
-      source = themeSourcePath;
-      recursive = true;
+
+      ".config/Kvantum/${kvantumTheme}" = {
+        source = themeSourcePath;
+        recursive = true;
+      };
     };
   };
 }

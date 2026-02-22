@@ -109,6 +109,7 @@
             "$mod, Q, killactive"
             "$mod, V, togglefloating"
             "$mod, J, togglesplit"
+            "$mod, F, fullscreen"
 
             # Workspace navigation
             "$mod, bracketleft, workspace, m-1"
@@ -155,4 +156,5 @@
   useAgsRestart = import ./ags-restart.nix;
   useRofi = import ./rofi.nix;
   usePrintscreen = import ./printscreen.nix;
+  useSpectacle = import ./spectacle.nix;
 }

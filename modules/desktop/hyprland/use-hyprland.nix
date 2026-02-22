@@ -4,14 +4,23 @@
   workspaces ? null,
   followMouse ? 1,
   pointerSpeed ? 0,
-  enableMouseAcceleration ? false
+  enableMouseAcceleration ? false,
+  disableHardwareCursors ? false
 }:
-{ pkgs, lib, username, ... }: {
+{ pkgs, lib, username, hyprland ? null, ... }:
+let
+  system = pkgs.stdenv.hostPlatform.system;
+  useHyprlandGit = hyprland != null;
+  hyprlandPackages = if useHyprlandGit then hyprland.packages.${system} else null;
+in {
   programs.uwsm.enable = true;
   programs.hyprland = {
     enable = true;
     withUWSM = true;
     xwayland.enable = enableXWayland;
+  } // lib.optionalAttrs useHyprlandGit {
+    package = hyprlandPackages.hyprland;
+    portalPackage = hyprlandPackages.xdg-desktop-portal-hyprland;
   };
 
   environment.sessionVariables = {
@@ -31,6 +40,8 @@
 
   home-manager.users.${username}.wayland.windowManager.hyprland = {
     enable = true;
+    package = null;
+    portalPackage = null;
     systemd.enable = false;
     xwayland.enable = enableXWayland;
 
@@ -53,6 +64,10 @@
       misc = {
         force_default_wallpaper = 0;
         disable_hyprland_logo = true;
+      };
+    } // lib.optionalAttrs disableHardwareCursors {
+      cursor = {
+        no_hardware_cursors = true;
       };
     };
   };

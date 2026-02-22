@@ -43,9 +43,9 @@ in
         package = pkgs.rose-pine-gtk-theme;
         name = gtkThemeNames.${variant};
       };
+      gtk3.extraCss = lib.optionalString (windowOpacity < 1.0) transparencyCss;
+      gtk4.extraCss = lib.optionalString (windowOpacity < 1.0) transparencyCss;
     };
-  } // lib.optionalAttrs (windowOpacity < 1.0) {
-    xdg.configFile."gtk-3.0/gtk.css".text = transparencyCss;
-    xdg.configFile."gtk-4.0/gtk.css".text = transparencyCss;
   };
+  
 }

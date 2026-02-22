@@ -41,6 +41,14 @@
 
     ags.url = "github:aylur/ags";
 
+    hyprland.url = "github:hyprwm/Hyprland";
+
+    hyprshell = {
+      url = "github:H3rmt/hyprshell/hyprshell-release";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprland.follows = "hyprland";
+    };
+
   };
 
   outputs = {
@@ -57,6 +65,8 @@
     claude-code,
     astal,
     ags,
+    hyprland,
+    hyprshell,
     ...
   }: let
     # Import module library (not executed, just imported)
@@ -82,10 +92,10 @@
   in {
     nixosConfigurations = {
       rflxn-asahi = rflxn-asahi.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code ags shared;
+        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code ags hyprland hyprshell shared;
       };
       rflxn-desktop = rflxn-desktop.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager lanzaboote claude-code astal ags shared;
+        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager lanzaboote claude-code astal ags hyprland hyprshell shared;
       };
       rflxn-server = rflxn-server.mkSystem {
         inherit nixpkgs nixpkgs-unstable modules impermanence home-manager vscode-server claude-code shared;

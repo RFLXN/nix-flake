@@ -7,6 +7,7 @@
   useFastfetch = import ./fastfetch;
   useDiscord = import ./discord;
   useSpotify = import ./spotify;
+  useSpectacle = import ./spectacle;
   useNixIndex = import ./nix-index;
   useDirenv = import ./direnv;
   useCommonTools = import ./common-tools;

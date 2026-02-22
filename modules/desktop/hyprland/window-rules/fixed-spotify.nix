@@ -2,8 +2,7 @@
 { lib, username, ... }: {
   home-manager.users.${username} = {
     wayland.windowManager.hyprland.settings.windowrule = [
-      "workspace ${workspace}, class:^(spotify)$"
-      "tile, class:^(spotify)$"
+      "match:class ^(spotify)$, workspace ${workspace}, tile 1"
     ];
   };
 }

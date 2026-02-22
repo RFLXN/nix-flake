@@ -1,4 +1,5 @@
 {
+  useFlatpak = import ./flatpak;
   pipewire = import ./pipewire;
   useLibinput = import ./libinput;
   useHomeManager = import ./home-manager;

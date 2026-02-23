@@ -13,4 +13,5 @@
   useGpuScreenRecorder = import ./gpu-screen-recorder;
   useRtkit = import ./rtkit;
   useLinuxWallpaperengine = import ./linux-wallpaperengine;
+  useBatteryLogger = import ./battery-logger;
 }

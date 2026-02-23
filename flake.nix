@@ -41,6 +41,8 @@
 
     ags.url = "github:aylur/ags";
 
+    battery-logger.url = "github:RFLXN/simple-battery-logger";
+
     hyprland.url = "github:hyprwm/Hyprland";
 
     hyprshell = {
@@ -65,6 +67,7 @@
     claude-code,
     astal,
     ags,
+    battery-logger,
     hyprland,
     hyprshell,
     ...
@@ -92,7 +95,7 @@
   in {
     nixosConfigurations = {
       rflxn-asahi = rflxn-asahi.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code ags hyprland hyprshell shared;
+        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code ags battery-logger shared;
       };
       rflxn-desktop = rflxn-desktop.mkSystem {
         inherit nixpkgs nixpkgs-unstable modules impermanence home-manager lanzaboote claude-code astal ags hyprland hyprshell shared;

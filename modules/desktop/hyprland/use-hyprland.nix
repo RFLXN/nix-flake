@@ -7,11 +7,12 @@
   enableMouseAcceleration ? false,
   disableHardwareCursors ? false
 }:
-{ pkgs, lib, username, hyprland ? null, ... }:
+{ pkgs, lib, username, ... }@args:
 let
   system = pkgs.stdenv.hostPlatform.system;
-  useHyprlandGit = hyprland != null;
-  hyprlandPackages = if useHyprlandGit then hyprland.packages.${system} else null;
+  hyprlandInput = args.hyprland or null;
+  useHyprlandGit = hyprlandInput != null;
+  hyprlandPackages = if useHyprlandGit then hyprlandInput.packages.${system} else null;
 in {
   programs.uwsm.enable = true;
   programs.hyprland = {

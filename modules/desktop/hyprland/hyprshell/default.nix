@@ -1,8 +1,9 @@
 { modifier ? "alt" }:
-{ pkgs, username, hyprshell ? null, ... }:
+{ pkgs, username, ... }@args:
 let
   system = pkgs.stdenv.hostPlatform.system;
-  hyprshellPackage = if hyprshell != null then hyprshell.packages.${system}.default else pkgs.hyprshell;
+  hyprshellInput = args.hyprshell or null;
+  hyprshellPackage = if hyprshellInput != null then hyprshellInput.packages.${system}.default else pkgs.hyprshell;
 in {
   home-manager.users.${username} = {
     wayland.windowManager.hyprland.settings.exec-once = [ "hyprshell run" ];

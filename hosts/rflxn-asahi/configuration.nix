@@ -22,11 +22,13 @@
         variant = "main";
         windowOpacity = 0.6;
       })
+      (gtk.theme.usePapirusIcon {})
       (qt.theme.useRosePine {
         variant = "main";
         accent = "rose";
         kvantumReduceWindowOpacity = 40;
       })
+      (qt.theme.usePapirusIcon {})
       (hyprland.cursors.useRosePineCursor {})
       (hyprland.windowRules.useDefaults {})
       (hyprland.touchpad.useDefaults {})
@@ -66,6 +68,10 @@
       (pipewire.usePipewire {})
       (useDocker { isBtrfs = true; isRootless = true; })
       (useHomeManager {})
+      (useFlatpak {})
+      (useBatteryLogger {
+        batteryDeviceName = "macsmc-battery";
+      })
       (useKeyd { settings = import ./keyd-configs.nix; })
       (useLibinput {})
       (useRtkit {})
@@ -109,6 +115,7 @@
       (useSpotify {})
       (useVscode {})
       (useCodex {})
+      (useDolphin {})
     ]) ++
 
     # Hardware

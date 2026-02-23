@@ -8,9 +8,11 @@
 { pkgs, lib, username, ... }:
 let
   regreetPkg = pkgs.regreet;
+  hyprlandSessionCommand = "${lib.getExe pkgs.bash} -lc ${lib.escapeShellArg "if [ -x /run/current-system/sw/bin/start-hyprland ]; then exec /run/current-system/sw/bin/start-hyprland; else exec /run/current-system/sw/bin/Hyprland; fi"}";
+  uwsmHyprlandSessionCommand = "${lib.getExe pkgs.bash} -lc ${lib.escapeShellArg "entry=/run/current-system/sw/bin/start-hyprland; if [ ! -x \"$entry\" ]; then entry=/run/current-system/sw/bin/Hyprland; fi; exec ${lib.getExe pkgs.uwsm} start -F -- \"$entry\""}";
   resolvedAutoLoginCommand = {
-    "uwsm-hyprland" = "${lib.getExe pkgs.uwsm} start -F -- /run/current-system/sw/bin/start-hyprland";
-    "hyprland" = "/run/current-system/sw/bin/start-hyprland";
+    "uwsm-hyprland" = uwsmHyprlandSessionCommand;
+    "hyprland" = hyprlandSessionCommand;
   }.${autoLoginSession} or autoLoginSession;
 
   regreetSessionCommand =

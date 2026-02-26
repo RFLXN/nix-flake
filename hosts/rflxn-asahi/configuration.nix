@@ -55,7 +55,6 @@
       (hyprland.useAgs {})
       (hyprland.useTrayBridge {})
       (hyprland.useHyprpolkit {})
-      (hyprland.useHyprbars {})
       (useGreetd {
         enableAutoLogin = true;
         autoLoginSession = "uwsm-hyprland";

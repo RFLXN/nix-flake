@@ -2,8 +2,7 @@
   description = "RFLXN's NixOS Configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     apple-silicon = {
       url = "github:nix-community/nixos-apple-silicon";
@@ -13,7 +12,7 @@
     impermanence.url = "github:nix-community/impermanence";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -56,7 +55,6 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-unstable,
     apple-silicon,
     impermanence,
     home-manager,
@@ -95,13 +93,13 @@
   in {
     nixosConfigurations = {
       rflxn-asahi = rflxn-asahi.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code ags battery-logger shared;
+        inherit nixpkgs modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code ags battery-logger shared;
       };
       rflxn-desktop = rflxn-desktop.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager lanzaboote claude-code astal ags hyprland hyprshell shared;
+        inherit nixpkgs modules impermanence home-manager lanzaboote claude-code astal ags hyprland hyprshell shared;
       };
       rflxn-server = rflxn-server.mkSystem {
-        inherit nixpkgs nixpkgs-unstable modules impermanence home-manager vscode-server claude-code shared;
+        inherit nixpkgs modules impermanence home-manager vscode-server claude-code shared;
       };
     };
   };

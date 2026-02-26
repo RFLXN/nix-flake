@@ -1,9 +1,9 @@
 { enableGamescope ? false, enableProtontricks ? false }:
-{ pkgs, pkgs-unstable, lib, ... }:
+{ pkgs, lib, ... }:
 {
   programs.gamescope = {
     enable = enableGamescope;
-    package = pkgs-unstable.gamescope;
+    package = pkgs.gamescope;
     capSysNice = false;
   };
 
@@ -23,8 +23,8 @@
     enable = true;
     # Steam launch options execute inside Steam's FHS environment.
     # Include gamescope there so `gamescope -- %command%` resolves.
-    extraPackages = lib.optionals enableGamescope [ pkgs-unstable.gamescope ];
-    package = pkgs-unstable.steam.override {
+    extraPackages = lib.optionals enableGamescope [ pkgs.gamescope ];
+    package = pkgs.steam.override {
       extraPkgs = pkgs: with pkgs; [
         xorg.libXcursor
         xorg.libXi
@@ -40,7 +40,7 @@
     };
     protontricks = lib.mkIf enableProtontricks {
       enable = true;
-      package = pkgs-unstable.protontricks;
+      package = pkgs.protontricks;
     };
   };
 }

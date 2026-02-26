@@ -1,4 +1,4 @@
 { }:
-{ pkgs-unstable, ... }: {
-  environment.systemPackages = [ pkgs-unstable.r2modman ];
+{ pkgs, ... }: {
+  environment.systemPackages = [ pkgs.r2modman ];
 }

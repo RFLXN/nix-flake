@@ -1,4 +1,4 @@
 { }:
-{ pkgs-unstable, ... }: {
-  environment.systemPackages = [ pkgs-unstable.ayugram-desktop ];
+{ pkgs, ... }: {
+  environment.systemPackages = [ pkgs.ayugram-desktop ];
 }

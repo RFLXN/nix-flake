@@ -1,4 +1,4 @@
 { }:
-{ pkgs-unstable, ... }: {
-  environment.systemPackages = [ pkgs-unstable.protonplus ];
+{ pkgs, ... }: {
+  environment.systemPackages = [ pkgs.protonplus ];
 }

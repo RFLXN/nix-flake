@@ -1,7 +1,7 @@
 { enableZshAlias ? false }:
-{ lib, pkgs-unstable, username, ... }: lib.mkMerge [
+{ lib, pkgs, username, ... }: lib.mkMerge [
   {
-    environment.systemPackages = [ pkgs-unstable.jetbrains.pycharm-professional ];
+    environment.systemPackages = [ pkgs.jetbrains.pycharm-professional ];
   }
   (lib.mkIf enableZshAlias {
     home-manager.users.${username}.programs.zsh.initContent = ''

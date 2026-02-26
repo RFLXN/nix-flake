@@ -1,7 +1,7 @@
 { }:
-{ pkgs-unstable, ... }: {
+{ pkgs, ... }: {
   environment.systemPackages = [
-    pkgs-unstable.lsfg-vk
-    pkgs-unstable.lsfg-vk-ui
+    pkgs.lsfg-vk
+    pkgs.lsfg-vk-ui
   ];
 }

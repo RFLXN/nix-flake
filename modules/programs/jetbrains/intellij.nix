@@ -1,7 +1,7 @@
 { enableZshAlias ? false }:
-{ lib, pkgs-unstable, username, ... }: lib.mkMerge [
+{ lib, pkgs, username, ... }: lib.mkMerge [
   {
-    environment.systemPackages = [ pkgs-unstable.jetbrains.idea ];
+    environment.systemPackages = [ pkgs.jetbrains.idea ];
   }
   (lib.mkIf enableZshAlias {
     home-manager.users.${username}.programs.zsh.initContent = ''

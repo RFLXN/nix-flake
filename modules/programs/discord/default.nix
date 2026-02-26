@@ -1,7 +1,7 @@
 { }:
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, ... }:
 let
-  vesktop-ime = pkgs-unstable.vesktop.overrideAttrs (old: {
+  vesktop-ime = pkgs.vesktop.overrideAttrs (old: {
     desktopItems = [
       (pkgs.makeDesktopItem {
         name = "vesktop";

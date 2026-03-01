@@ -110,6 +110,8 @@
             "$mod, V, togglefloating"
             "$mod, J, togglesplit"
             "$mod, F, fullscreen"
+            "$mod, mouse_down, layoutmsg, move -col"
+            "$mod, mouse_up, layoutmsg, move +col"
 
             # Workspace navigation
             "$mod, bracketleft, workspace, m-1"
@@ -128,6 +130,7 @@
             "$submod, 3, movetoworkspacesilent, 3"
             "$submod, 4, movetoworkspacesilent, 4"
             "$submod, 5, movetoworkspacesilent, 5"
+            "$submod, 6, movetoworkspacesilent, 6"
 
             # 5% directional resize
             "$mod, left, exec, ${hyprSmartStep}/bin/hypr-smart-step resize left"
@@ -157,4 +160,5 @@
   useRofi = import ./rofi.nix;
   usePrintscreen = import ./printscreen.nix;
   useSpectacle = import ./spectacle.nix;
+  useHyprshot = import ./hyprshot.nix;
 }

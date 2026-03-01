@@ -10,12 +10,12 @@
         "HDMI-A-1, 1920x1080@60, 0x0, 1, transform, 1"
       ];
       workspaces = [
-        "1, monitor:DP-3, default:true, persistent:true"
-        "2, monitor:DP-3, persistent:true"
-        "3, monitor:DP-3, persistent:true"
-        "4, monitor:DP-3, persistent:true"
-        "5, monitor:DP-3, persistent:true"
-        "6, monitor:HDMI-A-1, default:true, persistent:true"
+        "1, monitor:DP-3, default:true, persistent:true, layout:master"
+        "2, monitor:DP-3, persistent:true, layout:master"
+        "3, monitor:DP-3, persistent:true, layout:master"
+        "4, monitor:DP-3, persistent:true, layout:master"
+        "5, monitor:DP-3, persistent:true, layout:master"
+        "6, monitor:HDMI-A-1, default:true, persistent:true, layout:scrolling, layoutopt:direction:down"
       ];
     })
     (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
@@ -34,12 +34,13 @@
     (hyprland.windowRules.useDefaults {})
     (hyprland.windowRules.useFixedVesktop { workspace = "6"; })
     (hyprland.windowRules.useFixedSpotify { workspace = "6"; })
+    #(hyprland.windowRules.useWorkspacePseudo { workspace = "6"; })
     (hyprland.keybinds.useDefaults {})
     (hyprland.keybinds.useKitty {})
     (hyprland.keybinds.useAgsLauncher {})
     (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
     (hyprland.keybinds.useGsrSaveReplay {})
-    (hyprland.keybinds.useSpectacle {})
+    (hyprland.keybinds.useHyprshot {})
     (hyprland.appearance {
       borderSize = 1;
       activeBorderColor = "rgb(888888)";
@@ -146,8 +147,9 @@
     (useWaylandUtils {})
     (useBlueman {})
     (useNmApplet {})
+    (usePwvucontrol {})
     (useCodex {})
-    (useSpectacle {})
+    (useHyprshot {})
 
   ]) ++ (with modules.hardware; [
     (useAmdGpu { enableOverdrive = true; })

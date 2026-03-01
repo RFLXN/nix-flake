@@ -23,6 +23,8 @@
   useAyugram = import ./ayugram;
   useBlueman = import ./blueman;
   useNmApplet = import ./nm-applet;
+  usePwvucontrol = import ./pwvucontrol;
   useCodex = import ./codex;
   useDolphin = import ./dolphin;
+  useHyprshot = import ./hyprshot;
 }

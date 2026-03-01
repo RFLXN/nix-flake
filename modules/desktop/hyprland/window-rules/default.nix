@@ -10,4 +10,5 @@
   };
   useFixedVesktop = import ./fixed-vesktop.nix;
   useFixedSpotify = import ./fixed-spotify.nix;
+  useWorkspacePseudo = import ./workspace-pseudo.nix;
 }

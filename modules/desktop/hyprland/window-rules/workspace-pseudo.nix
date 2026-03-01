@@ -2,7 +2,7 @@
 { lib, username, ... }: {
   home-manager.users.${username} = {
     wayland.windowManager.hyprland.settings.windowrule = [
-      "match:class ^(vesktop)$, workspace ${workspace}"
+      "match:workspace ${workspace}, pseudo on, size (monitor_w) (window_h)"
     ];
   };
 }

@@ -5,6 +5,8 @@ let
   astalPackagesSet = ags.inputs.astal.packages.${system};
 
   astalPackages = with astalPackagesSet; [
+    astal4 # or astal3 for gtk3
+    io
     apps
     battery
     bluetooth
@@ -14,6 +16,7 @@ let
     notifd
     tray
     wireplumber
+    powerprofiles
   ];
 
   agsPackage = ags.packages.${system}.default;

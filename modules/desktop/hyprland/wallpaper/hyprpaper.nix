@@ -38,7 +38,7 @@ in {
   assertions = [
     {
       assertion = resolvedWallpapers != [];
-      message = "useHyprpaper requires wallpaper (and optional monitors) or a wallpapers list.";
+      message = "hyprland.wallpaper.useHyprpaper requires wallpaper (and optional monitors) or a wallpapers list.";
     }
   ];
 

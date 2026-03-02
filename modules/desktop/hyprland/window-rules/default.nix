@@ -8,7 +8,7 @@
       ];
     };
   };
-  useFixedVesktop = import ./fixed-vesktop.nix;
   useFixedSpotify = import ./fixed-spotify.nix;
+  useFixedVesktop = import ./fixed-vesktop.nix;
   useWorkspacePseudo = import ./workspace-pseudo.nix;
 }

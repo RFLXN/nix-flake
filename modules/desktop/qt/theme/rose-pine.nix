@@ -92,11 +92,10 @@ in
   ];
 
   # Ensure Qt apps launched outside Home Manager shell init still receive
-  # the expected platform/style overrides (e.g. from Hyprland or rofi).
-  environment.sessionVariables = {
+  # the expected platform-theme override (e.g. from Hyprland or rofi).
+  /* environment.sessionVariables = {
     QT_QPA_PLATFORMTHEME = lib.mkDefault "qt5ct";
-    QT_STYLE_OVERRIDE = lib.mkDefault "kvantum";
-  };
+  }; */
   environment.systemPackages = with pkgs; [
     libsForQt5.qt5ct
     qt6Packages.qt6ct
@@ -109,7 +108,6 @@ in
     qt = {
       enable = true;
       platformTheme.name = "qtct";
-      style.name = "kvantum";
 
       # Keep qtct configs explicit so style applies consistently.
       qt5ctSettings = {

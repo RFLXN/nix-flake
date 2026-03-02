@@ -153,12 +153,12 @@
       };
     };
   
-  useKitty = import ./kitty.nix;
-  useGsrSaveReplay = import ./gsr-save-replay.nix;
   useAgsLauncher = import ./ags-launcher.nix;
   useAgsRestart = import ./ags-restart.nix;
-  useRofi = import ./rofi.nix;
-  usePrintscreen = import ./printscreen.nix;
+  useKitty = import ./kitty.nix;
+  useGsrSaveReplay = import ./gsr-save-replay.nix;
   useSpectacle = import ./spectacle.nix;
   useHyprshot = import ./hyprshot.nix;
+  usePrintscreen = import ./printscreen.nix;
+  useRofi = import ./rofi.nix;
 }

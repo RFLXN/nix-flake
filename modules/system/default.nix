@@ -1,10 +1,10 @@
 {
   boot = import ./boot;
   nix = import ./nix;
-  useNetworkManager = import ./network-manager;
-  useZram = import ./zram;
+  useCjkFonts = import ./fonts;
+  useFcitx5 = import ./ime;
   useImpermanence = import ./impermanence;
   useMe = import ./me;
-  useFcitx5 = import ./ime;
-  useCjkFonts = import ./fonts;
+  useNetworkManager = import ./network-manager;
+  useZram = import ./zram;
 }

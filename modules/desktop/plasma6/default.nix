@@ -1,4 +1,8 @@
 {
+  kwin = import ./kwin;
+  shortcuts = import ./shortcuts;
+  theme = import ./theme;
+
   usePlasma6 = { overrideConfig ? false, excludePackages ? [], enableSddmIntegration ? true, persistPath ? null }:
     { lib, pkgs, plasma-manager, username, defaultPersistPath ? null, ... }:
     let
@@ -27,8 +31,4 @@
         environment.persistence.${path}.directories = [ "/var/lib/sddm" ];
       })
     ];
-
-  theme = import ./theme;
-  kwin = import ./kwin;
-  shortcuts = import ./shortcuts;
 }

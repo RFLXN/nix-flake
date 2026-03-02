@@ -1,6 +1,6 @@
 { isWayland ? false }:
 { pkgs, ... }: {
   environment.systemPackages = [
-    (if isWayland then pkgs.wineWowPackages.waylandFull else pkgs.wineWowPackages.full)
+    (if isWayland then pkgs.wineWow64Packages.waylandFull else pkgs.wineWowPackages.full)
   ];
 }

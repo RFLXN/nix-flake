@@ -10,6 +10,6 @@
       };
     };
 
-  useLowLatency = import ./low-latency.nix;
   useDenoisedMic = import ./denoised-mic.nix;
+  useLowLatency = import ./low-latency.nix;
 }

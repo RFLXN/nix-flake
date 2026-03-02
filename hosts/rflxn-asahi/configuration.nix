@@ -2,6 +2,32 @@
   imports =
     # Desktop
     (with modules.desktop; [
+      (gtk.theme.usePapirusIcon {})
+      (gtk.theme.useRosePine {
+        variant = "main";
+        windowOpacity = 0.6;
+      })
+      (hyprland.appearance {
+        borderSize = 1;
+        activeBorderColor = "rgb(888888)";
+        inactiveBorderColor = "rgb(444444)";
+        activeOpacity = 0.95;
+        inactiveOpacity = 0.85;
+        fullscreenOpacity = 1.0;
+        blurSize = 10;
+        blurPasses = 3;
+      })
+      (hyprland.cursors.useRosePineCursor {})
+      (hyprland.keybinds.useAgsLauncher {})
+      (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
+      (hyprland.keybinds.useDefaults {})
+      (hyprland.keybinds.useKitty {})
+      (hyprland.keybinds.usePrintscreen {})
+      (hyprland.touchpad.gestures.useWorkspaces {})
+      (hyprland.touchpad.useDefaults {})
+      (hyprland.useAgs {})
+      (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
+      (hyprland.useHypridle {})
       (hyprland.useHyprland {
         followMouse = 0;
         pointerSpeed = -0.25;
@@ -17,44 +43,18 @@
           "5, monitor:eDP-1, persistent:true"
         ];
       })
-      (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
-      (gtk.theme.useRosePine {
-        variant = "main";
-        windowOpacity = 0.6;
-      })
-      (gtk.theme.usePapirusIcon {})
+      (hyprland.useHyprlock {})
+      (hyprland.useHyprpolkit {})
+      (hyprland.useHyprshell {})
+      (hyprland.useTrayBridge {})
+      (hyprland.windowRules.useDefaults {})
+      (logind.useLogind {})
+      (qt.theme.usePapirusIcon {})
       (qt.theme.useRosePine {
         variant = "main";
         accent = "rose";
         kvantumReduceWindowOpacity = 40;
       })
-      (qt.theme.usePapirusIcon {})
-      (hyprland.cursors.useRosePineCursor {})
-      (hyprland.windowRules.useDefaults {})
-      (hyprland.touchpad.useDefaults {})
-      (hyprland.touchpad.gestures.useWorkspaces {})
-      (hyprland.useHyprlock {})
-      (hyprland.useHypridle {})
-      (logind.useLogind {})
-      (hyprland.keybinds.useDefaults {})
-      (hyprland.keybinds.useKitty {})
-      (hyprland.keybinds.useAgsLauncher {})
-      (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
-      (hyprland.keybinds.usePrintscreen {})
-      (hyprland.appearance {
-        borderSize = 1;
-        activeBorderColor = "rgb(888888)";
-        inactiveBorderColor = "rgb(444444)";
-        activeOpacity = 0.95;
-        inactiveOpacity = 0.85;
-        fullscreenOpacity = 1.0;
-        blurSize = 10;
-        blurPasses = 3;
-      })
-      (hyprland.useHyprshell {})
-      (hyprland.useAgs {})
-      (hyprland.useTrayBridge {})
-      (hyprland.useHyprpolkit {})
       (useGreetd {
         enableAutoLogin = true;
         autoLoginSession = "uwsm-hyprland";
@@ -65,12 +65,12 @@
     # Services
     (with modules.services; [
       (pipewire.usePipewire {})
-      (useDocker { isBtrfs = true; isRootless = true; })
-      (useHomeManager {})
-      (useFlatpak {})
       (useBatteryLogger {
         batteryDeviceName = "macsmc-battery";
       })
+      (useDocker { isBtrfs = true; isRootless = true; })
+      (useFlatpak {})
+      (useHomeManager {})
       (useKeyd { settings = import ./keyd-configs.nix; })
       (useLibinput {})
       (useRtkit {})
@@ -95,9 +95,11 @@
       (shell.useShell {})
       (shell.useZsh {})
       (useClaudeCode {})
+      (useCodex {})
       (useCommonTools {})
       (useDirenv {})
       (useDiscord {})
+      (useDolphin {})
       (useFastfetch {
         beforeModules = [
           { type = "custom"; format = "RFLXN's Asahi Linux Macbook"; outputColor = "light_green"; }
@@ -113,8 +115,6 @@
       (useNixIndex {})
       (useSpotify {})
       (useVscode {})
-      (useCodex {})
-      (useDolphin {})
     ]) ++
 
     # Hardware
@@ -127,11 +127,11 @@
     (with modules.system; [
       (boot.useEfiBoot { canTouchEfiVariables = false; })
       (boot.useSystemdBoot { consoleMode = "0"; configurationLimit = 15; })
+      (nix.useCache {})
       (nix.useExperimentalFeatures {})
       (nix.useGc { dates = "Wed 05:00"; })
       (nix.useOptimise { dates = [ "Wed 05:00" ]; })
       (nix.useUnfreePackage {})
-      (nix.useCache {})
       (useCjkFonts {})
       (useFcitx5 {})
       (useImpermanence { rootUuid = "4493ff63-f4f8-48af-b74b-df4434b45fff"; })
@@ -155,10 +155,10 @@
   '';
 
   networking.nameservers = [
-    "1.1.1.1"
     "1.0.0.1"
-    "8.8.8.8"
+    "1.1.1.1"
     "8.8.4.4"
+    "8.8.8.8"
   ];
 
   time.timeZone = shared.timezone;

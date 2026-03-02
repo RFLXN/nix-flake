@@ -1,4 +1,6 @@
 {
+  gestures = import ./gestures;
+
   useDefaults = { }:
   { username, ... }:
   {
@@ -15,6 +17,4 @@
       };
     };
   };
-
-  gestures = import ./gestures;
 }

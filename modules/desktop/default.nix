@@ -1,10 +1,10 @@
 {
-  plasma6 = import ./plasma6;
   gtk = import ./gtk;
-  qt = import ./qt;
   hyprland = import ./hyprland;
   logind = import ./logind;
-  useSddm = import ./sddm;
+  plasma6 = import ./plasma6;
+  qt = import ./qt;
   useGreetd = import ./greetd;
+  useSddm = import ./sddm;
   useXdgPortal = import ./xdg-portal;
 }

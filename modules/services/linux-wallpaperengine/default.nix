@@ -1,9 +1,8 @@
 # This service requires Wallpaper Engine Installation from Steam
-{ wallpapers, fps ? 60, bindToUwsmHyprland ? false, uwsmSessionId ? "Hyprland", bindToPlasma ? false }:
+{ wallpapers, fps ? 60, bindToPlasma ? false }:
 { pkgs, lib, username, ... }:
 let
   wallpaperArgs = lib.concatMapStringsSep " " (w: "--screen-root ${w.screen} --bg ${w.wallpaper}") wallpapers;
-  uwsmSessionTarget = "wayland-session@${uwsmSessionId}.target";
 
   restart-wallpaper = pkgs.writeShellScriptBin "restart-wallpaper" ''
     systemctl --user restart linux-wallpaperengine
@@ -26,10 +25,8 @@ in {
       Unit = {
         Description = "Linux Wallpaper Engine";
         After = [ "graphical-session.target" ]
-          ++ lib.optionals bindToUwsmHyprland [ uwsmSessionTarget ]
           ++ lib.optionals bindToPlasma [ "plasma-plasmashell.service" ];
         BindsTo = []
-          ++ lib.optionals bindToUwsmHyprland [ uwsmSessionTarget ]
           ++ lib.optionals bindToPlasma [ "plasma-plasmashell.service" ];
         PartOf = [ "graphical-session.target" ];
       };

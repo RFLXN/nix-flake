@@ -1,7 +1,7 @@
 {
   desktop = import ./desktop;
-  services = import ./services;
-  programs = import ./programs;
   hardware = import ./hardware;
+  programs = import ./programs;
+  services = import ./services;
   system = import ./system;
 }

@@ -2,11 +2,10 @@
 
 This repository manages three NixOS machines with a module-host composition pattern:
 
-- `rflxn-desktop` (x86_64, Hyprland stack)
-- `rflxn-asahi` (aarch64, Apple Silicon + Plasma 6)
+- `rflxn-desktop` (x86_64, Hyprland based  DE)
+- `rflxn-asahi` (aarch64, Apple Silicon/Asahi Linux + Hyprland based DE)
 - `rflxn-server` (x86_64, headless/server workloads)
 
-![3 NixOS Systems](./vdg.jpg)
 
 ## Repository Layout
 
@@ -37,6 +36,19 @@ Modules follow a curried pattern:
 
 Hosts compose those modules in `hosts/<name>/configuration.nix`.
 
+### Why This Pattern
+
+This repo targets multiple systems that share many common configuration values, but need different host-specific keys and toggles.
+
+So the pattern is:
+
+- Define reusable groups of key/value config in modules.
+- Pull those groups from each host and pass host-specific options/overrides.
+
+This keeps shared values consistent across machines while still allowing each host to enable different features (for example, Hyprland vs Plasma, desktop vs server services, monitor/workspace layout differences).
+
+![3 NixOS Systems](./vdg.jpg)
+
 ## Flake Overview
 
 `flake.nix` defines:
@@ -54,28 +66,31 @@ Hosts compose those modules in `hosts/<name>/configuration.nix`.
 ### `rflxn-desktop`
 
 - Platform: `x86_64-linux`
-- DE stack: Hyprland + UWSM + greetd + AGS + Hyprshell/Hyprpaper/Hyprpolkit/Hyprbars
-- Theming: Rose Pine GTK + Rose Pine Kvantum Qt + Rose Pine cursor (xcursor + hyprcursor)
-- Services: PipeWire (low-latency + denoised mic), rootless Docker (btrfs), Syncthing user service, Tailscale, keyd, GPU screen recorder
-- Programs: extensive desktop/gaming/dev set (Kitty, VSCode, Firefox, Steam, Wine, JetBrains, etc.)
-- Boot/system: Lanzaboote + systemd-boot + Impermanence + NetworkManager (Wi-Fi) + zram
+- Session stack: Hyprland (UWSM) + greetd autologin + AGS + Hyprshell + Hyprlock + Hyprpolkit + tray bridge
+- Display/layout: dual-monitor setup (`DP-3` + `HDMI-A-1`) with workspace layouts split between `master` (1-5) and `scrolling` (6)
+- Theming: Rose Pine GTK/Qt, Papirus icons, Rose Pine cursor (xcursor + hyprcursor)
+- Wallpaper/rules: Linux Wallpaper Engine (per-monitor wallpapers), Spotify/Vesktop pinned to workspace `6`
+- Services: PipeWire (low-latency + denoised mic), rootless Docker (`btrfs`), Flatpak, Syncthing (user), Tailscale, keyd, rtkit, GPU screen recorder
+- Programs: full desktop + gaming + dev set (Steam/Gamescope/Wine, JetBrains, LibreOffice, Firefox, VSCode, etc.)
+- Boot/system: EFI + Lanzaboote + systemd-boot + Plymouth + Impermanence + NetworkManager (Wi-Fi) + zram
 
 ### `rflxn-asahi`
 
 - Platform: `aarch64-linux` (Apple Silicon)
-- DE stack: Plasma 6 + SDDM (HiDPI)
+- Session stack: Hyprland (UWSM) + greetd autologin + AGS + Hyprshell + Hyprlock + Hyprpolkit + logind tuning
+- Input/display: laptop-first setup with touchpad defaults + 3-finger workspace gesture on `eDP-1`
 - Firmware: requires local Asahi firmware directory at `hosts/rflxn-asahi/firmware`
-- Services: PipeWire, rootless Docker (btrfs), Syncthing user service, Tailscale, keyd/libinput/rtkit
+- Services: PipeWire, battery logger (`macsmc-battery`), rootless Docker (`btrfs`), Flatpak, Syncthing (user), Tailscale, keyd/libinput/rtkit
 - Programs: desktop/dev suite with aarch64 Firefox Widevine support
-- Boot/system: EFI (`canTouchEfiVariables = false`), systemd-boot, Impermanence, NetworkManager (Wi-Fi), zram
+- Hardware/system: EFI (`canTouchEfiVariables = false`), systemd-boot, Impermanence, NetworkManager (Wi-Fi), Bluetooth, graphics (`enable32Bit = false`), zram
 
 ### `rflxn-server`
 
 - Platform: `x86_64-linux`
 - Role: headless server + remote/dev infra
-- Services: Docker (includes Cloudflare DDNS container), Syncthing system service, SSH, Tailscale, VSCode server, JetBrains Remote
-- Programs: shell + dev CLI essentials
-- Boot/system: EFI + systemd-boot + Impermanence
+- Services: Docker (includes Cloudflare DDNS container), Syncthing (system service), SSH, Tailscale, VSCode server, JetBrains Remote, Home Manager
+- Programs: shell + CLI dev essentials (zsh, git, direnv, nix-index, claude-code, common tools)
+- Boot/system: EFI + systemd-boot + Impermanence + standard nix cache/GC/optimise configuration
 
 ## Build Commands
 
@@ -122,140 +137,195 @@ echo "API_KEY=your_cloudflare_api_token" > /persist/secrets/ddns.env
 
 ## Module API Map
 
-This section is a practical map of exported helpers.
+Exported helper signatures below are based on the current `modules/` source.
 
 ### `modules.desktop`
 
+- `useGreetd { enableRegreet ? false, regreetCompositor ? "hyprland", regreetPrimaryMonitor ? null, enableAutoLogin ? false, autoLoginSession ? "uwsm-hyprland" }`
 - `useSddm { enableHidpi ? false, waylandCompositor ? "weston" }`
-- `useGreetd { compositor ? "hyprland", primaryMonitor }`
 - `useXdgPortal { enableKdeSupport ? false, enableHyprlandSupport ? false, enableGtkSupport ? enableHyprlandSupport }`
+
+#### `modules.desktop.gtk.theme`
+
+- `usePapirusIcon { theme ? "Papirus-Dark" }`
+- `useRosePine { variant ? "main", windowOpacity ? 0.85 }`
 
 #### `modules.desktop.hyprland`
 
-- `useHyprland { enableXWayland ? true, monitors ? null, workspaces ? null, followMouse ? 1, pointerSpeed ? 0, enableMouseAcceleration ? false }`
-- `keybinds.useDefaults { mod ? "SUPER", subMod ? "SUPER SHIFT" }`
-- `keybinds.useKitty { key ? "SUPER, R" }`
-- `keybinds.useRofi { key ? "SUPER, D" }`
-- `keybinds.usePrintscreen { key ? ", Print" }`
-- `keybinds.useGsrSaveReplay { key ? "ALT, F9" }`
-- `keybinds.useAgsLauncher { key ? "SUPER, D" }`
-- `keybinds.useAgsRestart { key ? "SUPER, backslash" }`
 - `appearance { gapSize ? 5, borderSize ? 2, rounding ? 10, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
+- `useAgs { sourceDir ? null }`
 - `useDarkMode { qtUseGtkPlatformTheme ? true }`
 - `useDunst { fontSize ? 11, font ? "Noto Sans", cornerRadius ? 10, width ? 350, offset ? "15x15" }`
-- `useRofi {}`
-- `useHyprshell { modifier ? "alt" }`
-- `useHyprpolkit {}`
-- `useHyprpaper { wallpaper ? null, monitors ? [], wallpapers ? [] }`
-- `useWaybar {}`
 - `useHyprbars {}`
+- `useHypridle { timeToScreenOff ? 600, timeToLock ? 900, timeToSuspend ? 1800 }`
+- `useHyprland { enableXWayland ? true, monitors ? null, workspaces ? null, followMouse ? 1, pointerSpeed ? 0, enableMouseAcceleration ? false, disableHardwareCursors ? false }`
+- `useHyprlock {}`
+- `useHyprpolkit {}`
+- `useHyprshell { modifier ? "alt" }`
+- `useRofi {}`
 - `useTrayBridge {}`
-- `useAgs { configDir ? null, sourceDir ? ./.config }`
-- `cursors.useRosePineCursor { cursorSize ? 24 }`
-- `windowRules.useDefaults {}`
-- `windowRules.useFixedVesktop { workspace }`
-- `windowRules.useFixedSpotify { workspace }`
+- `useWaybar {}`
+
+#### `modules.desktop.hyprland.cursors`
+
+- `useRosePineCursor { cursorSize ? 24 }`
+
+#### `modules.desktop.hyprland.keybinds`
+
+- `useDefaults { mod ? "SUPER", subMod ? "SUPER SHIFT" }`
+- `useAgsLauncher { key ? "SUPER, D" }`
+- `useAgsRestart { key ? "SUPER, backslash" }`
+- `useGsrSaveReplay { key ? "ALT, F9" }`
+- `useHyprshot { key ? "Print" }`
+- `useKitty { key ? "SUPER, R" }`
+- `usePrintscreen { key ? ", Print" }`
+- `useRofi { key ? "SUPER, D" }`
+- `useSpectacle { key ? ", Print" }`
+
+#### `modules.desktop.hyprland.touchpad`
+
+- `useDefaults {}`
+
+#### `modules.desktop.hyprland.touchpad.gestures`
+
+- `useWorkspaces {}`
+
+#### `modules.desktop.hyprland.wallpaper`
+
+- `useHyprpaper { wallpaper ? null, monitors ? [], wallpapers ? [] }`
+- `useLinuxWallpaperEngine { wallpapers, fps ? 60 }`
+
+#### `modules.desktop.hyprland.windowRules`
+
+- `useDefaults {}`
+- `useFixedSpotify { workspace }`
+- `useFixedVesktop { workspace }`
+- `useWorkspacePseudo { workspace }`
+
+#### `modules.desktop.logind`
+
+- `useLogind {}`
 
 #### `modules.desktop.plasma6`
 
 - `usePlasma6 { overrideConfig ? false, excludePackages ? [], enableSddmIntegration ? true, persistPath ? null }`
-- `kwin.useBlur { strength ? 5 }`
-- `kwin.disableWindowBarrier {}`
-- `shortcuts.useKitty { key }`
-- `shortcuts.useGsrSaveReplay { key }`
-- `shortcuts.useRestartWallpaper { key }`
-- `theme.useLeaf {}`
 
-#### `modules.desktop.gtk`
+#### `modules.desktop.plasma6.kwin`
 
-- `theme.useRosePine { variant ? "main", windowOpacity ? 0.85 }`
+- `disableWindowBarrier {}`
+- `useBlur { strength ? 5 }`
 
-#### `modules.desktop.qt`
+#### `modules.desktop.plasma6.shortcuts`
 
-- `theme.useRosePine { variant ? "main", accent ? "rose", iconTheme ? null, useOverlay ? true, kvantumTranslucentWindows ? true, kvantumBlurring ? true, kvantumPopupBlurring ? true, kvantumReduceWindowOpacity ? 12 }`
+- `useGsrSaveReplay { key }`
+- `useKitty { key }`
+- `useRestartWallpaper { key }`
+
+#### `modules.desktop.plasma6.theme`
+
+- `useLeaf {}`
+
+#### `modules.desktop.qt.theme`
+
+- `usePapirusIcon { theme ? "Papirus-Dark" }`
+- `useRosePine { variant ? "main", accent ? "rose", useOverlay ? true, kvantumTranslucentWindows ? true, kvantumBlurring ? true, kvantumPopupBlurring ? true, kvantumReduceWindowOpacity ? 12 }`
 
 ### `modules.services`
 
+- `pipewire.usePipewire {}`
+- `pipewire.useDenoisedMic {}`
+- `pipewire.useLowLatency {}`
+- `useBatteryLogger { logFile ? null, lockFile ? null, powerSupplyDir ? null, batteryDeviceName ? null }`
 - `useDocker { isBtrfs ? false, isRootless ? false, containersAsService ? {}, persistPath ? null }`
+- `useFlatpak { persistPath ? null }`
 - `useGpuScreenRecorder { window ? "screen", framerate ? 60, replaySeconds ? 300, quality ? "high", container ? "mp4", audioSource ? "default_output", outputDir ? null }`
 - `useHomeManager { stateVersion ? "25.11", backupCommand ? null }`
 - `useJetbrainsRemote { ides ? [] }`
 - `useKeyd { settings ? {} }`
 - `useLibinput {}`
-- `pipewire.usePipewire {}`
-- `pipewire.useLowLatency {}`
-- `pipewire.useDenoisedMic {}`
+- `useLinuxWallpaperengine { wallpapers, fps ? 60, bindToPlasma ? false }`
 - `useRtkit {}`
 - `useSsh { persistPath ? null, allowPasswordLogin ? false }`
 - `useSyncthing { devices ? {}, folders ? {}, serviceLevel ? "user", persistPath ? null }`
 - `useTailscale { persistPath ? null }`
 - `useVscodeServer {}`
-- `useLinuxWallpaperengine { wallpapers, fps ? 60 }`
 
 ### `modules.programs`
 
-#### Aggregated objects
+#### Aggregated namespaces
 
 - `shell.useShell {}`
 - `shell.useZsh {}`
-- `jetbrains.useWebstorm { enableZshAlias ? false }`
 - `jetbrains.useIntellij { enableZshAlias ? false }`
 - `jetbrains.usePycharm { enableZshAlias ? false }`
-- `gaming.useSteam { enableGamescope ? false, enableProtontricks ? false }`
-- `gaming.useR2modman {}`
-- `gaming.useProtonplus {}`
+- `jetbrains.useWebstorm { enableZshAlias ? false }`
 - `gaming.useLsfgVk {}`
+- `gaming.useProtonplus {}`
+- `gaming.useR2modman {}`
+- `gaming.useSteam { enableGamescope ? false, enableProtontricks ? false }`
 - `gaming.useWine { isWayland ? false }`
 
-#### Single helpers
+#### Direct helpers
 
-- `useFirefox { enableWidevine ? false }`
-- `useVscode {}`
-- `useClaudeCode {}`
-- `useKitty {}`
-- `useGit { name, email }`
-- `useFastfetch { beforeModules ? [], afterModules ? [] }`
-- `useDiscord {}`
-- `useSpotify {}`
-- `useNixIndex {}`
-- `useDirenv {}`
-- `useCommonTools {}`
-- `useHaruna {}`
-- `useKcalc { enableWindowsAlias ? false }`
-- `useKolourpaint { enableWindowsAlias ? false }`
-- `useLact { enableDaemon ? true }`
-- `useThunar {}`
-- `useWaylandUtils {}`
 - `useAyugram {}`
 - `useBlueman {}`
-- `useNmApplet {}`
+- `useClaudeCode {}`
 - `useCodex {}`
+- `useCommonTools {}`
+- `useDirenv {}`
+- `useDiscord {}`
 - `useDolphin {}`
+- `useFastfetch { beforeModules ? [], afterModules ? [] }`
+- `useFirefox { enableWidevine ? false }`
+- `useGit { name, email }`
+- `useHaruna {}`
+- `useHyprshot {}`
+- `useKcalc { enableWindowsAlias ? false }`
+- `useKitty {}`
+- `useKolourpaint { enableWindowsAlias ? false }`
+- `useLact { enableDaemon ? true }`
+- `useLibreOffice {}`
+- `useNixIndex {}`
+- `useNmApplet {}`
+- `usePwvucontrol {}`
+- `useSpectacle {}`
+- `useSpotify {}`
+- `useThunar {}`
+- `useVscode {}`
+- `useWaylandUtils {}`
 
 ### `modules.hardware`
 
-- `useGraphics {}`
-- `useBluetooth { persistPath ? null }`
 - `useAmdGpu { enable32Bit ? true, enableOverdrive ? false }`
+- `useBluetooth { persistPath ? null }`
+- `useGraphics { enable32Bit ? true }`
 - `useOpenrazer {}`
 
 ### `modules.system`
 
-- `boot.useEfiBoot { canTouchEfiVariables ? false }`
-- `boot.useSystemdBoot { consoleMode ? null, configurationLimit ? 15 }`
-- `boot.useLanzaboote { persistPath ? null }`
-- `boot.usePlymouth { theme ? "breeze", enableQuietBoot ? true }`
-- `nix.useExperimentalFeatures {}`
-- `nix.useUnfreePackage {}`
-- `nix.useGc { dates }`
-- `nix.useOptimise { dates }`
-- `nix.useCache {}`
-- `useNetworkManager { useWifi ? false, persistPath ? null }`
-- `useZram { memoryPercent ? 25, priority ? 10 }`
+#### `modules.system.boot`
+
+- `useEfiBoot { canTouchEfiVariables ? false }`
+- `useLanzaboote { persistPath ? null }`
+- `usePlymouth { theme ? "breeze", enableQuietBoot ? true }`
+- `useSystemdBoot { consoleMode ? null, configurationLimit ? 15 }`
+
+#### `modules.system.nix`
+
+- `useCache {}`
+- `useExperimentalFeatures {}`
+- `useGc { dates }`
+- `useOptimise { dates }`
+- `useUnfreePackage {}`
+
+#### `modules.system` helpers
+
+- `useCjkFonts {}`
+- `useFcitx5 {}`
 - `useImpermanence { rootUuid, persistPath ? null, directories ? [], files ? [] }`
 - `useMe { hashedPassword ? null, hashedPasswordFile ? null, extraGroups ? [] }`
-- `useFcitx5 {}`
-- `useCjkFonts {}`
+- `useNetworkManager { useWifi ? false, persistPath ? null }`
+- `useZram { memoryPercent ? 25, priority ? 10 }`
 
 ## AGS Workflow (Current)
 

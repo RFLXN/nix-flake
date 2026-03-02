@@ -1,5 +1,34 @@
 { config, lib, pkgs, username, shared, modules, ... }: {
   imports = (with modules.desktop; [
+    (gtk.theme.usePapirusIcon {})
+    (gtk.theme.useRosePine {
+      variant = "main";
+      windowOpacity = 0.6;
+    })
+    (hyprland.appearance {
+      borderSize = 1;
+      activeBorderColor = "rgb(888888)";
+      inactiveBorderColor = "rgb(444444)";
+      activeOpacity = 0.95;
+      inactiveOpacity = 0.85;
+      fullscreenOpacity = 1.0;
+      blurSize = 10;
+      blurPasses = 3;
+    })
+    (hyprland.cursors.useRosePineCursor {})
+    (hyprland.keybinds.useAgsLauncher {})
+    (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
+    (hyprland.keybinds.useDefaults {})
+    (hyprland.keybinds.useGsrSaveReplay {})
+    (hyprland.keybinds.useHyprshot {})
+    (hyprland.keybinds.useKitty {})
+    (hyprland.useAgs {})
+    (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
+    (hyprland.useHypridle {
+      timeToScreenOff = 1799;
+      timeToLock = 1800;
+      timeToSuspend = 3600;
+    })
     (hyprland.useHyprland {
       followMouse = 0;
       pointerSpeed = -0.25;
@@ -18,41 +47,26 @@
         "6, monitor:HDMI-A-1, default:true, persistent:true, layout:scrolling, layoutopt:direction:down"
       ];
     })
-    (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
-    (gtk.theme.useRosePine {
-      variant = "main";
-      windowOpacity = 0.6;
+    (hyprland.useHyprlock {})
+    (hyprland.useHyprpolkit {})
+    (hyprland.useHyprshell {})
+    (hyprland.useTrayBridge {})
+    (hyprland.wallpaper.useLinuxWallpaperEngine {
+      wallpapers = [
+        { screen = "DP-3"; wallpaper = "2798192282"; }
+        { screen = "HDMI-A-1"; wallpaper = "2897249674"; }
+      ];
     })
-    (gtk.theme.usePapirusIcon {})
+    (hyprland.windowRules.useDefaults {})
+    (hyprland.windowRules.useFixedSpotify { workspace = "6"; })
+    (hyprland.windowRules.useFixedVesktop { workspace = "6"; })
+    (qt.theme.usePapirusIcon {})
     (qt.theme.useRosePine {
       variant = "main";
       accent = "rose";
-      kvantumReduceWindowOpacity = 40;
+      kvantumReduceWindowOpacity = 20;
     })
-    (qt.theme.usePapirusIcon {})
-    (hyprland.cursors.useRosePineCursor {})
-    (hyprland.windowRules.useDefaults {})
-    (hyprland.windowRules.useFixedVesktop { workspace = "6"; })
-    (hyprland.windowRules.useFixedSpotify { workspace = "6"; })
-    #(hyprland.windowRules.useWorkspacePseudo { workspace = "6"; })
-    (hyprland.keybinds.useDefaults {})
-    (hyprland.keybinds.useKitty {})
-    (hyprland.keybinds.useAgsLauncher {})
-    (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
-    (hyprland.keybinds.useGsrSaveReplay {})
-    (hyprland.keybinds.useHyprshot {})
-    (hyprland.appearance {
-      borderSize = 1;
-      activeBorderColor = "rgb(888888)";
-      inactiveBorderColor = "rgb(444444)";
-      activeOpacity = 0.95;
-      inactiveOpacity = 0.85;
-      fullscreenOpacity = 1.0;
-      blurSize = 10;
-      blurPasses = 3;
-    })
-    (hyprland.useHyprshell {})
-    /* (hyprland.useHyprpaper {
+    /* (hyprland.wallpaper.useHyprpaper {
       wallpaper = "/home/${username}/Pictures/wallpaper.jpg";
       wallpapers = [
         { monitor = "DP-3"; path = "/home/${username}/Pictures/main-wallpaper.jpg"; }
@@ -60,15 +74,6 @@
       ];
       monitors = [ "DP-3" "HDMI-A-1" ];
     }) */
-    (hyprland.useAgs {})
-    (hyprland.useTrayBridge {})
-    (hyprland.useHyprpolkit {})
-    (hyprland.useHyprlock {})
-    (hyprland.useHypridle {
-      timeToScreenOff = 1799;
-      timeToLock = 1800;
-      timeToSuspend = 3600;
-    })
     (useGreetd {
       enableAutoLogin = true;
       autoLoginSession = "uwsm-hyprland";
@@ -102,27 +107,21 @@
       };
     })
     (useTailscale {})
-    /* (useLinuxWallpaperengine {
-      wallpapers = [
-        { screen = "DP-3"; wallpaper = "2798192282"; }
-        { screen = "HDMI-A-1"; wallpaper = "2897249674"; }
-      ];
-      bindToUwsmHyprland = true;
-      uwsmSessionId = "start-hyprland";
-      }) */
 
   ]) ++ (with modules.programs; [
     (gaming.useLsfgVk {})
+    (gaming.useProtonplus {})
     (gaming.useR2modman {})
     (gaming.useSteam { enableGamescope = true; })
     (gaming.useWine { isWayland = true; })
-    (gaming.useProtonplus {})
     (jetbrains.useIntellij { enableZshAlias = true; })
     (jetbrains.useWebstorm { enableZshAlias = true; })
     (shell.useShell {})
     (shell.useZsh {})
     (useAyugram {})
+    (useBlueman {})
     (useClaudeCode {})
+    (useCodex {})
     (useCommonTools {})
     (useDirenv {})
     (useDiscord {})
@@ -136,20 +135,19 @@
     (useFirefox {})
     (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
     (useHaruna {})
+    (useHyprshot {})
     (useKcalc { enableWindowsAlias = true; })
     (useKitty {})
     (useKolourpaint { enableWindowsAlias = true; })
     (useLact {})
+    (useLibreOffice {})
     (useNixIndex {})
+    (useNmApplet {})
+    (usePwvucontrol {})
     (useSpotify {})
     (useThunar {})
     (useVscode {})
     (useWaylandUtils {})
-    (useBlueman {})
-    (useNmApplet {})
-    (usePwvucontrol {})
-    (useCodex {})
-    (useHyprshot {})
 
   ]) ++ (with modules.hardware; [
     (useAmdGpu { enableOverdrive = true; })
@@ -181,10 +179,10 @@
   networking.hostName = "rflxn-desktop";
 
   networking.nameservers = [
-    "1.1.1.1"
     "1.0.0.1"
-    "8.8.8.8"
+    "1.1.1.1"
     "8.8.4.4"
+    "8.8.8.8"
   ];
 
   time.timeZone = shared.timezone;

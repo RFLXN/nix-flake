@@ -1,20 +1,20 @@
 {
-  useHyprland = import ./use-hyprland.nix;
-  keybinds = import ./keybind;
   appearance = import ./appearance.nix;
-  useDunst = import ./dunst.nix;
-  useRofi = import ./rofi.nix;
-  useDarkMode = import ./dark-mode.nix;
-  useHyprshell = import ./hyprshell;
-  useHyprpolkit = import ./hyprpolkit.nix;
-  useHyprpaper = import ./hyprpaper;
-  useWaybar = import ./waybar.nix;
   cursors = import ./cursors;
-  useAgs = import ./ags;
-  useTrayBridge = import ./tray-bridge.nix;
-  windowRules = import ./window-rules;
-  useHyprbars = import ./hyprbars.nix;
+  keybinds = import ./keybind;
   touchpad = import ./touchpad;
+  useAgs = import ./ags;
+  useDarkMode = import ./dark-mode.nix;
+  useDunst = import ./dunst.nix;
+  useHyprbars = import ./hyprbars.nix;
   useHypridle = import ./hypridle;
+  useHyprland = import ./use-hyprland.nix;
   useHyprlock = import ./hyprlock;
+  useHyprpolkit = import ./hyprpolkit.nix;
+  useHyprshell = import ./hyprshell;
+  useRofi = import ./rofi.nix;
+  useTrayBridge = import ./tray-bridge.nix;
+  useWaybar = import ./waybar.nix;
+  wallpaper = import ./wallpaper;
+  windowRules = import ./window-rules;
 }

@@ -1,4 +1,8 @@
+let
+  defaultApps = import ./default-apps;
+in
 {
+  defaultApps = defaultApps;
   gtk = import ./gtk;
   hyprland = import ./hyprland;
   logind = import ./logind;

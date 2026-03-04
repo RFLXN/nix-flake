@@ -22,6 +22,8 @@
   useLibreOffice = import ./libre-office;
   useNixIndex = import ./nix-index;
   useNmApplet = import ./nm-applet;
+  useObsStudio = import ./obs-studio;
+  usePeaZip = import ./peazip;
   usePwvucontrol = import ./pwvucontrol;
   useSpectacle = import ./spectacle;
   useSpotify = import ./spotify;

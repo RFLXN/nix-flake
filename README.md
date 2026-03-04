@@ -145,6 +145,15 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useSddm { enableHidpi ? false, waylandCompositor ? "weston" }`
 - `useXdgPortal { enableKdeSupport ? false, enableHyprlandSupport ? false, enableGtkSupport ? enableHyprlandSupport }`
 
+#### `modules.desktop.defaultApps`
+
+- `useDefaultApps {}`
+- `useLibreOffice {}` (applies LibreOffice document MIME types across Writer/Calc/Impress/Draw/Math/Base)
+- `usePeaZip {}` (applies all archive MIME types from `peazip.desktop`)
+- `useHaruna {}` (applies audio/video MIME types from `org.kde.haruna.desktop`)
+- `useKitty {}` (applies shell-script MIME types via generated `kitty-shellscript.desktop`)
+- `useVscode { mimeTypes ? [...] }` (applies code/text MIME types to `code.desktop`)
+
 #### `modules.desktop.gtk.theme`
 
 - `usePapirusIcon { theme ? "Papirus-Dark" }`
@@ -287,6 +296,8 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useLibreOffice {}`
 - `useNixIndex {}`
 - `useNmApplet {}`
+- `useObsStudio { enableVirtualCamera ? false, enableAmdVaapi ? true, extraPlugins ? [] }`
+- `usePeaZip {}`
 - `usePwvucontrol {}`
 - `useSpectacle {}`
 - `useSpotify {}`

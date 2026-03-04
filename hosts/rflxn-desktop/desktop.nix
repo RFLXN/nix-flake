@@ -79,6 +79,7 @@
       autoLoginSession = "uwsm-hyprland";
     })
     (defaultApps.useDefaultApps {})
+    (defaultApps.useFirefox {})
     (defaultApps.useHaruna {})
     (defaultApps.useKitty {})
     (defaultApps.useLibreOffice {})

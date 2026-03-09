@@ -1,7 +1,7 @@
 {
   gapSize ? 5,
   borderSize ? 2,
-  rounding ? 10,
+  rounding ? 5,
   activeBorderColor ? "rgb(89b4fa)",
   inactiveBorderColor ? "rgb(585b70)",
   enableAnimations ? true,

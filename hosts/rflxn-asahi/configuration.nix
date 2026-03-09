@@ -69,6 +69,11 @@
         enableAutoLogin = true;
         autoLoginSession = "uwsm-hyprland";
       })
+      (defaultApps.useDefaultApps {})
+      (defaultApps.useFirefox {})
+      (defaultApps.useHaruna {})
+      (defaultApps.useKitty {})
+      (defaultApps.useVscode {})
       (useXdgPortal { enableHyprlandSupport = true; })
     ]) ++
 

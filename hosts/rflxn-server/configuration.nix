@@ -50,6 +50,7 @@
     (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
     (useNixIndex {})
     (gaming.useSteam {})
+    (useKitty {})
 
   ]) ++ (with modules.system; [
     (boot.useEfiBoot { canTouchEfiVariables = true; })

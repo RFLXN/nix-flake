@@ -48,6 +48,23 @@ let
         pkgs.boost;
   };
 
+  launchKitty = pkgs.writeShellScript "launch-headless-kitty" ''
+    if [ -x /run/current-system/sw/bin/kitty ]; then
+      exec /run/current-system/sw/bin/kitty
+    fi
+
+    printf '%s\n' 'kitty is not installed in the active system generation' >&2
+    exit 1
+  '';
+
+  tinywmHotkeys = pkgs.writeText "headless-sunshine-sxhkdrc" ''
+    super + Return
+      ${launchKitty}
+
+    ctrl + alt + Return
+      ${launchKitty}
+  '';
+
   sunshineApps = [
     {
       name = "Desktop";
@@ -119,6 +136,7 @@ in
       ${pkgs.xset}/bin/xset s off
       ${pkgs.xset}/bin/xset -dpms
       ${pkgs.xset}/bin/xset s noblank
+      SXHKD_SHELL=${pkgs.runtimeShell} ${pkgs.sxhkd}/bin/sxhkd -c ${tinywmHotkeys} &
     '';
 
     windowManager.tinywm.enable = true;

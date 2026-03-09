@@ -35,7 +35,7 @@
       };
     })
     (useHeadlessSunshine {
-      mode = "1920x1080";
+      mode = "1280x720";
       sunshineName = "rflxn-server";
     })
     (useTailscale {})

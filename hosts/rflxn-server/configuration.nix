@@ -37,6 +37,7 @@
     (useHeadlessSunshine {
       mode = "1280x720";
       sunshineName = "rflxn-server";
+      enableAmdGpu = true;
     })
     (useTailscale {})
     (useVscodeServer {})

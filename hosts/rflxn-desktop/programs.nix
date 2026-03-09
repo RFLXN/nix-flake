@@ -32,6 +32,7 @@
     (useKolourpaint { enableWindowsAlias = true; })
     (useLact {})
     (useLibreOffice {})
+    (useMoonlight {})
     (useNixIndex {})
     (useNmApplet {})
     (useObsStudio {})

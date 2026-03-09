@@ -100,11 +100,11 @@ in
       ${pkgs.xset}/bin/xset s noblank
     '';
 
-    windowManager.icewm.enable = true;
+    windowManager.tinywm.enable = true;
   };
 
   services.displayManager = {
-    defaultSession = "none+icewm";
+    defaultSession = "none+tinywm";
     autoLogin = {
       enable = true;
       user = username;

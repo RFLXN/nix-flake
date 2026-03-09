@@ -49,6 +49,7 @@
     (useDirenv {})
     (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
     (useNixIndex {})
+    (gaming.useSteam {})
 
   ]) ++ (with modules.system; [
     (boot.useEfiBoot { canTouchEfiVariables = true; })

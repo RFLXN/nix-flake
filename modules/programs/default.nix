@@ -21,6 +21,7 @@
   useKolourpaint = import ./kolourpaint;
   useLact = import ./lact;
   useLibreOffice = import ./libre-office;
+  useMoonlight = import ./moonlight;
   useNixIndex = import ./nix-index;
   useNmApplet = import ./nm-applet;
   useObsStudio = import ./obs-studio;

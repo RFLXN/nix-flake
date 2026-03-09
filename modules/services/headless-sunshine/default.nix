@@ -1,6 +1,14 @@
-{ mode ? "1920x1080", sunshineName ? "headless-sunshine", openFirewall ? false, enableAudio ? true }:
+{
+  mode ? "1920x1080",
+  sunshineName ? "headless-sunshine",
+  openFirewall ? false,
+  enableAudio ? true,
+  enableAmdGpu ? false,
+  enableAmgGpu ? enableAmdGpu
+}:
 { config, lib, pkgs, username, ... }:
 let
+  amdGpuEnabled = enableAmdGpu || enableAmgGpu;
   modeDefinitions = {
     "1280x720" = {
       resolution = {
@@ -85,6 +93,8 @@ let
       ];
     }
   ];
+
+  sunshineEncoder = if amdGpuEnabled then "vaapi" else "software";
 in
 {
   imports = lib.optionals enableAudio [
@@ -142,6 +152,23 @@ in
     windowManager.tinywm.enable = true;
   };
 
+  boot.initrd.kernelModules = lib.optionals amdGpuEnabled [ "amdgpu" ];
+
+  hardware.graphics = lib.mkIf amdGpuEnabled {
+    enable = true;
+    enable32Bit = config.programs.steam.enable;
+  };
+
+  users.users.${username}.extraGroups = lib.optionals amdGpuEnabled [
+    "render"
+    "video"
+  ];
+
+  systemd.user.services.sunshine.environment = lib.mkIf amdGpuEnabled {
+    LIBVA_DRIVER_NAME = "radeonsi";
+    VDPAU_DRIVER = "radeonsi";
+  };
+
   services.displayManager = {
     defaultSession = "none+tinywm";
     autoLogin = {
@@ -163,7 +190,8 @@ in
     settings = {
       sunshine_name = sunshineName;
       capture = "x11";
-      encoder = "software";
+      encoder = sunshineEncoder;
+      adapter_name = lib.mkIf amdGpuEnabled "/dev/dri/renderD128";
       output_name = 0;
     };
   };

@@ -23,6 +23,16 @@
       (hyprland.keybinds.useDefaults {})
       (hyprland.keybinds.useKitty {})
       (hyprland.keybinds.usePrintscreen {})
+      (hyprland.keybinds.useToggleMonitorSetup {
+        settings = [
+          {
+            monitorName = "eDP-1";
+            defaultSetup = "eDP-1, 3456x2160@60, 0x0, 1.6";
+            toggleSetup = "eDP-1, 3456x2160@120, 0x0, 1.6";
+            key = "SUPER SHIFT, P";
+          }
+        ];
+      })
       (hyprland.touchpad.gestures.useWorkspaces {})
       (hyprland.touchpad.useDefaults {})
       (hyprland.useAgs {})

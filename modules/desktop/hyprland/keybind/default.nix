@@ -131,7 +131,10 @@
             "$submod, 4, movetoworkspacesilent, 4"
             "$submod, 5, movetoworkspacesilent, 5"
             "$submod, 6, movetoworkspacesilent, 6"
+          ];
 
+          # Repeat while the key is held.
+          binde = [
             # 5% directional resize
             "$mod, left, exec, ${hyprSmartStep}/bin/hypr-smart-step resize left"
             "$mod, right, exec, ${hyprSmartStep}/bin/hypr-smart-step resize right"
@@ -161,4 +164,5 @@
   useHyprshot = import ./hyprshot.nix;
   usePrintscreen = import ./printscreen.nix;
   useRofi = import ./rofi.nix;
+  useToggleMonitorSetup = import ./toggle-monitor-setup.nix;
 }

@@ -36,11 +36,11 @@
           "eDP-1, 3456x2160@60, 0x0, 1.6"
         ];
         workspaces = [
-          "1, monitor:eDP-1, default:true, persistent:true"
-          "2, monitor:eDP-1, persistent:true"
-          "3, monitor:eDP-1, persistent:true"
-          "4, monitor:eDP-1, persistent:true"
-          "5, monitor:eDP-1, persistent:true"
+          "1, monitor:eDP-1, default:true, persistent:true, layout:master"
+          "2, monitor:eDP-1, persistent:true, layout:master"
+          "3, monitor:eDP-1, persistent:true, layout:master"
+          "4, monitor:eDP-1, persistent:true, layout:master"
+          "5, monitor:eDP-1, persistent:true, layout:master"
         ];
       })
       (hyprland.useHyprlock {})
@@ -99,7 +99,7 @@
       (useCommonTools {})
       (useDirenv {})
       (useDiscord {})
-      (useDolphin {})
+      (useThunar {})
       (useFastfetch {
         beforeModules = [
           { type = "custom"; format = "RFLXN's Asahi Linux Macbook"; outputColor = "light_green"; }
@@ -109,9 +109,9 @@
       (useFirefox { enableWidevine = true; })
       (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
       (useHaruna {})
-      (useKcalc { enableWindowsAlias = true; })
+      (useKcalc {})
       (useKitty {})
-      (useKolourpaint { enableWindowsAlias = true; })
+      (useKolourpaint {})
       (useNixIndex {})
       (useSpotify {})
       (useVscode {})

@@ -52,24 +52,7 @@
 
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    apple-silicon,
-    impermanence,
-    home-manager,
-    plasma-manager,
-    vscode-server,
-    lanzaboote,
-    aarch64-widevine,
-    claude-code,
-    astal,
-    ags,
-    battery-logger,
-    hyprland,
-    hyprshell,
-    ...
-  }: let
+  outputs = inputs@{ self, ... }: let
     # Import module library (not executed, just imported)
     modules = import ./modules;
 
@@ -93,13 +76,13 @@
   in {
     nixosConfigurations = {
       rflxn-asahi = rflxn-asahi.mkSystem {
-        inherit nixpkgs modules apple-silicon impermanence home-manager plasma-manager aarch64-widevine claude-code ags battery-logger shared;
+        inherit inputs modules shared;
       };
       rflxn-desktop = rflxn-desktop.mkSystem {
-        inherit nixpkgs modules impermanence home-manager lanzaboote claude-code astal ags hyprland hyprshell shared;
+        inherit inputs modules shared;
       };
       rflxn-server = rflxn-server.mkSystem {
-        inherit nixpkgs modules impermanence home-manager vscode-server claude-code shared;
+        inherit inputs modules shared;
       };
     };
   };

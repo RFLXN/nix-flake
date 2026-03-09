@@ -1,5 +1,5 @@
 { mode ? "1920x1080", sunshineName ? "headless-sunshine", openFirewall ? false, enableAudio ? true }:
-{ lib, pkgs, username, ... }:
+{ config, lib, pkgs, username, ... }:
 let
   modeDefinitions = {
     "1280x720" = {
@@ -47,6 +47,27 @@ let
       else
         pkgs.boost;
   };
+
+  sunshineApps = [
+    {
+      name = "Desktop";
+      "image-path" = "desktop.png";
+    }
+  ] ++ lib.optionals config.programs.steam.enable [
+    {
+      name = "Steam Big Picture";
+      "image-path" = "steam.png";
+      detached = [
+        "/run/current-system/sw/bin/setsid /run/current-system/sw/bin/steam steam://open/bigpicture"
+      ];
+      "prep-cmd" = [
+        {
+          do = "";
+          undo = "/run/current-system/sw/bin/setsid /run/current-system/sw/bin/steam steam://close/bigpicture";
+        }
+      ];
+    }
+  ];
 in
 {
   imports = lib.optionals enableAudio [
@@ -115,6 +136,12 @@ in
     enable = true;
     package = sunshinePackage;
     inherit openFirewall;
+    applications = {
+      env = {
+        PATH = "/run/current-system/sw/bin:$(HOME)/.local/bin";
+      };
+      apps = sunshineApps;
+    };
     settings = {
       sunshine_name = sunshineName;
       capture = "x11";

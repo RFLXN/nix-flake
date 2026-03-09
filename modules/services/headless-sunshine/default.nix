@@ -40,13 +40,13 @@ let
   };
 
   selectedMode = lib.attrByPath [ mode ] modeDefinitions."1920x1080" modeDefinitions;
-  sunshinePackage = pkgs.sunshine.overrideAttrs (old: {
-    postPatch = (old.postPatch or "") + ''
-      substituteInPlace cmake/dependencies/Boost_Sunshine.cmake \
-        --replace-fail 'find_package(Boost CONFIG ''${BOOST_VERSION} EXACT COMPONENTS ''${BOOST_COMPONENTS})' \
-                       'find_package(Boost CONFIG ''${BOOST_VERSION} COMPONENTS ''${BOOST_COMPONENTS})'
-    '';
-  });
+  sunshinePackage = pkgs.sunshine.override {
+    boost =
+      if pkgs ? boost187 then
+        pkgs.boost187
+      else
+        pkgs.boost;
+  };
 in
 {
   imports = lib.optionals enableAudio [

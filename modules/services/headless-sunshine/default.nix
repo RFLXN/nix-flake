@@ -40,6 +40,13 @@ let
   };
 
   selectedMode = lib.attrByPath [ mode ] modeDefinitions."1920x1080" modeDefinitions;
+  sunshinePackage = pkgs.sunshine.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace cmake/dependencies/Boost_Sunshine.cmake \
+        --replace-fail 'find_package(Boost CONFIG ''${BOOST_VERSION} EXACT COMPONENTS ''${BOOST_COMPONENTS})' \
+                       'find_package(Boost CONFIG ''${BOOST_VERSION} COMPONENTS ''${BOOST_COMPONENTS})'
+    '';
+  });
 in
 {
   imports = lib.optionals enableAudio [
@@ -106,6 +113,7 @@ in
 
   services.sunshine = {
     enable = true;
+    package = sunshinePackage;
     inherit openFirewall;
     settings = {
       sunshine_name = sunshineName;

@@ -37,6 +37,7 @@
     (useObsStudio {})
     (usePeaZip {})
     (usePwvucontrol {})
+    (useShotcut {})
     (useSpotify {})
     (useThunar {})
     (useVscode {})

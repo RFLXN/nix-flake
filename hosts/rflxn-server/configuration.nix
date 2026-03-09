@@ -34,6 +34,10 @@
         };
       };
     })
+    (useHeadlessSunshine {
+      mode = "1920x1080";
+      sunshineName = "rflxn-server";
+    })
     (useTailscale {})
     (useVscodeServer {})
 

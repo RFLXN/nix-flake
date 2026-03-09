@@ -290,6 +290,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useHaruna {}`
 - `useHyprshot {}`
 - `useKcalc { enableWindowsAlias ? false }`
+- `useKdenLive {}`
 - `useKitty {}`
 - `useKolourpaint { enableWindowsAlias ? false }`
 - `useLact { enableDaemon ? true }`
@@ -299,6 +300,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useObsStudio { enableVirtualCamera ? false, enableAmdVaapi ? true, extraPlugins ? [] }`
 - `usePeaZip {}`
 - `usePwvucontrol {}`
+- `useShotcut {}`
 - `useSpectacle {}`
 - `useSpotify {}`
 - `useThunar {}`

@@ -34,11 +34,6 @@
         };
       };
     })
-    (useHeadlessSunshine {
-      mode = "1280x720";
-      sunshineName = "rflxn-server";
-      enableAmdGpu = true;
-    })
     (useTailscale {})
     (useVscodeServer {})
 
@@ -50,8 +45,6 @@
     (useDirenv {})
     (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
     (useNixIndex {})
-    (gaming.useSteam {})
-    (useKitty {})
 
   ]) ++ (with modules.system; [
     (boot.useEfiBoot { canTouchEfiVariables = true; })

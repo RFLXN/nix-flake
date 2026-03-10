@@ -4,7 +4,6 @@
   useDocker = import ./docker;
   useFlatpak = import ./flatpak;
   useGpuScreenRecorder = import ./gpu-screen-recorder;
-  useHeadlessSunshine = import ./headless-sunshine;
   useHomeManager = import ./home-manager;
   useJetbrainsRemote = import ./jetbrains-remote;
   useKeyd = import ./keyd;

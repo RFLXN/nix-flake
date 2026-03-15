@@ -10,6 +10,7 @@
   useLibinput = import ./libinput;
   useLinuxWallpaperengine = import ./linux-wallpaperengine;
   useRtkit = import ./rtkit;
+  useSamba = import ./samba;
   useSsh = import ./ssh;
   useSyncthing = import ./syncthing;
   useTailscale = import ./tailscale;

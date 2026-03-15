@@ -18,6 +18,11 @@
     (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
     (useJetbrainsRemote { ides = with pkgs.jetbrains; [ webstorm idea ]; })
     (useSsh { allowPasswordLogin = true; })
+    (useSamba {
+      directories = {
+        data = "/home/${username}/data";
+      };
+    })
     (useSyncthing {
       serviceLevel = "system";
       devices = { inherit (shared.syncthing-devices) rflxn-desktop rflxn-asahi; };

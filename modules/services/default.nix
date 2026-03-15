@@ -9,6 +9,7 @@
   useKeyd = import ./keyd;
   useLibinput = import ./libinput;
   useLinuxWallpaperengine = import ./linux-wallpaperengine;
+  useQBittorrent = import ./qbittorrent;
   useRtkit = import ./rtkit;
   useSamba = import ./samba;
   useSsh = import ./ssh;

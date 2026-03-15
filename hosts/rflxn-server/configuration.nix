@@ -23,6 +23,9 @@
         data = "/home/${username}/data";
       };
     })
+    (useQBittorrent {
+      passwordFile = "/persist/secrets/qbittorrent.hashedPassword";
+    })
     (useSyncthing {
       serviceLevel = "system";
       devices = { inherit (shared.syncthing-devices) rflxn-desktop rflxn-asahi; };

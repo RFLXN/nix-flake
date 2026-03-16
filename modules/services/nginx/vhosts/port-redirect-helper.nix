@@ -6,6 +6,7 @@
   default ? false,
   proxyWebsockets ? true,
   forwardPrefixHeader ? true,
+  recommendedProxySettings ? true,
   extraConfig ? "",
 }:
 { lib, ... }:
@@ -55,6 +56,7 @@ in
             "/" = {
               inherit proxyWebsockets;
               proxyPass = upstream;
+              inherit recommendedProxySettings;
               inherit extraConfig;
             };
           }
@@ -67,6 +69,7 @@ in
             "${normalizedPath}" = {
               inherit proxyWebsockets;
               proxyPass = upstream;
+              inherit recommendedProxySettings;
               extraConfig = locationExtraConfig;
             };
           };

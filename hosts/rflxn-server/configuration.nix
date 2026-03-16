@@ -26,7 +26,7 @@
     (useDeluge {
       authFile = "/persist/secrets/deluge.auth";
       downloadDir = "/home/${username}/data/torrents";
-      webAuthFile = "/persist/secrect/deluge-web.auth";
+      webAuthFile = "/persist/secrets/deluge-web.auth";
     })
     (useSyncthing {
       serviceLevel = "system";

@@ -1,0 +1,3 @@
+{
+  useDeluge = import ./deluge.nix;
+}

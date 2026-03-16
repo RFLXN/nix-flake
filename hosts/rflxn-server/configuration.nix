@@ -23,10 +23,13 @@
         data = "/home/${username}/data";
       };
     })
+    (nginx.useNginX {})
+    (nginx.vhosts.useDeluge {})
     (useDeluge {
       authFile = "/persist/secrets/deluge.auth";
       downloadDir = "/home/${username}/data/torrents";
       webAuthFile = "/persist/secrets/deluge-web.auth";
+      webHost = "127.0.0.1";
     })
     (useSyncthing {
       serviceLevel = "system";

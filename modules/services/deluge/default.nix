@@ -2,6 +2,7 @@
   authFile ? null,
   downloadDir ? null,
   webAuthFile ? null,
+  webHost ? "0.0.0.0",
   webPort ? 8112,
   persistPath ? null
 }:
@@ -72,12 +73,13 @@ lib.mkMerge [
         ${pkgs.jq}/bin/jq -n \
           --arg pwd_salt "$pwd_salt" \
           --arg pwd_sha1 "$pwd_sha1" \
+          --arg web_host ${lib.escapeShellArg webHost} \
           --argjson port ${toString webPort} \
           '{
             "pwd_salt": $pwd_salt,
             "pwd_sha1": $pwd_sha1,
             "port": $port,
-            "interface": "0.0.0.0"
+            "interface": $web_host
           }' > "$web_conf"
 
         ${pkgs.coreutils}/bin/chown ${username}:${primaryGroup} "$web_conf"

@@ -23,8 +23,9 @@
         data = "/home/${username}/data";
       };
     })
-    (useQBittorrent {
-      passwordFile = "/persist/secrets/qbittorrent.hashedPassword";
+    (useDeluge {
+      authFile = "/persist/secrets/deluge.auth";
+      downloadDir = "/home/${username}/data/torrents";
     })
     (useSyncthing {
       serviceLevel = "system";

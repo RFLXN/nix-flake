@@ -1,8 +1,15 @@
-{ devices, folders, persistPath ? null }:
+{
+  devices,
+  folders,
+  webHost ? "0.0.0.0",
+  webPort ? 8384,
+  persistPath ? null
+}:
 { lib, username, defaultPersistPath ? null, ... }:
 let
   path = if persistPath != null then persistPath else defaultPersistPath;
   dataDir = "/var/lib/syncthing";
+  guiAddress = "${webHost}:${toString webPort}";
 in
 lib.mkMerge [
   {
@@ -11,6 +18,7 @@ lib.mkMerge [
       user = username;
       group = "users";
       inherit dataDir;
+      inherit guiAddress;
       settings = { inherit devices folders; };
     };
   }

@@ -25,6 +25,7 @@
     })
     (nginx.useNginX {})
     (nginx.vhosts.useDeluge {})
+    (nginx.vhosts.useSyncthing {})
     (useDeluge {
       authFile = "/persist/secrets/deluge.auth";
       downloadDir = "/home/${username}/data/torrents";
@@ -33,6 +34,7 @@
     })
     (useSyncthing {
       serviceLevel = "system";
+      webHost = "127.0.0.1";
       devices = { inherit (shared.syncthing-devices) rflxn-desktop rflxn-asahi; };
       folders = {
         "development" = {

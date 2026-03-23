@@ -136,11 +136,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1771832504,
-        "narHash": "sha256-ymjhH+8Ew9AHoF5O9PFHl4pBDR3+LkSlDrBFssNntMY=",
+        "lastModified": 1774253850,
+        "narHash": "sha256-V/gMdfolY0WzGnJmNVwt4uLTSY0n+28rC4x1XlFjqJ0=",
         "owner": "RFLXN",
         "repo": "simple-battery-logger",
-        "rev": "a38a0f032f1ec5958d44e81ebeda80ad01c66c2d",
+        "rev": "a6122bd52cbdf144c5e77fb4223498ec0a8cfc43",
         "type": "github"
       },
       "original": {

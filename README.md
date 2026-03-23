@@ -256,7 +256,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useRtkit {}`
 - `useSsh { persistPath ? null, allowPasswordLogin ? false }`
 - `useSyncthing { devices ? {}, folders ? {}, serviceLevel ? "user", persistPath ? null }`
-- `useTailscale { persistPath ? null }`
+- `useTailscale { persistPath ? null, enableSystemTray ? false }`
 - `useVscodeServer {}`
 
 ### `modules.programs`

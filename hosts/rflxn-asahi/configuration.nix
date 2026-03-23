@@ -100,7 +100,7 @@
           };
         };
       })
-      (useTailscale {})
+      (useTailscale { enableSystemTray = true; })
     ]) ++
 
     # Programs
@@ -114,6 +114,7 @@
       (useCommonTools {})
       (useDirenv {})
       (useDiscord {})
+      (useAyugram {})
       (useThunar {})
       (useFastfetch {
         beforeModules = [

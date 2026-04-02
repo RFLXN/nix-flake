@@ -7,6 +7,7 @@
   useClaudeCode = import ./claude-code;
   useCodex = import ./codex;
   useCommonTools = import ./common-tools;
+  useChrome = import ./chrome;
   useDirenv = import ./direnv;
   useDiscord = import ./discord;
   useDolphin = import ./dolphin;

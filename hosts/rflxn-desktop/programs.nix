@@ -1,9 +1,10 @@
 { modules, ... }: {
   imports = with modules.programs; [
     (gaming.useLsfgVk {})
+    (gaming.useLutris {})
     (gaming.useProtonplus {})
     (gaming.useR2modman {})
-    (gaming.useSteam { enableGamescope = true; })
+    (gaming.useSteam { enableGamescope = true; enableProtontricks = true; })
     (gaming.useWine { isWayland = true; })
     (jetbrains.useIntellij { enableZshAlias = true; })
     (jetbrains.useWebstorm { enableZshAlias = true; })
@@ -14,6 +15,7 @@
     (useClaudeCode {})
     (useCodex {})
     (useCommonTools {})
+    (useChrome {})
     (useDirenv {})
     (useDiscord {})
     (useDolphin {})

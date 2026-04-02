@@ -33,6 +33,7 @@ in {
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     GDK_BACKEND = "wayland,x11";
     MOZ_ENABLE_WAYLAND = "1";
+    SDL_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
   };

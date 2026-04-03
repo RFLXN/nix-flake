@@ -11,6 +11,7 @@
           home-manager
           lanzaboote
           claude-code
+          t3code
           astal
           ags
           hyprland

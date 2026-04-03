@@ -31,6 +31,7 @@
   useShotcut = import ./shotcut;
   useSpectacle = import ./spectacle;
   useSpotify = import ./spotify;
+  useT3 = import ./t3;
   useThunar = import ./thunar;
   useVscode = import ./vscode;
   useWaylandUtils = import ./wayland-utils;

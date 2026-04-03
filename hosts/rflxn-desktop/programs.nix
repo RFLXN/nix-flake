@@ -42,6 +42,7 @@
     (usePwvucontrol {})
     (useShotcut {})
     (useSpotify {})
+    (useT3 {})
     (useThunar {})
     (useVscode {})
     (useWaylandUtils {})

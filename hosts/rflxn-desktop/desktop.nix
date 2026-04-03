@@ -22,13 +22,9 @@
     (hyprland.keybinds.useGsrSaveReplay {})
     (hyprland.keybinds.useHyprshot {})
     (hyprland.keybinds.useKitty {})
+    (hyprland.keybinds.useScreenOff { key = "CTRL SHIFT, P"; })
     (hyprland.useAgs {})
     (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
-    (hyprland.useHypridle {
-      timeToScreenOff = 1799;
-      timeToLock = 1800;
-      timeToSuspend = 3600;
-    })
     (hyprland.useHyprland {
       followMouse = 0;
       pointerSpeed = -0.25;

@@ -36,6 +36,11 @@
 
     claude-code.url = "github:sadjow/claude-code-nix";
 
+    t3code = {
+      url = "github:Sawrz/t3code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     astal.url = "github:aylur/astal";
 
     ags.url = "github:aylur/ags";

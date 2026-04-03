@@ -66,6 +66,7 @@ in {
       misc = {
         force_default_wallpaper = 0;
         disable_hyprland_logo = true;
+        key_press_enables_dpms = true;
       };
     } // lib.optionalAttrs disableHardwareCursors {
       cursor = {

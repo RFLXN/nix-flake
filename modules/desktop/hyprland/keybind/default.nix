@@ -160,9 +160,9 @@
   useAgsRestart = import ./ags-restart.nix;
   useKitty = import ./kitty.nix;
   useGsrSaveReplay = import ./gsr-save-replay.nix;
+  useScreenOff = import ./screen-off.nix;
   useSpectacle = import ./spectacle.nix;
   useHyprshot = import ./hyprshot.nix;
-  usePrintscreen = import ./printscreen.nix;
   useRofi = import ./rofi.nix;
   useToggleMonitorSetup = import ./toggle-monitor-setup.nix;
 }

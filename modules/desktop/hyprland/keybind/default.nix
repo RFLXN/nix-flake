@@ -108,7 +108,6 @@
             # Window management
             "$mod, Q, killactive"
             "$mod, V, togglefloating"
-            "$mod, J, togglesplit"
             "$mod, F, fullscreen"
             "$mod, mouse_down, layoutmsg, move -col"
             "$mod, mouse_up, layoutmsg, move +col"

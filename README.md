@@ -286,6 +286,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useDolphin {}`
 - `useFastfetch { beforeModules ? [], afterModules ? [] }`
 - `useFirefox { enableWidevine ? false }`
+- `useForgeCode { enableZshIntegration ? false }`
 - `useGit { name, email }`
 - `useHaruna {}`
 - `useHyprshot {}`

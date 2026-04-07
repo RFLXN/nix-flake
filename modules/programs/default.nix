@@ -13,6 +13,7 @@
   useDolphin = import ./dolphin;
   useFastfetch = import ./fastfetch;
   useFirefox = import ./firefox;
+  useForgeCode = import ./forge-code;
   useGit = import ./git;
   useHaruna = import ./haruna;
   useHyprshot = import ./hyprshot;

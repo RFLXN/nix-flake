@@ -1,6 +1,6 @@
 { lib, stdenvNoCC, fetchurl, version ? "0.112.0", codexHashes ? {
     x86_64-linux = "sha256-/zY/hZfb8Dg8F2WefJJzW6qZG+irmflnxcw8aLMpJ3w=";
-    aarch64-linux = "sha256-9cSxFHMyocxBCLd2x1nue0CdNl5YMKTllmfh+cfm2mA=";
+    aarch64-linux = "sha256-dcpRDkWfLIWzMbc5EKqW1XIBxVY2HxpNl4uDWtMJh5g=";
     x86_64-darwin = lib.fakeSha256;
     aarch64-darwin = lib.fakeSha256;
   } }:

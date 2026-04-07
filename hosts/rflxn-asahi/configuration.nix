@@ -22,7 +22,6 @@
       (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
       (hyprland.keybinds.useDefaults {})
       (hyprland.keybinds.useKitty {})
-      (hyprland.keybinds.usePrintscreen {})
       (hyprland.keybinds.useToggleMonitorSetup {
         settings = [
           {
@@ -71,7 +70,7 @@
       })
       (defaultApps.useDefaultApps {})
       (defaultApps.useFirefox {})
-      (defaultApps.useHaruna {})
+      # (defaultApps.useHaruna {})
       (defaultApps.useKitty {})
       (defaultApps.useVscode {})
       (useXdgPortal { enableHyprlandSupport = true; })
@@ -111,6 +110,7 @@
       (shell.useZsh {})
       (useClaudeCode {})
       (useCodex {})
+      (useForgeCode { enableZshIntegration = true; })
       (useCommonTools {})
       (useDirenv {})
       (useDiscord {})
@@ -124,7 +124,7 @@
       })
       (useFirefox { enableWidevine = true; })
       (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
-      (useHaruna {})
+      # (useHaruna {})
       (useKcalc {})
       (useKitty {})
       (useKolourpaint {})

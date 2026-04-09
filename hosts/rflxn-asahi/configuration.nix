@@ -84,7 +84,7 @@
       })
       (useDocker { isBtrfs = true; isRootless = true; })
       (useFlatpak {})
-      (useHomeManager {})
+      (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
       (useKeyd { settings = import ./keyd-configs.nix; })
       (useLibinput {})
       (useRtkit {})
@@ -130,6 +130,7 @@
       (useKolourpaint {})
       (useNixIndex {})
       (useSpotify {})
+      (useT3 {})
       (useVscode {})
     ]) ++
 

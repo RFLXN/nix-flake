@@ -12,6 +12,7 @@
           home-manager
           aarch64-widevine
           claude-code
+          t3code
           astal
           ags
           battery-logger;

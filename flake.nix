@@ -37,7 +37,7 @@
     claude-code.url = "github:sadjow/claude-code-nix";
 
     t3code = {
-      url = "github:Sawrz/t3code-nix";
+      url = "github:RFLXN/t3code";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

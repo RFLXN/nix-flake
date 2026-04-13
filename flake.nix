@@ -50,6 +50,11 @@
 
     ags.url = "github:aylur/ags";
 
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     battery-logger.url = "github:RFLXN/simple-battery-logger";
 
     hyprland.url = "github:hyprwm/Hyprland";

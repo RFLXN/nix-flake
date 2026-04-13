@@ -16,6 +16,7 @@
           t3code
           astal
           ags
+          quickshell
           battery-logger;
         inherit (shared) username;
         defaultPersistPath = "/persist";

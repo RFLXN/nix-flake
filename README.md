@@ -1,11 +1,12 @@
 # RFLXN's NixOS Flake
 
-This repository manages three NixOS machines with a module-host composition pattern:
+This repository manages three NixOS machines from one flake using small curried modules and host-level composition.
 
-- `rflxn-desktop` (x86_64, Hyprland based  DE)
-- `rflxn-asahi` (aarch64, Apple Silicon/Asahi Linux + Hyprland based DE)
-- `rflxn-server` (x86_64, headless/server workloads)
+- `rflxn-desktop`: `x86_64-linux` AMD desktop, Hyprland workstation and gaming box
+- `rflxn-asahi`: `aarch64-linux` Apple Silicon laptop, Asahi Linux plus Hyprland
+- `rflxn-server`: `x86_64-linux` headless server for remote development and network services
 
+![3 NixOS Systems](./vdg.jpg)
 
 ## Repository Layout
 
@@ -14,103 +15,134 @@ nix/
 ├── flake.nix
 ├── modules/
 │   ├── desktop/
-│   ├── services/
-│   ├── programs/
 │   ├── hardware/
+│   ├── programs/
+│   ├── services/
 │   └── system/
 └── hosts/
-    ├── rflxn-desktop/
     ├── rflxn-asahi/
+    ├── rflxn-desktop/
     └── rflxn-server/
 ```
 
 ## Composition Model
 
-Modules follow a curried pattern:
+Most reusable modules follow this pattern:
 
 ```nix
 { optionA ? defaultA, ... }:
 { pkgs, lib, username, ... }:
-{ ...config... }
+{ ... }
 ```
 
-Hosts compose those modules in `hosts/<name>/configuration.nix`.
+`flake.nix` passes shared `specialArgs` into each host:
 
-### Why This Pattern
+- `modules`: the module library exported from `./modules`
+- `shared`: common values such as `username`, timezone, locale, and Syncthing device IDs
+- `username`: convenience alias from `shared.username`
+- `defaultPersistPath = "/persist"`
+- selected flake inputs needed by the host, such as `home-manager`, `impermanence`, `hyprland`, `hyprshell`, `quickshell`, `apple-silicon`, and `vscode-server`
 
-This repo targets multiple systems that share many common configuration values, but need different host-specific keys and toggles.
+Host composition style:
 
-So the pattern is:
-
-- Define reusable groups of key/value config in modules.
-- Pull those groups from each host and pass host-specific options/overrides.
-
-This keeps shared values consistent across machines while still allowing each host to enable different features (for example, Hyprland vs Plasma, desktop vs server services, monitor/workspace layout differences).
-
-![3 NixOS Systems](./vdg.jpg)
+- `hosts/rflxn-desktop/` splits its config into `desktop.nix`, `services.nix`, `programs.nix`, and `systems.nix`
+- `hosts/rflxn-asahi/configuration.nix` composes most modules inline because the machine is more specialized
+- `hosts/rflxn-server/configuration.nix` keeps most of the headless service stack in one place
 
 ## Flake Overview
 
-`flake.nix` defines:
+`flake.nix` currently tracks:
 
-- Stable base: `nixos-25.11`
-- Additional inputs: `home-manager`, `impermanence`, `plasma-manager`, `lanzaboote`, `vscode-server`, `apple-silicon`, `astal`, `ags`, etc.
-- Shared values: `username`, locale/timezone, Syncthing device IDs
-- Per-host `mkSystem` entrypoints:
-  - `hosts/rflxn-desktop/default.nix`
-  - `hosts/rflxn-asahi/default.nix`
-  - `hosts/rflxn-server/default.nix`
+- `nixpkgs = github:NixOS/nixpkgs/nixos-unstable`
+- `home-manager`
+- `impermanence`
+- `plasma-manager`
+- `vscode-server`
+- `lanzaboote`
+- `apple-silicon`
+- `aarch64-widevine`
+- `hyprland`
+- `hyprshell`
+- `quickshell`
+- `astal`
+- `ags`
+- `claude-code`
+- `codex-cli-nix`
+- `t3code`
+- `battery-logger`
+
+Shared values defined directly in the flake:
+
+- `username = "rflxn"`
+- `timezone = "Asia/Seoul"`
+- `locale = "en_US.UTF-8"`
+- Syncthing device IDs for all three hosts
+
+Per-host entrypoints:
+
+- `hosts/rflxn-desktop/default.nix`
+- `hosts/rflxn-asahi/default.nix`
+- `hosts/rflxn-server/default.nix`
 
 ## Host Profiles
 
 ### `rflxn-desktop`
 
 - Platform: `x86_64-linux`
-- Session stack: Hyprland (UWSM) + greetd autologin + AGS + Hyprshell + Hyprlock + Hyprpolkit + tray bridge
-- Display/layout: dual-monitor setup (`DP-3` + `HDMI-A-1`) with workspace layouts split between `master` (1-5) and `scrolling` (6)
-- Theming: Rose Pine GTK/Qt, Papirus icons, Rose Pine cursor (xcursor + hyprcursor)
-- Wallpaper/rules: Linux Wallpaper Engine (per-monitor wallpapers), Spotify/Vesktop pinned to workspace `6`
-- Services: PipeWire (low-latency + denoised mic), rootless Docker (`btrfs`), Flatpak, Syncthing (user), Tailscale, keyd, rtkit, GPU screen recorder
-- Programs: full desktop + gaming + dev set (Steam/Gamescope/Wine, JetBrains, LibreOffice, Firefox, VSCode, etc.)
-- Boot/system: EFI + Lanzaboote + systemd-boot + Plymouth + Impermanence + NetworkManager (Wi-Fi) + zram
+- Role: main desktop and gaming workstation
+- Session stack: Hyprland with UWSM, greetd autologin, AGS, Hyprshell, Hyprlock, Hyprpolkit, and tray bridge
+- Display layout: `DP-3` and rotated `HDMI-A-1`, with workspaces `1` to `5` on `DP-3` using `master` and workspace `6` on `HDMI-A-1` using `scrolling`
+- Theme: Rose Pine GTK and Qt, Papirus icons, Rose Pine cursor and hyprcursor
+- Wallpaper and rules: Linux Wallpaper Engine per monitor, Spotify and Vesktop pinned to workspace `6`
+- Services: PipeWire with low-latency and denoised mic config, rootless Docker on `btrfs`, Flatpak, GPU Screen Recorder, keyd, Home Manager, Syncthing user service, Tailscale, and rtkit
+- Programs: browsers, IDEs, AI tooling, gaming tools, media tools, and general desktop apps
+- System: EFI, systemd-boot, Lanzaboote, Plymouth, impermanence, NetworkManager Wi-Fi, zram, AMD GPU tuning, Bluetooth, and shared font and IME setup
 
 ### `rflxn-asahi`
 
-- Platform: `aarch64-linux` (Apple Silicon)
-- Session stack: Hyprland (UWSM) + greetd autologin + AGS + Hyprshell + Hyprlock + Hyprpolkit + logind tuning
-- Input/display: laptop-first setup with touchpad defaults + 3-finger workspace gesture on `eDP-1`
-- Firmware: requires local Asahi firmware directory at `hosts/rflxn-asahi/firmware`
-- Services: PipeWire, battery logger (`macsmc-battery`), rootless Docker (`btrfs`), Flatpak, Syncthing (user), Tailscale, keyd/libinput/rtkit
-- Programs: desktop/dev suite with aarch64 Firefox Widevine support
-- Hardware/system: EFI (`canTouchEfiVariables = false`), systemd-boot, Impermanence, NetworkManager (Wi-Fi), Bluetooth, graphics (`enable32Bit = false`), zram
+- Platform: `aarch64-linux`
+- Role: Apple Silicon laptop
+- Session stack: Hyprland with UWSM, greetd autologin, AGS, Hyprshell, Hyprlock, and Hyprpolkit
+- Input and display: built-in `eDP-1`, touchpad defaults, 3-finger workspace gesture, and Mac-style key remaps through keyd
+- Monitor toggle: `SUPER SHIFT, P` switches `eDP-1` between `60 Hz` and `120 Hz`
+- Firmware: requires a local `hosts/rflxn-asahi/firmware` directory
+- Services: PipeWire, battery logger for `macsmc-battery`, rootless Docker on `btrfs`, Flatpak, keyd, libinput, rtkit, Home Manager, Syncthing user service, and Tailscale with systray support
+- Programs: desktop and development tools, including Firefox with aarch64 Widevine support
+- System: Apple Silicon support module, EFI with `canTouchEfiVariables = false`, systemd-boot, impermanence, NetworkManager Wi-Fi, Bluetooth, graphics with `enable32Bit = false`, zram, shared font and IME setup
 
 ### `rflxn-server`
 
 - Platform: `x86_64-linux`
-- Role: headless server + remote/dev infra
-- Services: Docker (includes Cloudflare DDNS container), Syncthing (system service), SSH, Tailscale, VSCode server, JetBrains Remote, Home Manager
-- Programs: shell + CLI dev essentials (zsh, git, direnv, nix-index, claude-code, common tools)
-- Boot/system: EFI + systemd-boot + Impermanence + standard nix cache/GC/optimise configuration
+- Role: headless server, remote development host, and sync box
+- Services: Docker, Cloudflare DDNS OCI container, Home Manager, JetBrains Remote, SSH, Samba, Tailscale, VS Code server, Syncthing system service, Deluge, and nginx
+- Reverse proxy: nginx exposes Deluge under `/torrent` and Syncthing under `/syncthing`
+- Programs: zsh, git, direnv, nix-index, Claude Code, and common CLI tooling
+- System: EFI, systemd-boot, impermanence, and standard nix cache, GC, and optimise settings
 
-## Build Commands
+## Build and Inspection
 
 ```bash
-# Desktop
+# Inspect the flake
+nix flake show
+
+# Build without switching
+nix build .#nixosConfigurations.rflxn-desktop.config.system.build.toplevel
+nix build .#nixosConfigurations.rflxn-asahi.config.system.build.toplevel
+nix build .#nixosConfigurations.rflxn-server.config.system.build.toplevel
+
+# Switch
 sudo nixos-rebuild switch --flake .#rflxn-desktop
-
-# Asahi
 sudo nixos-rebuild switch --flake .#rflxn-asahi
-
-# Server
 sudo nixos-rebuild switch --flake .#rflxn-server
 ```
 
-## Prerequisites & Secrets
+## Prerequisites and Secrets
 
 ### Global
 
-1. Btrfs layout is expected (`@root`, `@nix`, `@persist` subvolumes).
-2. User password hash file:
+1. The hosts assume a `btrfs` layout with `@root`, `@root-blank`, `@nix`, and `@persist`.
+2. `/persist` is the default persistence root passed into modules.
+3. Create the user password hash file:
 
 ```bash
 mkdir -p /persist/secrets
@@ -119,25 +151,30 @@ mkpasswd -m sha-512 > /persist/secrets/rflxn.hashedPassword
 
 ### Desktop (`rflxn-desktop`)
 
-- If using Lanzaboote/Secure Boot, create and enroll keys for `sbctl` (stored at `/var/lib/sbctl`, persisted by module config).
+- If you use Lanzaboote and Secure Boot, create and enroll `sbctl` keys.
+- The boot module persists `/var/lib/sbctl`.
 
 ### Asahi (`rflxn-asahi`)
 
-- Provide firmware files in `hosts/rflxn-asahi/firmware` (gitignored).
-- Build throws if firmware is missing.
+- Extract firmware into `hosts/rflxn-asahi/firmware`.
+- Builds will throw if that directory is missing.
 
 ### Server (`rflxn-server`)
 
-- DDNS container expects:
+- Cloudflare DDNS expects:
 
 ```bash
 mkdir -p /persist/secrets
-echo "API_KEY=your_cloudflare_api_token" > /persist/secrets/ddns.env
+printf 'API_KEY=your_cloudflare_api_token\n' > /persist/secrets/ddns.env
 ```
+
+- Deluge expects:
+  - `/persist/secrets/deluge.auth` in Deluge `auth` file format
+  - `/persist/secrets/deluge-web.auth` as JSON with `pwd_salt` and `pwd_sha1`
 
 ## Module API Map
 
-Exported helper signatures below are based on the current `modules/` source.
+The list below reflects the currently exported helper surface from `modules/`.
 
 ### `modules.desktop`
 
@@ -148,11 +185,12 @@ Exported helper signatures below are based on the current `modules/` source.
 #### `modules.desktop.defaultApps`
 
 - `useDefaultApps {}`
-- `useLibreOffice {}` (applies LibreOffice document MIME types across Writer/Calc/Impress/Draw/Math/Base)
-- `usePeaZip {}` (applies all archive MIME types from `peazip.desktop`)
-- `useHaruna {}` (applies audio/video MIME types from `org.kde.haruna.desktop`)
-- `useKitty {}` (applies shell-script MIME types via generated `kitty-shellscript.desktop`)
-- `useVscode { mimeTypes ? [...] }` (applies code/text MIME types to `code.desktop`)
+- `useFirefox { mimeTypes ? [...] }`
+- `useHaruna {}`
+- `useKitty {}`
+- `useLibreOffice {}`
+- `usePeaZip {}`
+- `useVscode { mimeTypes ? [...] }`
 
 #### `modules.desktop.gtk.theme`
 
@@ -161,7 +199,7 @@ Exported helper signatures below are based on the current `modules/` source.
 
 #### `modules.desktop.hyprland`
 
-- `appearance { gapSize ? 5, borderSize ? 2, rounding ? 10, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
+- `appearance { gapSize ? 5, borderSize ? 2, rounding ? 5, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
 - `useAgs { sourceDir ? null }`
 - `useDarkMode { qtUseGtkPlatformTheme ? true }`
 - `useDunst { fontSize ? 11, font ? "Noto Sans", cornerRadius ? 10, width ? 350, offset ? "15x15" }`
@@ -170,6 +208,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useHyprland { enableXWayland ? true, monitors ? null, workspaces ? null, followMouse ? 1, pointerSpeed ? 0, enableMouseAcceleration ? false, disableHardwareCursors ? false }`
 - `useHyprlock {}`
 - `useHyprpolkit {}`
+- `useQuickShell {}`
 - `useHyprshell { modifier ? "alt" }`
 - `useRofi {}`
 - `useTrayBridge {}`
@@ -187,9 +226,10 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useGsrSaveReplay { key ? "ALT, F9" }`
 - `useHyprshot { key ? "Print" }`
 - `useKitty { key ? "SUPER, R" }`
-- `usePrintscreen { key ? ", Print" }`
 - `useRofi { key ? "SUPER, D" }`
+- `useScreenOff { key ? "SUPER SHIFT, O", delaySeconds ? 1 }`
 - `useSpectacle { key ? ", Print" }`
+- `useToggleMonitorSetup { settings ? [] }`
 
 #### `modules.desktop.hyprland.touchpad`
 
@@ -245,6 +285,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `pipewire.useDenoisedMic {}`
 - `pipewire.useLowLatency {}`
 - `useBatteryLogger { logFile ? null, lockFile ? null, powerSupplyDir ? null, batteryDeviceName ? null }`
+- `useDeluge { authFile ? null, downloadDir ? null, webAuthFile ? null, webHost ? "0.0.0.0", webPort ? 8112, persistPath ? null }`
 - `useDocker { isBtrfs ? false, isRootless ? false, containersAsService ? {}, persistPath ? null }`
 - `useFlatpak { persistPath ? null }`
 - `useGpuScreenRecorder { window ? "screen", framerate ? 60, replaySeconds ? 300, quality ? "high", container ? "mp4", audioSource ? "default_output", outputDir ? null }`
@@ -253,11 +294,18 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useKeyd { settings ? {} }`
 - `useLibinput {}`
 - `useLinuxWallpaperengine { wallpapers, fps ? 60, bindToPlasma ? false }`
+- `useNginX { upstreams ? {} }`
 - `useRtkit {}`
+- `useSamba { directories ? {}, persistPath ? null }`
 - `useSsh { persistPath ? null, allowPasswordLogin ? false }`
-- `useSyncthing { devices ? {}, folders ? {}, serviceLevel ? "user", persistPath ? null }`
+- `useSyncthing { devices ? {}, folders ? {}, serviceLevel ? "user", webHost ? "0.0.0.0", webPort ? 8384, persistPath ? null }`
 - `useTailscale { persistPath ? null, enableSystemTray ? false }`
 - `useVscodeServer {}`
+
+#### `modules.services.nginx.vhosts`
+
+- `useDeluge { port ? 8112 }`
+- `useSyncthing { port ? 8384 }`
 
 ### `modules.programs`
 
@@ -269,6 +317,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `jetbrains.usePycharm { enableZshAlias ? false }`
 - `jetbrains.useWebstorm { enableZshAlias ? false }`
 - `gaming.useLsfgVk {}`
+- `gaming.useLutris {}`
 - `gaming.useProtonplus {}`
 - `gaming.useR2modman {}`
 - `gaming.useSteam { enableGamescope ? false, enableProtontricks ? false }`
@@ -281,6 +330,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useClaudeCode {}`
 - `useCodex {}`
 - `useCommonTools {}`
+- `useChrome {}`
 - `useDirenv {}`
 - `useDiscord {}`
 - `useDolphin {}`
@@ -296,6 +346,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useKolourpaint { enableWindowsAlias ? false }`
 - `useLact { enableDaemon ? true }`
 - `useLibreOffice {}`
+- `useMoonlight {}`
 - `useNixIndex {}`
 - `useNmApplet {}`
 - `useObsStudio { enableVirtualCamera ? false, enableAmdVaapi ? true, extraPlugins ? [] }`
@@ -304,6 +355,7 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useShotcut {}`
 - `useSpectacle {}`
 - `useSpotify {}`
+- `useT3 {}`
 - `useThunar {}`
 - `useVscode {}`
 - `useWaylandUtils {}`
@@ -341,15 +393,11 @@ Exported helper signatures below are based on the current `modules/` source.
 - `useNetworkManager { useWifi ? false, persistPath ? null }`
 - `useZram { memoryPercent ? 25, priority ? 10 }`
 
-## AGS Workflow (Current)
+## AGS Workflow
 
-Recommended development loop:
+Current behavior of `modules/desktop/hyprland/ags/default.nix`:
 
-- Keep AGS source in `my-ags/`
-- Symlink for fast iteration:
-
-```bash
-ln -sfn /home/rflxn/nix/my-ags ~/.config/ags
-```
-
-Declarative snapshot also exists at `modules/desktop/hyprland/ags/.config/`, but active development is expected to happen in `my-ags/` and then be synced intentionally.
+- The module installs AGS and the Astal packages it needs.
+- Hyprland autostarts `ags run`.
+- `~/.config/ags` is intentionally left unmanaged for live local iteration.
+- The `sourceDir` argument exists, but the out-of-store symlink line is currently commented out in the module.

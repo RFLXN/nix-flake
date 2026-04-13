@@ -11,6 +11,7 @@
   useHyprland = import ./use-hyprland.nix;
   useHyprlock = import ./hyprlock;
   useHyprpolkit = import ./hyprpolkit.nix;
+  useQuickShell = import ./quickshell.nix;
   useHyprshell = import ./hyprshell;
   useRofi = import ./rofi.nix;
   useTrayBridge = import ./tray-bridge.nix;

@@ -45,6 +45,7 @@
     })
     (hyprland.useHyprlock {})
     (hyprland.useHyprpolkit {})
+    (hyprland.useQuickShell {})
     (hyprland.useHyprshell {})
     (hyprland.useTrayBridge {})
     (hyprland.wallpaper.useLinuxWallpaperEngine {

@@ -11,6 +11,7 @@
           home-manager
           lanzaboote
           claude-code
+          codex-cli-nix
           t3code
           astal
           ags

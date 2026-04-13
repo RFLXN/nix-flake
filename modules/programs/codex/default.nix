@@ -1,9 +1,6 @@
-{  }:
-{ pkgs, ... }:
-let
-  codexPackage = pkgs.callPackage ./pkg.nix { };
-in {
+{ }:
+{ pkgs, codex-cli-nix, ... }: {
   environment.systemPackages = [
-    codexPackage
+    codex-cli-nix.packages.${pkgs.system}.default
   ];
 }

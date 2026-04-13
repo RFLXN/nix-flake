@@ -36,6 +36,11 @@
 
     claude-code.url = "github:sadjow/claude-code-nix";
 
+    codex-cli-nix = {
+      url = "github:sadjow/codex-cli-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     t3code = {
       url = "github:RFLXN/t3code";
       inputs.nixpkgs.follows = "nixpkgs";

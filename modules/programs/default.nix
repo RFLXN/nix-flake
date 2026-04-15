@@ -6,6 +6,7 @@
   useBlueman = import ./blueman;
   useClaudeCode = import ./claude-code;
   useCodex = import ./codex;
+  useCodexDesktop = import ./codex-desktop;
   useCommonTools = import ./common-tools;
   useChrome = import ./chrome;
   useDirenv = import ./direnv;

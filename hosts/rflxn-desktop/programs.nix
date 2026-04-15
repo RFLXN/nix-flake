@@ -14,6 +14,7 @@
     (useBlueman {})
     (useClaudeCode {})
     (useCodex {})
+    (useCodexDesktop {})
     (useCommonTools {})
     (useChrome {})
     (useDirenv {})

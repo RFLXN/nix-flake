@@ -12,6 +12,7 @@
           lanzaboote
           claude-code
           codex-cli-nix
+          codex-desktop
           t3code
           astal
           ags

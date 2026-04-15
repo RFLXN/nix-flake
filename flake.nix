@@ -41,6 +41,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    codex-desktop = {
+      url = "github:RFLXN/codex-desktop-linux/nix-package";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     t3code = {
       url = "github:RFLXN/t3code";
       inputs.nixpkgs.follows = "nixpkgs";

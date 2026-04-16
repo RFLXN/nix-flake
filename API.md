@@ -307,7 +307,7 @@ modules = {
   Enables `hyprpolkitagent`.
 
 - `hyprland.useQuickShell {}`
-  Installs QuickShell from the `quickshell` flake input.
+  Installs QuickShell from the `quickshell` flake input with the documented extra Qt modules for SVG, image formats, multimedia, and Qt5Compat effects support.
 
 - `hyprland.useHyprshell { modifier ? "alt" }`
   Enables Hyprshell, starts `hyprshell run`, and configures the window switcher.

@@ -9,6 +9,7 @@
       })
       (hyprland.appearance {
         borderSize = 1;
+        rounding = 12;
         activeBorderColor = "rgb(888888)";
         inactiveBorderColor = "rgb(444444)";
         activeOpacity = 0.95;

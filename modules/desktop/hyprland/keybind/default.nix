@@ -132,6 +132,8 @@
             "$submod, 4, movetoworkspacesilent, 4"
             "$submod, 5, movetoworkspacesilent, 5"
             "$submod, 6, movetoworkspacesilent, 6"
+            "$submod, 7, movetoworkspacesilent, 7"
+            "$submod, 8, movetoworkspacesilent, 8"
           ];
 
           # Repeat while the key is held.

@@ -58,8 +58,8 @@
       ];
     })
     (hyprland.windowRules.useDefaults {})
-    (hyprland.windowRules.useFixedSpotify { workspace = "6"; })
-    (hyprland.windowRules.useFixedVesktop { workspace = "6"; })
+    (hyprland.windowRules.useFixedSpotify { workspace = "8"; })
+    (hyprland.windowRules.useFixedVesktop { workspace = "8"; })
     (qt.theme.usePapirusIcon {})
     (qt.theme.useRosePine {
       variant = "main";

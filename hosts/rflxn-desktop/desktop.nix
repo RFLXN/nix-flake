@@ -41,7 +41,9 @@
         "3, monitor:DP-3, persistent:true, layout:master"
         "4, monitor:DP-3, persistent:true, layout:master"
         "5, monitor:DP-3, persistent:true, layout:master"
-        "6, monitor:HDMI-A-1, default:true, persistent:true, layout:scrolling, layoutopt:direction:down"
+        "6, monitor:DP-3, persistent:true, layout:master"
+        "7, monitor:DP-3, persistent:true, layout:master"
+        "8, monitor:HDMI-A-1, default:true, persistent:true, layout:scrolling, layoutopt:direction:down"
       ];
     })
     (hyprland.useHyprlock {})

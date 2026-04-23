@@ -120,6 +120,8 @@
             "$mod, 3, workspace, 3"
             "$mod, 4, workspace, 4"
             "$mod, 5, workspace, 5"
+            "$mod, 5, workspace, 6"
+            "$mod, 5, workspace, 7"
 
             # Move current window to workspace
             "$submod, bracketleft, movetoworkspacesilent, m-1"

@@ -51,6 +51,8 @@
           "3, monitor:eDP-1, persistent:true, layout:master"
           "4, monitor:eDP-1, persistent:true, layout:master"
           "5, monitor:eDP-1, persistent:true, layout:master"
+          "6, monitor:eDP-1, persistent:true, layout:master"
+          "7, monitor:eDP-1, persistent:true, layout:master"
         ];
       })
       (hyprland.useHyprlock {})

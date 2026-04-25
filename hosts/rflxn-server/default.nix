@@ -10,6 +10,7 @@
           impermanence
           home-manager
           vscode-server
+          codex-cli-nix
           claude-code;
         inherit (shared) username;
         defaultPersistPath = "/persist";

@@ -56,6 +56,7 @@
     (shell.useShell {})
     (shell.useZsh {})
     (useClaudeCode {})
+    (useCodex {})
     (useCommonTools {})
     (useDirenv {})
     (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })

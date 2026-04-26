@@ -39,7 +39,7 @@ Required input-backed modules:
 | `modules.system.boot.useLanzaboote` | `lanzaboote` |
 | `modules.system.useImpermanence` | `impermanence` |
 | `modules.desktop.plasma6.usePlasma6` | `plasma-manager` |
-| `modules.desktop.hyprland.useAgs` | `ags` |
+| `modules.desktop.hyprland.useAgs` | `rflxn-shell` |
 | `modules.desktop.hyprland.useHyprland` | optional `hyprland` input, otherwise falls back to `pkgs.hyprland` |
 | `modules.desktop.hyprland.useHyprshell` | optional `hyprshell` input, otherwise falls back to `pkgs.hyprshell` |
 | `modules.programs.useClaudeCode` | `claude-code` |
@@ -278,9 +278,9 @@ modules = {
 - `hyprland.appearance { gapSize ? 5, borderSize ? 2, rounding ? 5, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
   Applies the repo's default Hyprland window decoration, animation, dwindle, and scrolling settings.
 
-- `hyprland.useAgs { sourceDir ? null }`
-  Enables AGS through Home Manager, installs AGS plus Astal packages, and starts `ags run`.
-  Note: `sourceDir` is currently calculated but not used because the out-of-store config symlink is commented out.
+- `hyprland.useAgs { agsPackage ? null, autostartCommand ? "ags run", enableAutostart ? true, layout ? null, package ? null, runtimePackages ? null }`
+  Enables the `rflxn-shell` Home Manager module, configures `programs.ags-shell`, and starts `ags run` from Hyprland.
+  Pass `layout` to render host-specific monitor/widget placement into the packaged shell config.
 
 - `hyprland.useDarkMode { qtUseGtkPlatformTheme ? true }`
   Enables `dconf`, sets GNOME dark mode preference, and optionally exports `QT_QPA_PLATFORMTHEME=gtk3`.
@@ -641,7 +641,6 @@ These files exist in the tree but are not part of the exported `modules` API:
 
 ## Current API Quirks
 
-- `hyprland.useAgs.sourceDir` is currently unused because the out-of-store config symlink is commented out.
 - `hyprland.useHypridle` declares timeout arguments but currently hardcodes the listener values.
 - `services.useSyncthing.persistPath` only affects the `serviceLevel = "system"` branch.
 - `services.useNginX` and `services.nginx.useNginX` are the same export surface.

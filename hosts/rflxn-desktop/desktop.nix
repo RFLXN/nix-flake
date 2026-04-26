@@ -24,7 +24,36 @@
     (hyprland.keybinds.useHyprshot {})
     (hyprland.keybinds.useKitty {})
     (hyprland.keybinds.useScreenOff { key = "CTRL SHIFT, P"; })
-    (hyprland.useAgs {})
+    (hyprland.useAgs {
+      layout = {
+        layouts = [
+          {
+            monitor = "DP-3";
+            widgets = {
+              left = [ "feed-hub" "window-title" ];
+              center = [ "workspaces" "datetime" ];
+              right = [ "system-controls" ];
+            };
+            components = [
+              "app-launcher-menu"
+              "feed-hub-menu"
+              "system-controls-menu"
+              "shutdown-confirmation-overlay"
+              "global-menu-close-layer"
+            ];
+          }
+          {
+            monitor = "HDMI-A-1";
+            widgets = {
+              left = [ "datetime" ];
+              center = [ "workspaces" ];
+              right = [ "hw-monitor" ];
+            };
+            components = [];
+          }
+        ];
+      };
+    })
     (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
     (hyprland.useHyprland {
       followMouse = 0;

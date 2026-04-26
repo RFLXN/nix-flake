@@ -14,8 +14,7 @@
           codex-cli-nix
           codex-desktop
           t3code
-          astal
-          ags
+          rflxn-shell
           hyprland
           hyprshell;
         inherit (shared) username;

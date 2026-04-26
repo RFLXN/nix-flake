@@ -35,7 +35,27 @@
       })
       (hyprland.touchpad.gestures.useWorkspaces {})
       (hyprland.touchpad.useDefaults {})
-      (hyprland.useAgs {})
+      (hyprland.useAgs {
+        layout = {
+          layouts = [
+            {
+              monitor = "eDP-1";
+              widgets = {
+                left = [ "feed-hub" "window-title" ];
+                center = [ "workspaces" "datetime" ];
+                right = [ "system-controls" ];
+              };
+              components = [
+                "app-launcher-menu"
+                "feed-hub-menu"
+                "system-controls-menu"
+                "shutdown-confirmation-overlay"
+                "global-menu-close-layer"
+              ];
+            }
+          ];
+        };
+      })
       (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
       (hyprland.useHypridle {})
       (hyprland.useHyprland {

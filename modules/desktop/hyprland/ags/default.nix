@@ -1,11 +1,17 @@
-{ sourceDir ? null }:
-{ ags, pkgs, username, ... }:
+{
+  agsPackage ? null,
+  autostartCommand ? "ags run",
+  enableAutostart ? true,
+  layout ? null,
+  package ? null,
+  runtimePackages ? null,
+}:
+{ lib, pkgs, rflxn-shell, username, ... }:
 let
   system = pkgs.stdenv.hostPlatform.system;
-  astalPackagesSet = ags.inputs.astal.packages.${system};
-
-  astalPackages = with astalPackagesSet; [
-    astal4 # or astal3 for gtk3
+  agsPackages = rflxn-shell.inputs.ags.packages.${system};
+  astalPackages = with agsPackages; [
+    astal4
     io
     apps
     battery
@@ -18,28 +24,49 @@ let
     wireplumber
     powerprofiles
   ];
-
-  agsPackage = ags.packages.${system}.default;
-  agsSourceDir =
-    if sourceDir == null then
-      "/home/${username}/nix/my-ags"
+  defaultRuntimePackages = astalPackages ++ [
+    pkgs.libadwaita
+    pkgs.libsoup_3
+    pkgs.gtk4
+    pkgs.papirus-icon-theme
+    pkgs.upower
+  ];
+  resolvedRuntimePackages =
+    if runtimePackages == null then
+      defaultRuntimePackages
     else
-      toString sourceDir;
+      runtimePackages;
+  defaultAgsPackage = (agsPackages.default.override {
+    extraPackages = resolvedRuntimePackages;
+  }).overrideAttrs (_oldAttrs: {
+    dontWrapQtApps = true;
+  });
+  agsShellConfig =
+    {
+      enable = true;
+      agsPackage =
+        if agsPackage == null then
+          defaultAgsPackage
+        else
+          agsPackage;
+      runtimePackages = resolvedRuntimePackages;
+    }
+    // lib.optionalAttrs (layout != null) {
+      inherit layout;
+    }
+    // lib.optionalAttrs (package != null) {
+      inherit package;
+    }
+    ;
 in
 {
-  home-manager.sharedModules = [ ags.homeManagerModules.default ];
-  environment.systemPackages = [ agsPackage ];
+  imports = [ rflxn-shell.nixosModules.ags-shell ];
 
-  home-manager.users.${username} = { config, ... }: {
-    wayland.windowManager.hyprland.settings.exec-once = [ "ags run" ];
-    home.packages = astalPackages;
+  home-manager.users.${username} = {
+    programs.ags-shell = agsShellConfig;
 
-    # Keep AGS on its default path (~/.config/ags) for live local iteration.
-    #xdg.configFile."ags".source = config.lib.file.mkOutOfStoreSymlink agsSourceDir;
-
-    programs.ags = {
-      enable = true;
-      extraPackages = astalPackages;
+    wayland.windowManager.hyprland.settings = lib.mkIf enableAutostart {
+      exec-once = [ autostartCommand ];
     };
   };
 }

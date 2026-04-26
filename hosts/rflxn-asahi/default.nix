@@ -14,8 +14,7 @@
           claude-code
           codex-cli-nix
           t3code
-          astal
-          ags
+          rflxn-shell
           battery-logger;
         inherit (shared) username;
         defaultPersistPath = "/persist";

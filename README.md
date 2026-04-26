@@ -41,7 +41,7 @@ Most reusable modules follow this pattern:
 - `shared`: common values such as `username`, timezone, locale, and Syncthing device IDs
 - `username`: convenience alias from `shared.username`
 - `defaultPersistPath = "/persist"`
-- selected flake inputs needed by the host, such as `home-manager`, `impermanence`, `hyprland`, `hyprshell`, `apple-silicon`, and `vscode-server`
+- selected flake inputs needed by the host, such as `home-manager`, `impermanence`, `hyprland`, `hyprshell`, `rflxn-shell`, `apple-silicon`, and `vscode-server`
 
 Host composition style:
 
@@ -63,8 +63,7 @@ Host composition style:
 - `aarch64-widevine`
 - `hyprland`
 - `hyprshell`
-- `astal`
-- `ags`
+- `rflxn-shell`
 - `claude-code`
 - `codex-cli-nix`
 - `codex-desktop`
@@ -180,7 +179,7 @@ See [API.md](./API.md) for the current exported module API.
 
 Current behavior of `modules/desktop/hyprland/ags/default.nix`:
 
-- The module installs AGS and the Astal packages it needs.
-- Hyprland autostarts `ags run`.
-- `~/.config/ags` is intentionally left unmanaged for live local iteration.
-- The `sourceDir` argument exists, but the out-of-store symlink line is currently commented out in the module.
+- The module imports `rflxn-shell.nixosModules.ags-shell`.
+- Home Manager enables `programs.ags-shell`.
+- Host files pass monitor-specific `programs.ags-shell.layout` data.
+- Hyprland autostarts `ags run` by default.

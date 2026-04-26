@@ -51,9 +51,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    astal.url = "github:aylur/astal";
-
-    ags.url = "github:aylur/ags";
+    rflxn-shell = {
+      url = "github:RFLXN/rflxn-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     battery-logger.url = "github:RFLXN/simple-battery-logger";
 

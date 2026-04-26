@@ -2,6 +2,16 @@
   imports = with modules.programs; [
     (gaming.useLsfgVk {})
     (gaming.useLutris {})
+    (gaming.useMangoHud {
+      settings = {
+        fps = true;
+        frametime = false;
+        gpu_stats = false;
+        cpu_stats = false;
+        ram = false;
+        vram = false;
+      };
+    })
     (gaming.useProtonplus {})
     (gaming.useR2modman {})
     (gaming.useSteam { enableGamescope = true; enableProtontricks = true; })

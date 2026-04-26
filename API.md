@@ -390,6 +390,9 @@ modules = {
 - `programs.gaming.useLutris {}`
   Installs Lutris.
 
+- `programs.gaming.useMangoHud { enableSessionWide ? false, settings ? {}, settingsPerApplication ? {} }`
+  Enables Home Manager's MangoHud module, writes MangoHud config from `settings`, and adds MangoHud to Steam's FHS environment.
+
 - `programs.gaming.useProtonplus {}`
   Installs ProtonPlus.
 

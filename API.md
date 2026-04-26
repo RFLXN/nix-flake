@@ -40,7 +40,6 @@ Required input-backed modules:
 | `modules.system.useImpermanence` | `impermanence` |
 | `modules.desktop.plasma6.usePlasma6` | `plasma-manager` |
 | `modules.desktop.hyprland.useAgs` | `ags` |
-| `modules.desktop.hyprland.useQuickShell` | `quickshell` |
 | `modules.desktop.hyprland.useHyprland` | optional `hyprland` input, otherwise falls back to `pkgs.hyprland` |
 | `modules.desktop.hyprland.useHyprshell` | optional `hyprshell` input, otherwise falls back to `pkgs.hyprshell` |
 | `modules.programs.useClaudeCode` | `claude-code` |
@@ -286,12 +285,6 @@ modules = {
 - `hyprland.useDarkMode { qtUseGtkPlatformTheme ? true }`
   Enables `dconf`, sets GNOME dark mode preference, and optionally exports `QT_QPA_PLATFORMTHEME=gtk3`.
 
-- `hyprland.useDunst { fontSize ? 11, font ? "Noto Sans", cornerRadius ? 10, width ? 350, offset ? "15x15" }`
-  Enables Dunst with the repo's default notification styling.
-
-- `hyprland.useHyprbars {}`
-  Enables the `hyprbars` plugin and a small default config.
-
 - `hyprland.useHypridle { timeToScreenOff ? 600, timeToLock ? 900, timeToSuspend ? 1800 }`
   Enables Hypridle with DPMS off, lock, and suspend listeners.
   Note: the module currently hardcodes `600`, `900`, and `1800` in the listener list, so the declared arguments are currently no-ops.
@@ -306,21 +299,12 @@ modules = {
 - `hyprland.useHyprpolkit {}`
   Enables `hyprpolkitagent`.
 
-- `hyprland.useQuickShell {}`
-  Installs QuickShell from the `quickshell` flake input with the documented extra Qt modules for SVG, image formats, multimedia, and Qt5Compat effects support.
-
 - `hyprland.useHyprshell { modifier ? "alt" }`
   Enables Hyprshell, starts `hyprshell run`, and configures the window switcher.
   If a `hyprshell` flake input is present in `specialArgs`, it uses that package.
 
-- `hyprland.useRofi {}`
-  Enables Home Manager Rofi config with Kitty as terminal.
-
 - `hyprland.useTrayBridge {}`
   Enables `snixembed`.
-
-- `hyprland.useWaybar {}`
-  Enables Waybar with the repo's fixed config, starts it via `exec-once`, and disables Waybar systemd management.
 
 #### `modules.desktop.hyprland.cursors`
 
@@ -347,14 +331,8 @@ modules = {
 - `hyprland.keybinds.useScreenOff { key ? "SUPER SHIFT, O", delaySeconds ? 1 }`
   Binds a delayed `hyprctl dispatch dpms toggle`.
 
-- `hyprland.keybinds.useSpectacle { key ? ", Print" }`
-  Binds KDE Spectacle.
-
 - `hyprland.keybinds.useHyprshot { key ? "Print" }`
   Binds region capture to `Print` and active-window capture to `Alt+Print`.
-
-- `hyprland.keybinds.useRofi { key ? "SUPER, D" }`
-  Binds `rofi -show drun`.
 
 - `hyprland.keybinds.useToggleMonitorSetup { settings ? [] }`
   Builds one toggle script per entry and binds each script to the configured key.
@@ -401,9 +379,6 @@ modules = {
 
 - `hyprland.windowRules.useFixedVesktop { workspace }`
   Pins Vesktop to a workspace by class match.
-
-- `hyprland.windowRules.useWorkspacePseudo { workspace }`
-  Enables pseudo layout sizing for a specific workspace.
 
 ## `modules.programs`
 
@@ -499,9 +474,6 @@ modules = {
 - `useKcalc { enableWindowsAlias ? false }`
   Installs KCalc and optionally creates a `calc` desktop entry alias.
 
-- `useKdenLive {}`
-  Installs Kdenlive.
-
 - `useKitty {}`
   Installs Kitty and writes the repo's `kitty.conf` into Home Manager.
 
@@ -534,9 +506,6 @@ modules = {
 
 - `useShotcut {}`
   Installs Shotcut.
-
-- `useSpectacle {}`
-  Installs KDE Spectacle.
 
 - `useSpotify {}`
   Installs Spotify on most systems, or `spotify-qt` plus `librespot` on `aarch64-linux`. On `aarch64-linux`, it patches `spotify-qt.json` if that file already exists.
@@ -676,4 +645,3 @@ These files exist in the tree but are not part of the exported `modules` API:
 - `hyprland.useHypridle` declares timeout arguments but currently hardcodes the listener values.
 - `services.useSyncthing.persistPath` only affects the `serviceLevel = "system"` branch.
 - `services.useNginX` and `services.nginx.useNginX` are the same export surface.
-- `programs.useKdenLive` uses capital `L` in the export name even though the path is `kdenlive`.

@@ -19,7 +19,6 @@
   useHaruna = import ./haruna;
   useHyprshot = import ./hyprshot;
   useKcalc = import ./kcalc;
-  useKdenLive = import ./kdenlive;
   useKitty = import ./kitty;
   useKolourpaint = import ./kolourpaint;
   useLact = import ./lact;
@@ -31,7 +30,6 @@
   usePeaZip = import ./peazip;
   usePwvucontrol = import ./pwvucontrol;
   useShotcut = import ./shotcut;
-  useSpectacle = import ./spectacle;
   useSpotify = import ./spotify;
   useT3 = import ./t3;
   useThunar = import ./thunar;

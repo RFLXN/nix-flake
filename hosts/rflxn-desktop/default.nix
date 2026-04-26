@@ -16,7 +16,6 @@
           t3code
           astal
           ags
-          quickshell
           hyprland
           hyprshell;
         inherit (shared) username;

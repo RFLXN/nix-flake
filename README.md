@@ -41,7 +41,7 @@ Most reusable modules follow this pattern:
 - `shared`: common values such as `username`, timezone, locale, and Syncthing device IDs
 - `username`: convenience alias from `shared.username`
 - `defaultPersistPath = "/persist"`
-- selected flake inputs needed by the host, such as `home-manager`, `impermanence`, `hyprland`, `hyprshell`, `quickshell`, `apple-silicon`, and `vscode-server`
+- selected flake inputs needed by the host, such as `home-manager`, `impermanence`, `hyprland`, `hyprshell`, `apple-silicon`, and `vscode-server`
 
 Host composition style:
 
@@ -63,7 +63,6 @@ Host composition style:
 - `aarch64-widevine`
 - `hyprland`
 - `hyprshell`
-- `quickshell`
 - `astal`
 - `ags`
 - `claude-code`

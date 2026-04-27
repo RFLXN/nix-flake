@@ -5,7 +5,8 @@
   followMouse ? 1,
   pointerSpeed ? 0,
   enableMouseAcceleration ? false,
-  disableHardwareCursors ? false
+  disableHardwareCursors ? false,
+  noCursorWarps ? true
 }:
 { pkgs, lib, username, ... }@args:
 let
@@ -63,14 +64,16 @@ in {
 
       general.resize_on_border = true;
 
+      cursor = {
+        no_warps = noCursorWarps;
+      } // lib.optionalAttrs disableHardwareCursors {
+        no_hardware_cursors = true;
+      };
+
       misc = {
         force_default_wallpaper = 0;
         disable_hyprland_logo = true;
         key_press_enables_dpms = true;
-      };
-    } // lib.optionalAttrs disableHardwareCursors {
-      cursor = {
-        no_hardware_cursors = true;
       };
     };
   };

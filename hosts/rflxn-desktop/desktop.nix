@@ -1,8 +1,7 @@
 { modules, username, ... }: {
   imports = with modules.desktop; [
     (gtk.theme.usePapirusIcon {})
-    (gtk.theme.useRosePine {
-      variant = "main";
+    (gtk.theme.useMatcha {
       windowOpacity = 0.6;
     })
     (hyprland.appearance {
@@ -89,9 +88,7 @@
     (hyprland.windowRules.useFixedSpotify { workspace = "8"; })
     (hyprland.windowRules.useFixedVesktop { workspace = "8"; })
     (qt.theme.usePapirusIcon {})
-    (qt.theme.useRosePine {
-      variant = "main";
-      accent = "rose";
+    (qt.theme.useMatcha {
       kvantumReduceWindowOpacity = 20;
     })
     /* (hyprland.wallpaper.useHyprpaper {

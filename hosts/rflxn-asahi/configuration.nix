@@ -3,8 +3,7 @@
     # Desktop
     (with modules.desktop; [
       (gtk.theme.usePapirusIcon {})
-      (gtk.theme.useRosePine {
-        variant = "main";
+      (gtk.theme.useMatcha {
         windowOpacity = 0.6;
       })
       (hyprland.appearance {
@@ -82,9 +81,7 @@
       (hyprland.windowRules.useDefaults {})
       (logind.useLogind {})
       (qt.theme.usePapirusIcon {})
-      (qt.theme.useRosePine {
-        variant = "main";
-        accent = "rose";
+      (qt.theme.useMatcha {
         kvantumReduceWindowOpacity = 40;
       })
       (useGreetd {

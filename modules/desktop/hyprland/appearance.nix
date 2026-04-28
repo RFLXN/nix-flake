@@ -53,11 +53,6 @@
       ];
     };
 
-    dwindle = {
-      pseudotile = true;
-      preserve_split = true;
-    };
-
     scrolling = {
       fullscreen_on_one_column = false;
       column_width = 0.45;

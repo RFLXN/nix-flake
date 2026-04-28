@@ -220,6 +220,11 @@ modules = {
 
 ### `modules.desktop.gtk.theme`
 
+- `gtk.theme.useMatcha { color ? "dark", variant ? "azul", windowOpacity ? 0.85 }`
+  Configures Matcha GTK theme and optional transparency CSS.
+  Allowed colors: `standard`, `light`, `dark`.
+  Allowed variants: `aliz`, `azul`, `pueril`, `sea`.
+
 - `gtk.theme.usePapirusIcon { theme ? "Papirus-Dark" }`
   Configures Papirus icons in Home Manager GTK settings.
   Allowed values: `Papirus`, `Papirus-Dark`, `Papirus-Light`.
@@ -229,6 +234,9 @@ modules = {
   Allowed variants: `main`, `moon`, `dawn`.
 
 ### `modules.desktop.qt.theme`
+
+- `qt.theme.useMatcha { color ? "dark", kvantumTranslucentWindows ? true, kvantumBlurring ? true, kvantumPopupBlurring ? true, kvantumReduceWindowOpacity ? 12 }`
+  Packages `vinceliuice/Matcha-kde`, installs Qt/Kvantum support, and configures Qt5/Qt6 to use the Matcha Kvantum theme.
 
 - `qt.theme.usePapirusIcon { theme ? "Papirus-Dark" }`
   Installs Papirus icons and configures Qt5/Qt6 icon themes through `qt5ct` and `qt6ct`.

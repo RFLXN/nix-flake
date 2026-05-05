@@ -7,7 +7,7 @@
     ])
     ++ (with modules.system; [
       (boot.useEfiBoot { canTouchEfiVariables = true; })
-      (boot.useLanzaboote {})
+      # (boot.useLanzaboote {})
       (boot.usePlymouth {})
       (boot.useSystemdBoot { configurationLimit = 10; })
       (nix.useCache {})

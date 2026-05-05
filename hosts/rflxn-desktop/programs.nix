@@ -16,6 +16,7 @@
     (gaming.useR2modman {})
     (gaming.useSteam { enableGamescope = true; enableProtontricks = true; })
     (gaming.useWine { isWayland = true; })
+    (gaming.useFFXIV {})
     (jetbrains.useIntellij { enableZshAlias = true; })
     (jetbrains.useWebstorm { enableZshAlias = true; })
     (shell.useShell {})

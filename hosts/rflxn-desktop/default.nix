@@ -16,7 +16,8 @@
           t3code
           rflxn-shell
           hyprland
-          hyprshell;
+          hyprshell
+          xivlauncher-rb;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };

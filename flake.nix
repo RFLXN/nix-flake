@@ -66,6 +66,9 @@
       inputs.hyprland.follows = "hyprland";
     };
 
+    xivlauncher-rb = {
+      url = "github:RFLXN/XIVLauncher.Core/RB-patched";
+    };
   };
 
   outputs = inputs@{ self, ... }: let

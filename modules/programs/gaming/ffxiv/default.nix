@@ -1,4 +1,4 @@
 {  }:
-{ pkgs, ... }: {
-  environment.systemPackages = [ pkgs.xivlauncher ];
+{ pkgs, xivlauncher-rb, ... }: {
+  environment.systemPackages = [ xivlauncher-rb.packages.${pkgs.system}.xivlauncher-rb ];
 }

@@ -976,6 +976,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_7": {
+      "locked": {
+        "lastModified": 1777954456,
+        "narHash": "sha256-hGdgeU2Nk87RAuZyYjyDjFL6LK7dAZN5RE9+hrDTkDU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "549bd84d6279f9852cae6225e372cc67fb91a4c1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -1083,7 +1099,8 @@
         "plasma-manager": "plasma-manager",
         "rflxn-shell": "rflxn-shell",
         "t3code": "t3code",
-        "vscode-server": "vscode-server"
+        "vscode-server": "vscode-server",
+        "xivlauncher-rb": "xivlauncher-rb"
       }
     },
     "rust-overlay": {
@@ -1277,6 +1294,45 @@
         "owner": "hyprwm",
         "repo": "xdg-desktop-portal-hyprland",
         "type": "github"
+      }
+    },
+    "xivlauncher-rb": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_7",
+        "xivlauncher-rb-src": "xivlauncher-rb-src"
+      },
+      "locked": {
+        "lastModified": 1778173087,
+        "narHash": "sha256-EhL9JZtqq/BtFzxKhuniEX16XzZhQjIy+Vw0jCTZx50=",
+        "owner": "RFLXN",
+        "repo": "XIVLauncher.Core",
+        "rev": "9c76753a43a431c87cb0b75e4af58068788a0b8a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RFLXN",
+        "ref": "RB-patched",
+        "repo": "XIVLauncher.Core",
+        "type": "github"
+      }
+    },
+    "xivlauncher-rb-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1776552466,
+        "narHash": "sha256-N92s7mtjtRiHhAt2gF9iBgWyuKEEy/QZLnJVpWsZtIw=",
+        "ref": "RB-patched",
+        "rev": "35507de9418a2fd1139fd786f56b20c10cd4a58f",
+        "revCount": 631,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/RFLXN/XIVLauncher.Core.git"
+      },
+      "original": {
+        "ref": "RB-patched",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/RFLXN/XIVLauncher.Core.git"
       }
     }
   },

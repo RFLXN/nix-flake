@@ -401,6 +401,9 @@ modules = {
 - `programs.gaming.useMangoHud { enableSessionWide ? false, settings ? {}, settingsPerApplication ? {} }`
   Enables Home Manager's MangoHud module, writes MangoHud config from `settings`, and adds MangoHud to Steam's FHS environment.
 
+- `programs.gaming.useFFXIV { enableFileSecret ? false }`
+  Installs `xivlauncher-rb`; when `enableFileSecret` is true, patches its desktop entry to launch with `XL_SECRET_PROVIDER=file`.
+
 - `programs.gaming.useProtonplus {}`
   Installs ProtonPlus.
 

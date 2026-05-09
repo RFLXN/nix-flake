@@ -8,6 +8,7 @@
       ];
     };
   };
+  useFixedMopiMopi = import ./fixed-mopimopi.nix;
   useFixedSpotify = import ./fixed-spotify.nix;
   useFixedVesktop = import ./fixed-vesktop.nix;
 }

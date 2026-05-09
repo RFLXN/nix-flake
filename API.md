@@ -385,6 +385,9 @@ modules = {
 - `hyprland.windowRules.useFixedSpotify { workspace }`
   Pins Spotify to a workspace by class match.
 
+- `hyprland.windowRules.useFixedMopiMopi { workspace }`
+  Pins MopiMopi to a workspace by class match.
+
 - `hyprland.windowRules.useFixedVesktop { workspace }`
   Pins Vesktop to a workspace by class match.
 
@@ -401,9 +404,6 @@ modules = {
 - `programs.gaming.useMangoHud { enableSessionWide ? false, settings ? {}, settingsPerApplication ? {} }`
   Enables Home Manager's MangoHud module, writes MangoHud config from `settings`, and adds MangoHud to Steam's FHS environment.
 
-- `programs.gaming.useFFXIV { enableFileSecret ? false, enableDotNetIPv6 ? true }`
-  Installs `xivlauncher-rb`; when needed, patches its desktop entry to launch with `XL_SECRET_PROVIDER=file` and/or `DOTNET_SYSTEM_NET_DISABLEIPV6=1`.
-
 - `programs.gaming.useProtonplus {}`
   Installs ProtonPlus.
 
@@ -415,6 +415,14 @@ modules = {
 
 - `programs.gaming.useWine { isWayland ? false }`
   Installs either Wayland Wine or the full X11-oriented Wine package set.
+
+#### `modules.programs.gaming.ffxiv`
+
+- `programs.gaming.ffxiv.useFFXIV { enableFileSecret ? false, enableDotNetIPv6 ? true }`
+  Installs `xivlauncher-rb`; when needed, patches its desktop entry to launch with `XL_SECRET_PROVIDER=file` and/or `DOTNET_SYSTEM_NET_DISABLEIPV6=1`.
+
+- `programs.gaming.ffxiv.useMopiMopi {}`
+  Installs a `mopimopi` launcher package with a desktop entry that opens the MopiMopi overlay in Chromium.
 
 ### `modules.programs.jetbrains`
 

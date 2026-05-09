@@ -1,14 +1,19 @@
 {
   enableFileSecret ? false,
+  enableDotNetIPv6 ? true,
 }:
-{ pkgs, xivlauncher-rb, ... }:
+{ pkgs, lib, xivlauncher-rb, ... }:
 let
   system = pkgs.stdenv.hostPlatform.system;
   xivlauncher = xivlauncher-rb.packages.${system}.xivlauncher-rb;
+  envVars =
+    lib.optionals enableFileSecret [ "XL_SECRET_PROVIDER=file" ]
+    ++ lib.optionals (!enableDotNetIPv6) [ "DOTNET_SYSTEM_NET_DISABLEIPV6=1" ];
+  envPrefix = lib.concatStringsSep " " envVars;
   xivlauncherPackage =
-    if enableFileSecret then
+    if envVars != [] then
       pkgs.symlinkJoin {
-        name = "${xivlauncher.name}-file-secret";
+        name = "${xivlauncher.name}-desktop-env";
         paths = [ xivlauncher ];
         postBuild = ''
           shopt -s nullglob
@@ -22,7 +27,7 @@ let
           patched=0
           for desktopFile in "''${desktopFiles[@]}"; do
             if grep -q '^Exec=' "$desktopFile"; then
-              sed -i 's|^Exec=|Exec=env XL_SECRET_PROVIDER=file |' "$desktopFile"
+              sed -i 's|^Exec=|Exec=env ${envPrefix} |' "$desktopFile"
               patched=1
             fi
           done

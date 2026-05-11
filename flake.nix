@@ -32,6 +32,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    distro-grub-themes = {
+      url = "github:AdisonCavani/distro-grub-themes";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     aarch64-widevine.url = "github:epetousis/nixos-aarch64-widevine";
 
     claude-code.url = "github:sadjow/claude-code-nix";

@@ -9,7 +9,12 @@
       (boot.useEfiBoot { canTouchEfiVariables = true; })
       # (boot.useLanzaboote {})
       (boot.usePlymouth {})
-      (boot.useSystemdBoot { configurationLimit = 10; })
+      (boot.grub.useGrub {
+        timeout = 5;
+        configurationLimit = 10;
+        gfxmodeEfi = "1920x1080,auto";
+      })
+      (boot.grub.theme.useDistroTheme { name = "nixos"; })
       (nix.useCache {})
       (nix.useExperimentalFeatures {})
       (nix.useGc { dates = "Wed 05:00"; })

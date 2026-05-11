@@ -37,6 +37,7 @@ Required input-backed modules:
 | Module | Required special arg |
 | --- | --- |
 | `modules.system.boot.useLanzaboote` | `lanzaboote` |
+| `modules.system.boot.grub.theme.useDistroTheme` | `distro-grub-themes` |
 | `modules.system.useImpermanence` | `impermanence` |
 | `modules.desktop.plasma6.usePlasma6` | `plasma-manager` |
 | `modules.desktop.hyprland.useAgs` | `rflxn-shell` |
@@ -119,6 +120,12 @@ modules = {
 
 - `boot.useEfiBoot { canTouchEfiVariables ? false }`
   Sets `boot.loader.efi.canTouchEfiVariables`.
+
+- `boot.grub.useGrub { timeout ? null, configurationLimit ? 10, defaultEntry ? 0, gfxmodeEfi ? "auto", gfxpayloadEfi ? "keep", timeoutStyle ? "menu", useOSProber ? false }`
+  Enables GRUB for UEFI systems with `device = "nodev"`, disables OS prober by default, and optionally configures timeout, retained configurations, default entry, EFI graphics mode/payload, and timeout style.
+
+- `boot.grub.theme.useDistroTheme { name ? "nixos" }`
+  Applies a `distro-grub-themes` theme to GRUB by name.
 
 - `boot.useLanzaboote { persistPath ? null }`
   Enables Lanzaboote, disables direct `systemd-boot`, installs `sbctl`, and persists `/var/lib/sbctl` when a persistence path is available.

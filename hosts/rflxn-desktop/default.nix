@@ -10,6 +10,7 @@
           impermanence
           home-manager
           lanzaboote
+          distro-grub-themes
           claude-code
           codex-cli-nix
           codex-desktop

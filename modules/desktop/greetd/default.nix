@@ -4,12 +4,37 @@
   regreetPrimaryMonitor ? null,
   enableAutoLogin ? false,
   autoLoginSession ? "uwsm-hyprland",
+  enableSilentSession ? enableAutoLogin,
 }:
 { pkgs, lib, username, ... }:
 let
   regreetPkg = pkgs.regreet;
-  hyprlandSessionCommand = "${lib.getExe pkgs.bash} -lc ${lib.escapeShellArg "if [ -x /run/current-system/sw/bin/start-hyprland ]; then exec /run/current-system/sw/bin/start-hyprland; else exec /run/current-system/sw/bin/Hyprland; fi"}";
-  uwsmHyprlandSessionCommand = "${lib.getExe pkgs.bash} -lc ${lib.escapeShellArg "entry=/run/current-system/sw/bin/start-hyprland; if [ ! -x \"$entry\" ]; then entry=/run/current-system/sw/bin/Hyprland; fi; exec ${lib.getExe pkgs.uwsm} start -F -- \"$entry\""}";
+  clearTerminal = lib.optionalString enableSilentSession ''
+    printf '\033[2J\033[3J\033[H'
+  '';
+  journalRedirect = lib.optionalString enableSilentSession ''
+    exec > >(${lib.getExe' pkgs.systemd "systemd-cat"} --identifier=greetd-session --priority=info)
+    exec 2> >(${lib.getExe' pkgs.systemd "systemd-cat"} --identifier=greetd-session --priority=warning)
+  '';
+  sessionCommand = command: "${lib.getExe pkgs.bash} -lc ${lib.escapeShellArg ''
+    ${clearTerminal}
+    ${journalRedirect}
+    ${command}
+  ''}";
+  hyprlandSessionCommand = sessionCommand ''
+    if [ -x /run/current-system/sw/bin/start-hyprland ]; then
+      exec /run/current-system/sw/bin/start-hyprland
+    else
+      exec /run/current-system/sw/bin/Hyprland
+    fi
+  '';
+  uwsmHyprlandSessionCommand = sessionCommand ''
+    entry=/run/current-system/sw/bin/start-hyprland
+    if [ ! -x "$entry" ]; then
+      entry=/run/current-system/sw/bin/Hyprland
+    fi
+    exec ${lib.getExe pkgs.uwsm} start -F -- "$entry"
+  '';
   resolvedAutoLoginCommand = {
     "uwsm-hyprland" = uwsmHyprlandSessionCommand;
     "hyprland" = hyprlandSessionCommand;
@@ -63,6 +88,11 @@ in {
         user = "greeter";
       };
     };
+  };
+
+  systemd.services.greetd.serviceConfig = lib.mkIf enableSilentSession {
+    StandardOutput = "journal";
+    StandardError = "journal";
   };
 
   environment.systemPackages = lib.optionals enableRegreet [ regreetPkg ];

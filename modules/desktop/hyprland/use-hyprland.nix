@@ -36,8 +36,9 @@ in {
     MOZ_ENABLE_WAYLAND = "1";
     SDL_IM_MODULE = "fcitx";
     QT_IM_MODULE = "fcitx";
-    XMODIFIERS = "@im=fcitx";
   };
+
+  environment.variables.XMODIFIERS = "@im=fcitx";
 
   services.xserver.enable = enableXWayland;
 

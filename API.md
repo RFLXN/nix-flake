@@ -184,8 +184,9 @@ modules = {
 
 ### Top-level exports
 
-- `useGreetd { enableRegreet ? false, regreetCompositor ? "hyprland", regreetPrimaryMonitor ? null, enableAutoLogin ? false, autoLoginSession ? "uwsm-hyprland" }`
+- `useGreetd { enableRegreet ? false, regreetCompositor ? "hyprland", regreetPrimaryMonitor ? null, enableAutoLogin ? false, autoLoginSession ? "uwsm-hyprland", enableSilentSession ? enableAutoLogin }`
   Enables `greetd` for either Regreet or autologin.
+  `enableSilentSession` clears the text console and redirects the greetd-launched session command output to the journal instead of tty output.
   `regreetPrimaryMonitor` should look like `{ name = "DP-3"; res = "1920x1080@200"; }`.
   Assertion: at least one of `enableRegreet` or `enableAutoLogin` must be true.
 

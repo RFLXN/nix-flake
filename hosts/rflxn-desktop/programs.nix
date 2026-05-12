@@ -57,6 +57,7 @@
     (useShotcut {})
     (useSpotify {})
     (useT3 {})
+    (useTauon {})
     (useThunar {})
     (useVscode {})
     (useWaylandUtils {})

@@ -543,6 +543,9 @@ modules = {
 - `useT3 {}`
   Installs `t3code` from the flake input.
 
+- `useTauon {}`
+  Installs Tauon.
+
 - `useThunar {}`
   Enables Thunar plus archive, GVFS, and tumbler support.
 

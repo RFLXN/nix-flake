@@ -1108,11 +1108,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777360041,
-        "narHash": "sha256-hOaStMQD8W3IMr3XZjCC298pdjRXQKL+PVya79z7wEM=",
+        "lastModified": 1778560304,
+        "narHash": "sha256-DlljAvWkclTW9ANKU/Bv4gVqLXq0/qCj48Z+gqgSPx8=",
         "owner": "RFLXN",
         "repo": "rflxn-shell",
-        "rev": "2c7aa684f1a1e8c19425a7f5478a1fd17c2cacc3",
+        "rev": "b0d40b1efa02462ee7ab1d68ffc0afbb3e224f87",
         "type": "github"
       },
       "original": {

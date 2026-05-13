@@ -1398,11 +1398,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778659054,
-        "narHash": "sha256-OFAfePdHKouT2l664CJswGXJPvEdDtJHl14KZcuVwGI=",
+        "lastModified": 1778659895,
+        "narHash": "sha256-F5N79kCiayUNFduDIbyajzQEvQDuE2jC7CYgN+X1iOY=",
         "owner": "RFLXN",
         "repo": "XivMitmLatencyMitigator-nix",
-        "rev": "9a9786b393d2c5b1765943f5920845f125325c56",
+        "rev": "c64a488bdef1417d162d435c5a18fb6363073ff9",
         "type": "github"
       },
       "original": {

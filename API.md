@@ -432,6 +432,12 @@ modules = {
 - `programs.gaming.ffxiv.useMopiMopi {}`
   Installs a `mopimopi` launcher package with a desktop entry that opens the MopiMopi overlay in Chromium.
 
+- `programs.gaming.ffxiv.useXivMitmClientRoutes { gateway, interface, ranges ? [...] }`
+  Adds a systemd oneshot service that routes FFXIV server ranges through the given gateway/interface.
+
+- `programs.gaming.ffxiv.useXivMitmGateway { listenPort ? 10514, incomingInterface ? null, outgoingInterface ? incomingInterface, clientCidr ? null, portRange ? "1024:65535", ranges ? [...] }`
+  Adds server-side sysctls and iptables NAT chains that DNAT routed FFXIV TCP traffic to a local XivMitmLatencyMitigator listener and masquerade matching forwarded traffic.
+
 ### `modules.programs.jetbrains`
 
 - `programs.jetbrains.useIntellij { enableZshAlias ? false }`
@@ -536,6 +542,10 @@ modules = {
 
 - `useShotcut {}`
   Installs Shotcut.
+
+- `useSshClient { matchBlocks ? {}, enableDefaultConfig ? false }`
+  Enables Home Manager SSH client config and forwards `matchBlocks` to `programs.ssh.matchBlocks`.
+  When `enableDefaultConfig = false`, it writes the Home Manager legacy `Host *` defaults explicitly.
 
 - `useSpotify {}`
   Installs Spotify on most systems, or `spotify-qt` plus `librespot` on `aarch64-linux`. On `aarch64-linux`, it patches `spotify-qt.json` if that file already exists.

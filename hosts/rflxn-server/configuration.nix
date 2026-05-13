@@ -53,6 +53,10 @@
     (useVscodeServer {})
 
   ]) ++ (with modules.programs; [
+    (gaming.ffxiv.useXivMitmGateway {
+      incomingInterface = "enp5s0";
+      clientCidr = "192.168.100.101/32";
+    })
     (shell.useShell {})
     (shell.useZsh {})
     (useClaudeCode {})

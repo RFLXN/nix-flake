@@ -18,6 +18,10 @@
     (gaming.useWine { isWayland = true; })
     (gaming.ffxiv.useFFXIV { enableFileSecret = true; enableDotNetIPv6 = false; })
     (gaming.ffxiv.useMopiMopi {})
+    (gaming.ffxiv.useXivMitmClientRoutes {
+      gateway = "192.168.100.100";
+      interface = "eno1";
+    })
     (jetbrains.useIntellij { enableZshAlias = true; })
     (jetbrains.useWebstorm { enableZshAlias = true; })
     (shell.useShell {})
@@ -55,6 +59,14 @@
     (usePeaZip {})
     (usePwvucontrol {})
     (useShotcut {})
+    (useSshClient {
+      matchBlocks.rflxn-server = {
+        hostname = "rflxn-server";
+        user = "rflxn";
+        identityFile = "~/.ssh/id_ed25519_rflxn_server";
+        identitiesOnly = true;
+      };
+    })
     (useSpotify {})
     (useT3 {})
     (useTauon {})

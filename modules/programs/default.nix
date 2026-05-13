@@ -30,6 +30,7 @@
   usePeaZip = import ./peazip;
   usePwvucontrol = import ./pwvucontrol;
   useShotcut = import ./shotcut;
+  useSshClient = import ./ssh-client;
   useSpotify = import ./spotify;
   useT3 = import ./t3;
   useTauon = import ./tauon;

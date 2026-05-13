@@ -74,6 +74,11 @@
     xivlauncher-rb = {
       url = "github:RFLXN/XIVLauncher.Core/RB-patched";
     };
+
+    xivmitm-nix = {
+      url = "github:RFLXN/XivMitmLatencyMitigator-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, ... }: let

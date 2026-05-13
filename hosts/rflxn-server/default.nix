@@ -11,7 +11,8 @@
           home-manager
           vscode-server
           codex-cli-nix
-          claude-code;
+          claude-code
+          xivmitm-nix;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };

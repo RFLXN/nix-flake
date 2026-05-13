@@ -56,6 +56,8 @@
     (gaming.ffxiv.useXivMitmGateway {
       incomingInterface = "enp5s0";
       clientCidr = "192.168.100.101/32";
+      manageDocker = false;
+      runContainer = false;
     })
     (shell.useShell {})
     (shell.useZsh {})

@@ -1,46 +1,20 @@
 {
   gateway,
   interface,
-  ranges ? [
-    "119.252.36.0/24"
-    "119.252.37.0/24"
-    "153.254.80.0/24"
-    "204.2.29.0/24"
-    "80.239.145.0/24"
-  ],
+  ranges ? null,
 }:
-{ lib, pkgs, ... }:
-let
-  routeUp = lib.concatMapStringsSep "\n" (range: ''
-    ip route replace ${range} via ${gateway} dev ${interface}
-  '') ranges;
-
-  routeDown = lib.concatMapStringsSep "\n" (range: ''
-    ip route del ${range} via ${gateway} dev ${interface} 2>/dev/null || true
-  '') ranges;
-in
+{ lib, xivmitm-nix, ... }:
 {
-  assertions = [
-    {
-      assertion = ranges != [];
-      message = "xivmitm client routes need at least one FFXIV server range.";
-    }
+  imports = [
+    xivmitm-nix.nixosModules.client
   ];
 
-  systemd.services.ffxiv-xivmitm-client-routes = {
-    description = "Route FFXIV traffic through the XivMitmLatencyMitigator gateway";
-    wantedBy = [ "multi-user.target" ];
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
-
-    path = [ pkgs.iproute2 ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
+  services.xivMitmLatencyMitigator.client =
+    {
+      enable = true;
+      inherit gateway interface;
+    }
+    // lib.optionalAttrs (ranges != null) {
+      inherit ranges;
     };
-
-    script = routeUp;
-    preStop = routeDown;
-  };
 }

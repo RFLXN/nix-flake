@@ -18,7 +18,8 @@
           rflxn-shell
           hyprland
           hyprshell
-          xivlauncher-rb;
+          xivlauncher-rb
+          xivmitm-nix;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };

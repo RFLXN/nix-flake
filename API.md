@@ -48,6 +48,7 @@ Required input-backed modules:
 | `modules.programs.useCodexDesktop` | `codex-desktop` |
 | `modules.programs.useT3` | `t3code` |
 | `modules.programs.useFirefox { enableWidevine = true; }` | optional `aarch64-widevine` on Asahi |
+| `modules.programs.gaming.ffxiv.useXivMitmClientRoutes` / `useXivMitmGateway` | `xivmitm-nix` |
 | `modules.services.useBatteryLogger` | `battery-logger` |
 | `modules.services.useHomeManager` | `home-manager` |
 | `modules.services.useVscodeServer` | `vscode-server` |
@@ -432,11 +433,11 @@ modules = {
 - `programs.gaming.ffxiv.useMopiMopi {}`
   Installs a `mopimopi` launcher package with a desktop entry that opens the MopiMopi overlay in Chromium.
 
-- `programs.gaming.ffxiv.useXivMitmClientRoutes { gateway, interface, ranges ? [...] }`
-  Adds a systemd oneshot service that routes FFXIV server ranges through the given gateway/interface.
+- `programs.gaming.ffxiv.useXivMitmClientRoutes { gateway, interface, ranges ? null }`
+  Wraps `xivmitm-nix.nixosModules.client` and enables client-side FFXIV routes through the given gateway/interface.
 
-- `programs.gaming.ffxiv.useXivMitmGateway { listenPort ? 10514, incomingInterface ? null, outgoingInterface ? incomingInterface, clientCidr ? null, portRange ? "1024:65535", ranges ? [...] }`
-  Adds server-side sysctls and iptables NAT chains that DNAT routed FFXIV TCP traffic to a local XivMitmLatencyMitigator listener and masquerade matching forwarded traffic.
+- `programs.gaming.ffxiv.useXivMitmGateway { listenPort ? 10514, incomingInterface ? null, outgoingInterface ? incomingInterface, clientCidr ? null, portRange ? "1024:65535", ranges ? null, manageDocker ? false, runContainer ? false, ... }`
+  Wraps `xivmitm-nix.nixosModules.server` and enables server-side sysctls and iptables routing for XivMitmLatencyMitigator. Docker container management stays disabled by default for raw Compose usage.
 
 ### `modules.programs.jetbrains`
 

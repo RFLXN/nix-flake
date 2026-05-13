@@ -1140,7 +1140,8 @@
         "rflxn-shell": "rflxn-shell",
         "t3code": "t3code",
         "vscode-server": "vscode-server",
-        "xivlauncher-rb": "xivlauncher-rb"
+        "xivlauncher-rb": "xivlauncher-rb",
+        "xivmitm-nix": "xivmitm-nix"
       }
     },
     "rust-overlay": {
@@ -1388,6 +1389,26 @@
         "submodules": true,
         "type": "git",
         "url": "https://github.com/RFLXN/XIVLauncher.Core.git"
+      }
+    },
+    "xivmitm-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778659054,
+        "narHash": "sha256-OFAfePdHKouT2l664CJswGXJPvEdDtJHl14KZcuVwGI=",
+        "owner": "RFLXN",
+        "repo": "XivMitmLatencyMitigator-nix",
+        "rev": "9a9786b393d2c5b1765943f5920845f125325c56",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RFLXN",
+        "repo": "XivMitmLatencyMitigator-nix",
+        "type": "github"
       }
     }
   },

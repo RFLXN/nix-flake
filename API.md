@@ -427,6 +427,9 @@ modules = {
 
 #### `modules.programs.gaming.ffxiv`
 
+- `programs.gaming.ffxiv.useCactbot {}`
+  Installs Chromium webapp launchers for `Cactbot - Raidboss` and `Cactbot - Configuration`.
+
 - `programs.gaming.ffxiv.useFFXIV { enableFileSecret ? false, enableDotNetIPv6 ? true }`
   Installs `xivlauncher-rb`; when needed, patches its desktop entry to launch with `XL_SECRET_PROVIDER=file` and/or `DOTNET_SYSTEM_NET_DISABLEIPV6=1`.
 

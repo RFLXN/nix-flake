@@ -16,6 +16,7 @@
     (gaming.useR2modman {})
     (gaming.useSteam { enableGamescope = true; enableProtontricks = true; })
     (gaming.useWine { isWayland = true; })
+    (gaming.ffxiv.useCactbot {})
     (gaming.ffxiv.useFFXIV { enableFileSecret = true; enableDotNetIPv6 = false; })
     (gaming.ffxiv.useMopiMopi {})
     (gaming.ffxiv.useXivMitmClientRoutes {

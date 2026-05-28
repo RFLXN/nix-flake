@@ -505,6 +505,9 @@ modules = {
 - `useGit { name, email }`
   Enables Git and Git LFS in Home Manager, sets user identity and default branch, and enables GitHub CLI with credential helper.
 
+- `useGptOauthServer { host ? "0.0.0.0", port ? 10531, version ? "1.0.1", authFile ? null, models ? null, codexVersion ? null, baseUrl ? null, oauthClientId ? null, oauthTokenUrl ? null, extraArgs ? [] }`
+  Installs a `gpt-server` wrapper that runs `npx --yes openai-oauth@${version}` with the configured defaults and forwards extra runtime arguments.
+
 - `useHaruna {}`
   Installs Haruna.
 

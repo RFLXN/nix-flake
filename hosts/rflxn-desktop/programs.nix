@@ -74,5 +74,6 @@
     (useThunar {})
     (useVscode {})
     (useWaylandUtils {})
+    (useGptOauthServer {})
   ];
 }

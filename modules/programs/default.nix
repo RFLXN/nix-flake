@@ -16,6 +16,7 @@
   useFirefox = import ./firefox;
   useForgeCode = import ./forge-code;
   useGit = import ./git;
+  useGptOauthServer = import ./gpt-oauth-server;
   useHaruna = import ./haruna;
   useHyprshot = import ./hyprshot;
   useKcalc = import ./kcalc;

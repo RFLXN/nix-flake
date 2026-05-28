@@ -47,7 +47,7 @@
     };
 
     codex-desktop = {
-      url = "github:RFLXN/codex-desktop-linux/nix-package";
+      url = "github:ilysenko/codex-desktop-linux";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

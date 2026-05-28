@@ -476,7 +476,7 @@ modules = {
   Installs Codex CLI from the `codex-cli-nix` flake input.
 
 - `useCodexDesktop {}`
-  Installs Codex Desktop from the `codex-desktop` flake input.
+  Enables the upstream Codex Desktop Linux Home Manager module from the `codex-desktop` flake input.
 
 - `useCommonTools {}`
   Installs the repo's common CLI toolkit.

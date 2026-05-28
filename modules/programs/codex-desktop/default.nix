@@ -1,7 +1,17 @@
 { }:
-{ pkgs, codex-desktop, ... }:
+{ pkgs, username, codex-cli-nix, codex-desktop, ... }:
+let
+  system = pkgs.stdenv.hostPlatform.system;
+in
 {
-  environment.systemPackages = [
-    (pkgs.callPackage "${codex-desktop}/pkg.nix" {})
-  ];
+  home-manager.users.${username} = {
+    imports = [
+      codex-desktop.homeManagerModules.default
+    ];
+
+    programs.codexDesktopLinux = {
+      enable = true;
+      remoteControl.package = codex-cli-nix.packages.${system}.default;
+    };
+  };
 }

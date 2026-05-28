@@ -183,16 +183,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1776238864,
-        "narHash": "sha256-aGrmeUga4VhH9QAERPCWfMEkYdXlGjSORV4QJ7xmkpg=",
-        "owner": "RFLXN",
+        "lastModified": 1779947017,
+        "narHash": "sha256-LqJGNZiykqUV0Wpxw2pU/4d/SF+um3Qi/u9xjChfBzo=",
+        "owner": "ilysenko",
         "repo": "codex-desktop-linux",
-        "rev": "0995a857f2567dcd6cc61240cdfc782d547bfcfc",
+        "rev": "be7189cba186028dbaae1fcf5ceaa4b7aaf4de1f",
         "type": "github"
       },
       "original": {
-        "owner": "RFLXN",
-        "ref": "nix-package",
+        "owner": "ilysenko",
         "repo": "codex-desktop-linux",
         "type": "github"
       }
@@ -1108,11 +1107,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778560304,
-        "narHash": "sha256-DlljAvWkclTW9ANKU/Bv4gVqLXq0/qCj48Z+gqgSPx8=",
+        "lastModified": 1779953779,
+        "narHash": "sha256-r3Z6vAkKra8jTmsXl5uHcBFl5mxediRn3ZnrkYA2WNg=",
         "owner": "RFLXN",
         "repo": "rflxn-shell",
-        "rev": "b0d40b1efa02462ee7ab1d68ffc0afbb3e224f87",
+        "rev": "15ce05bee37f864f4b675798a37a5ba609e3f87d",
         "type": "github"
       },
       "original": {

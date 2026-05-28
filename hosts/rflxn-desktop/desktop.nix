@@ -1,4 +1,4 @@
-{ modules, username, ... }: {
+{ pkgs, modules, username, ... }: {
   imports = with modules.desktop; [
     (gtk.theme.usePapirusIcon {})
     (gtk.theme.useMatcha {
@@ -24,6 +24,10 @@
     (hyprland.keybinds.useKitty {})
     (hyprland.keybinds.useScreenOff { key = "CTRL SHIFT, P"; })
     (hyprland.useAgs {
+      systemControlMenu = {
+        volume.program = pkgs.pwvucontrol;
+        bluetooth.program = pkgs.blueman;
+      };
       layout = {
         layouts = [
           {

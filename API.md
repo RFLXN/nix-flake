@@ -295,7 +295,7 @@ modules = {
 - `hyprland.appearance { gapSize ? 5, borderSize ? 2, rounding ? 5, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
   Applies the repo's default Hyprland window decoration, animation, dwindle, and scrolling settings.
 
-- `hyprland.useAgs { agsPackage ? null, autostartCommand ? "ags run", enableAutostart ? true, layout ? null, package ? null, runtimePackages ? null }`
+- `hyprland.useAgs { agsPackage ? null, autostartCommand ? "ags run", enableAutostart ? true, layout ? null, package ? null, runtimePackages ? null, systemControlMenu ? {} }`
   Enables the `rflxn-shell` Home Manager module, configures `programs.ags-shell`, and starts `ags run` from Hyprland.
   Pass `layout` to render host-specific monitor/widget placement into the packaged shell config.
 

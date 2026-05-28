@@ -35,6 +35,10 @@
       (hyprland.touchpad.gestures.useWorkspaces {})
       (hyprland.touchpad.useDefaults {})
     (hyprland.useAgs {
+      systemControlMenu = {
+        volume.program = pkgs.pwvucontrol;
+        bluetooth.program = pkgs.blueman;
+      };
       layout = {
         layouts = [
           {

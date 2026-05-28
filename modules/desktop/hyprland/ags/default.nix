@@ -5,6 +5,7 @@
   layout ? null,
   package ? null,
   runtimePackages ? null,
+  systemControlMenu ? {},
 }:
 { lib, pkgs, rflxn-shell, username, ... }:
 let
@@ -30,6 +31,7 @@ let
     pkgs.gtk4
     pkgs.papirus-icon-theme
     pkgs.upower
+    pkgs.xprop
   ];
   resolvedRuntimePackages =
     if runtimePackages == null then
@@ -56,6 +58,9 @@ let
     }
     // lib.optionalAttrs (package != null) {
       inherit package;
+    }
+    // lib.optionalAttrs (systemControlMenu != {}) {
+      inherit systemControlMenu;
     }
     ;
 in

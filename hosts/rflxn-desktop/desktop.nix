@@ -78,6 +78,8 @@
         "8, monitor:HDMI-A-1, default:true, persistent:true, layout:scrolling, layoutopt:direction:down"
       ];
     })
+    (hyprland.useXdgMenu {})
+    (hyprland.useXdgUserDirs {})
     (hyprland.useHyprlock {})
     (hyprland.useHyprpolkit {})
     (hyprland.useHyprshell {})
@@ -96,6 +98,7 @@
     (qt.theme.useMatcha {
       kvantumReduceWindowOpacity = 20;
     })
+    (qt.useDolphinQtTheme {})
     /* (hyprland.wallpaper.useHyprpaper {
       wallpaper = "/home/${username}/Pictures/wallpaper.jpg";
       wallpapers = [

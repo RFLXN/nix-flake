@@ -26,5 +26,8 @@ let
     else
       kde.dolphin;
 in {
+  # Outside Plasma, Dolphin/KService needs both xdg.mimeApps defaults
+  # (desktop.defaultApps.*) and a valid XDG applications menu
+  # (for example, hyprland.useXdgMenu) to resolve "Open With" handlers.
   environment.systemPackages = [ dolphinPackage ];
 }

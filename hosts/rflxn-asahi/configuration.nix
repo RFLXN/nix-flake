@@ -78,6 +78,8 @@
           "7, monitor:eDP-1, persistent:true, layout:master"
         ];
       })
+      (hyprland.useXdgMenu {})
+      (hyprland.useXdgUserDirs {})
       (hyprland.useHyprlock {})
       (hyprland.useHyprpolkit {})
       (hyprland.useHyprshell {})
@@ -97,6 +99,7 @@
       (defaultApps.useFirefox {})
       # (defaultApps.useHaruna {})
       (defaultApps.useKitty {})
+      (defaultApps.usePeaZip {})
       (defaultApps.useVscode {})
       (useXdgPortal { enableHyprlandSupport = true; })
     ]) ++
@@ -143,8 +146,6 @@
       (useDiscord {})
       (useAyugram {})
       (useDolphin { withSilentKdeDeps = true; })
-      (usePcManFmQt {})
-      (useThunar {})
       (useFastfetch {
         beforeModules = [
           { type = "custom"; format = "RFLXN's Asahi Linux Macbook"; outputColor = "light_green"; }

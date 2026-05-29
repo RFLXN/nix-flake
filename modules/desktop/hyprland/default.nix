@@ -11,6 +11,8 @@
   useHyprpolkit = import ./hyprpolkit.nix;
   useHyprshell = import ./hyprshell;
   useTrayBridge = import ./tray-bridge.nix;
+  useXdgMenu = import ./xdg-menu.nix;
+  useXdgUserDirs = import ./xdg-user-dirs.nix;
   wallpaper = import ./wallpaper;
   windowRules = import ./window-rules;
 }

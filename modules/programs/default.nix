@@ -29,14 +29,12 @@
   useNmApplet = import ./nm-applet;
   useObsStudio = import ./obs-studio;
   usePeaZip = import ./peazip;
-  usePcManFmQt = import ./pcmanfm-qt;
   usePwvucontrol = import ./pwvucontrol;
   useShotcut = import ./shotcut;
   useSshClient = import ./ssh-client;
   useSpotify = import ./spotify;
   useT3 = import ./t3;
   useTauon = import ./tauon;
-  useThunar = import ./thunar;
   useVscode = import ./vscode;
   useWaylandUtils = import ./wayland-utils;
 }

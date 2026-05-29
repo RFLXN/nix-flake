@@ -29,6 +29,7 @@
   useNmApplet = import ./nm-applet;
   useObsStudio = import ./obs-studio;
   usePeaZip = import ./peazip;
+  usePcManFmQt = import ./pcmanfm-qt;
   usePwvucontrol = import ./pwvucontrol;
   useShotcut = import ./shotcut;
   useSshClient = import ./ssh-client;

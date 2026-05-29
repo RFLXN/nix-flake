@@ -88,6 +88,7 @@
       (qt.theme.useMatcha {
         kvantumReduceWindowOpacity = 40;
       })
+      (qt.useDolphinQtTheme {})
       (useGreetd {
         enableAutoLogin = true;
         autoLoginSession = "uwsm-hyprland";
@@ -141,6 +142,8 @@
       (useDirenv {})
       (useDiscord {})
       (useAyugram {})
+      (useDolphin { withSilentKdeDeps = true; })
+      (usePcManFmQt {})
       (useThunar {})
       (useFastfetch {
         beforeModules = [
@@ -160,6 +163,7 @@
       (useVscode {})
       (usePeaZip {})
       (usePwvucontrol {})
+      (useWaylandUtils {})
     ]) ++
 
     # Hardware

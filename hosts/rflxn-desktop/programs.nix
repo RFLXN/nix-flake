@@ -36,7 +36,7 @@
     (useChrome {})
     (useDirenv {})
     (useDiscord {})
-    (useDolphin {})
+    (useDolphin { withSilentKdeDeps = true; })
     (useFastfetch {
       beforeModules = [
         { type = "custom"; format = "RFLXN's Desktop"; outputColor = "light_green"; }

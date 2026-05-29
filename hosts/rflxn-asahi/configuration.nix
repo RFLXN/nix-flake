@@ -103,9 +103,9 @@
     # Services
     (with modules.services; [
       (pipewire.usePipewire {})
-      (useBatteryLogger {
-        batteryDeviceName = "macsmc-battery";
-      })
+      #(useBatteryLogger {
+      #  batteryDeviceName = "macsmc-battery";
+      #})
       (useDocker { isBtrfs = true; isRootless = true; })
       (useFlatpak {})
       (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
@@ -132,8 +132,10 @@
       (jetbrains.useWebstorm { enableZshAlias = true; })
       (shell.useShell {})
       (shell.useZsh {})
+      (useBlueman {})
       (useClaudeCode {})
       (useCodex {})
+      (useCodexDesktop {})
       (useForgeCode { enableZshIntegration = true; })
       (useCommonTools {})
       (useDirenv {})
@@ -156,6 +158,8 @@
       (useSpotify {})
       (useT3 {})
       (useVscode {})
+      (usePeaZip {})
+      (usePwvucontrol {})
     ]) ++
 
     # Hardware

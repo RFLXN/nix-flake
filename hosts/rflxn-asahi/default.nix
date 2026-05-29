@@ -13,6 +13,7 @@
           aarch64-widevine
           claude-code
           codex-cli-nix
+          codex-desktop
           t3code
           rflxn-shell
           battery-logger;

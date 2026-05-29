@@ -43,7 +43,6 @@
         { type = "custom"; format = "https://github.com/RFLXN/nix-flake"; outputColor = "dim_white"; }
       ];
     })
-    (useForgeCode { enableZshIntegration = true; })
     (useFirefox {})
     (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
     (useHaruna {})

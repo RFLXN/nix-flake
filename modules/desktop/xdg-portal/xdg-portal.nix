@@ -1,0 +1,4 @@
+{}:
+{
+  xdg.portal.enable = true;
+}

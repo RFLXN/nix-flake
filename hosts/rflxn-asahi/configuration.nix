@@ -101,7 +101,8 @@
       (defaultApps.useKitty {})
       (defaultApps.usePeaZip {})
       (defaultApps.useVscode {})
-      (useXdgPortal { enableHyprlandSupport = true; })
+      (xdgPortal.useXdgPortal {})
+      (xdgPortal.useHyprlandPortal { useQtTheme = true; })
     ]) ++
 
     # Services

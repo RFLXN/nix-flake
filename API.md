@@ -78,9 +78,13 @@ modules = {
       ...
     };
     qt.theme = { ... };
+    xdgPortal = {
+      useHyprlandPortal = ...;
+      useKdePortal = ...;
+      useXdgPortal = ...;
+    };
     useGreetd = ...;
     useSddm = ...;
-    useXdgPortal = ...;
   };
 
   hardware = {
@@ -200,8 +204,17 @@ modules = {
 - `useSddm { enableHidpi ? false, waylandCompositor ? "weston" }`
   Enables SDDM on Wayland with the repo's theme override.
 
-- `useXdgPortal { enableKdeSupport ? false, enableHyprlandSupport ? false, enableGtkSupport ? enableHyprlandSupport }`
-  Enables `xdg-desktop-portal` and adds KDE, Hyprland, and/or GTK portals.
+### `modules.desktop.xdgPortal`
+
+- `xdgPortal.useXdgPortal {}`
+  Enables `xdg-desktop-portal`.
+
+- `xdgPortal.useHyprlandPortal { useQtTheme ? false, enableGtkFallback ? true }`
+  Configures Hyprland as the portal backend with GTK fallback.
+  When `useQtTheme` is true, KDE's portal is installed and the file chooser portal is routed to KDE so Qt/Kvantum themed dialogs can be used.
+
+- `xdgPortal.useKdePortal {}`
+  Adds KDE's portal backend.
 
 ### `modules.desktop.defaultApps`
 

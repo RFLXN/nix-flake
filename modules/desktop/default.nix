@@ -10,5 +10,5 @@ in
   qt = import ./qt;
   useGreetd = import ./greetd;
   useSddm = import ./sddm;
-  useXdgPortal = import ./xdg-portal;
+  xdgPortal = import ./xdg-portal;
 }

@@ -90,6 +90,7 @@
       ];
     })
     (hyprland.windowRules.useDefaults {})
+    (hyprland.windowRules.useFixedDiscord { workspace = "8"; })
     (hyprland.windowRules.useFixedMopiMopi { workspace = "8"; })
     (hyprland.windowRules.useFixedSpotify { workspace = "8"; })
     (hyprland.windowRules.useFixedVesktop { workspace = "8"; })

@@ -403,6 +403,9 @@ modules = {
 - `hyprland.windowRules.useDefaults {}`
   Initializes `windowrule` with the repo's placeholder defaults.
 
+- `hyprland.windowRules.useFixedDiscord { workspace }`
+  Pins Discord to a workspace by class match.
+
 - `hyprland.windowRules.useFixedSpotify { workspace }`
   Pins Spotify to a workspace by class match.
 
@@ -500,7 +503,7 @@ modules = {
   Enables Home Manager Direnv with Bash, Zsh, and `nix-direnv` integration.
 
 - `useDiscord {}`
-  Installs a Vesktop variant with Wayland IME flags baked into the desktop entry.
+  Installs the stock Discord package with an XWayland/fcitx desktop entry for stable IME behavior.
 
 - `useDolphin {}`
   Installs KDE Dolphin.
@@ -574,6 +577,9 @@ modules = {
 
 - `useThunar {}`
   Enables Thunar plus archive, GVFS, and tumbler support.
+
+- `useVesktop {}`
+  Installs a Vesktop variant with Wayland IME flags baked into the desktop entry.
 
 - `useVscode {}`
   Installs VS Code.

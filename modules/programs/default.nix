@@ -34,6 +34,7 @@
   useSshClient = import ./ssh-client;
   useSpotify = import ./spotify;
   useTauon = import ./tauon;
+  useVesktop = import ./vesktop;
   useVscode = import ./vscode;
   useWaylandUtils = import ./wayland-utils;
 }

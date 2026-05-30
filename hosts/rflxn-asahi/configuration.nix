@@ -144,7 +144,7 @@
       (useForgeCode { enableZshIntegration = true; })
       (useCommonTools {})
       (useDirenv {})
-      (useDiscord {})
+      (useVesktop {})
       (useAyugram {})
       (useDolphin { withSilentKdeDeps = true; })
       (useFastfetch {

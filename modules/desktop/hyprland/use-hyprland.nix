@@ -47,6 +47,7 @@ in {
     package = null;
     portalPackage = null;
     systemd.enable = false;
+    configType = "hyprlang";
     xwayland.enable = enableXWayland;
 
     settings = {

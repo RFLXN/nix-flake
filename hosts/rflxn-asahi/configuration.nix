@@ -160,7 +160,6 @@
       (useKolourpaint {})
       (useNixIndex {})
       (useSpotify {})
-      (useT3 {})
       (useVscode {})
       (usePeaZip {})
       (usePwvucontrol {})

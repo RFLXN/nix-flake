@@ -33,7 +33,6 @@
   useShotcut = import ./shotcut;
   useSshClient = import ./ssh-client;
   useSpotify = import ./spotify;
-  useT3 = import ./t3;
   useTauon = import ./tauon;
   useVscode = import ./vscode;
   useWaylandUtils = import ./wayland-utils;

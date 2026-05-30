@@ -9,6 +9,9 @@
       (boot.useEfiBoot { canTouchEfiVariables = true; })
       # (boot.useLanzaboote {})
       (boot.usePlymouth {})
+      ({ pkgs, ... }: {
+        boot.kernelPackages = pkgs.linuxPackages_latest;
+      })
       (boot.grub.useGrub {
         timeout = 5;
         configurationLimit = 10;
@@ -22,8 +25,13 @@
       (nix.useUnfreePackage {})
       (useCjkFonts {})
       (useFcitx5 {})
-      (useImpermanence { rootUuid = "78b6199d-0161-42e2-9dbd-34c69d72d54e"; })
-      (useMe { hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword"; })
+      (useImpermanence {
+        rootUuid = "78b6199d-0161-42e2-9dbd-34c69d72d54e";
+      })
+      (useMe {
+        hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword";
+        rootHashedPasswordFile = "/persist/secrets/rflxn.hashedPassword";
+      })
       (useNetworkManager { useWifi = true; })
       (useZram {})
     ]);

@@ -12,7 +12,7 @@
     impermanence.url = "github:nix-community/impermanence";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -22,8 +22,11 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    flake-utils-systems-linux.url = "github:nix-systems/default-linux";
+
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
+      inputs.flake-utils.inputs.systems.follows = "flake-utils-systems-linux";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -51,25 +54,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    t3code = {
-      url = "github:RFLXN/t3code";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     rflxn-shell = {
       url = "github:RFLXN/rflxn-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     battery-logger.url = "github:RFLXN/simple-battery-logger";
-
-    hyprland.url = "github:hyprwm/Hyprland";
-
-    hyprshell = {
-      url = "github:H3rmt/hyprshell/hyprshell-release";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.hyprland.follows = "hyprland";
-    };
 
     xivlauncher-rb = {
       url = "github:RFLXN/XIVLauncher.Core/RB-patched";

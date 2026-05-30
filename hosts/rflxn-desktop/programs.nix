@@ -60,15 +60,14 @@
     (usePwvucontrol {})
     (useShotcut {})
     (useSshClient {
-      matchBlocks.rflxn-server = {
-        hostname = "rflxn-server";
-        user = "rflxn";
-        identityFile = "~/.ssh/id_ed25519_rflxn_server";
-        identitiesOnly = true;
+      settings.rflxn-server = {
+        HostName = "rflxn-server";
+        User = "rflxn";
+        IdentityFile = "~/.ssh/id_ed25519_rflxn_server";
+        IdentitiesOnly = true;
       };
     })
     (useSpotify {})
-    (useT3 {})
     (useTauon {})
     (useVscode {})
     (useWaylandUtils {})

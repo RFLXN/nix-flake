@@ -83,7 +83,6 @@
     (hyprland.useHyprlock {})
     (hyprland.useHyprpolkit {})
     (hyprland.useHyprshell {})
-    (hyprland.useTrayBridge {})
     (hyprland.wallpaper.useLinuxWallpaperEngine {
       wallpapers = [
         { screen = "DP-3"; wallpaper = "2798192282"; }

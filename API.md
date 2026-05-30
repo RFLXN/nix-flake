@@ -46,7 +46,6 @@ Required input-backed modules:
 | `modules.programs.useClaudeCode` | `claude-code` |
 | `modules.programs.useCodex` | `codex-cli-nix` |
 | `modules.programs.useCodexDesktop` | `codex-desktop` |
-| `modules.programs.useT3` | `t3code` |
 | `modules.programs.useFirefox { enableWidevine = true; }` | optional `aarch64-widevine` on Asahi |
 | `modules.programs.gaming.ffxiv.useXivMitmClientRoutes` / `useXivMitmGateway` | `xivmitm-nix` |
 | `modules.services.useBatteryLogger` | `battery-logger` |
@@ -162,11 +161,11 @@ modules = {
 - `useFcitx5 {}`
   Enables `fcitx5` with GTK, Hangul, and Mozc addons.
 
-- `useImpermanence { rootUuid, persistPath ? null, directories ? [], files ? [] }`
-  Enables impermanence, resets `@root` from `@root-blank` during initrd, persists `/home`, logs, `machine-id`, and any extra directories/files provided.
+- `useImpermanence { rootUuid, persistPath ? null, directories ? [], files ? [], enableWipeRoot ? true }`
+  Enables impermanence, optionally resets `@root` from `@root-blank` during initrd, writes wipe-root diagnostics to `/persist/log/wipe-root.log` when `@persist` exists, persists `/home`, logs, `machine-id`, and any extra directories/files provided.
 
-- `useMe { hashedPassword ? null, hashedPasswordFile ? null, extraGroups ? [] }`
-  Creates the main user from `username`, disables mutable users, adds `wheel`, and accepts either an inline hash or a password-hash file.
+- `useMe { hashedPassword ? null, hashedPasswordFile ? null, rootHashedPassword ? null, rootHashedPasswordFile ? null, extraGroups ? [] }`
+  Creates the main user from `username`, disables mutable users, adds `wheel`, accepts either an inline hash or a password-hash file, and can optionally set the root password for emergency access.
 
 - `useNetworkManager { useWifi ? false, persistPath ? null }`
   Enables NetworkManager, adds the user to `networkmanager`, optionally enables `iwd`-backed Wi-Fi, and persists NetworkManager state when a persistence path is available.
@@ -550,15 +549,12 @@ modules = {
 - `useShotcut {}`
   Installs Shotcut.
 
-- `useSshClient { matchBlocks ? {}, enableDefaultConfig ? false }`
-  Enables Home Manager SSH client config and forwards `matchBlocks` to `programs.ssh.matchBlocks`.
+- `useSshClient { settings ? {}, enableDefaultConfig ? false }`
+  Enables Home Manager SSH client config and writes OpenSSH blocks to `programs.ssh.settings`.
   When `enableDefaultConfig = false`, it writes the Home Manager legacy `Host *` defaults explicitly.
 
 - `useSpotify {}`
   Installs Spotify on most systems, or `spotify-qt` plus `librespot` on `aarch64-linux`. On `aarch64-linux`, it patches `spotify-qt.json` if that file already exists.
-
-- `useT3 {}`
-  Installs `t3code` from the flake input.
 
 - `useTauon {}`
   Installs Tauon.

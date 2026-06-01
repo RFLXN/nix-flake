@@ -9,6 +9,7 @@
 { pkgs, lib, username, ... }:
 let
   regreetPkg = pkgs.regreet;
+  toLua = lib.generators.toLua {};
   clearTerminal = lib.optionalString enableSilentSession ''
     printf '\033[2J\033[3J\033[H'
   '';
@@ -41,20 +42,35 @@ let
   }.${autoLoginSession} or autoLoginSession;
 
   regreetSessionCommand =
-    if regreetCompositor == "hyprland" then "Hyprland -c /etc/greetd/hyprland.conf"
+    if regreetCompositor == "hyprland" then "Hyprland -c /etc/greetd/hyprland.lua"
     else if regreetCompositor == "cage" then "${lib.getExe pkgs.cage} -s -- ${lib.getExe regreetPkg}"
     else regreetCompositor;
 
+  regreetExitCommand = "${lib.getExe regreetPkg}; hyprctl dispatch 'hl.dsp.exit()'";
   greeterHyprlandConfig = ''
-    ${lib.optionalString (regreetPrimaryMonitor != null) "monitor = ${regreetPrimaryMonitor.name}, ${regreetPrimaryMonitor.res}, 0x0, 1"}
-    ${lib.optionalString (regreetPrimaryMonitor != null) "monitor = , disable"}
+    ${lib.optionalString (regreetPrimaryMonitor != null) ''
+      hl.monitor(${toLua {
+        output = regreetPrimaryMonitor.name;
+        mode = regreetPrimaryMonitor.res;
+        position = "0x0";
+        scale = 1;
+      }})
+      hl.monitor(${toLua {
+        output = "";
+        disabled = true;
+      }})
+    ''}
 
-    misc {
-      force_default_wallpaper = 0
-      disable_hyprland_logo = true
-    }
+    hl.config({
+      misc = {
+        force_default_wallpaper = 0,
+        disable_hyprland_logo = true,
+      },
+    })
 
-    exec-once = ${lib.getExe regreetPkg}; hyprctl dispatch exit
+    hl.on("hyprland.start", function()
+      hl.exec_cmd(${toLua regreetExitCommand})
+    end)
   '';
 in {
   assertions = [
@@ -66,7 +82,7 @@ in {
 
   environment.etc = lib.mkMerge [
     (lib.mkIf (enableRegreet && regreetCompositor == "hyprland") {
-      "greetd/hyprland.conf".text = greeterHyprlandConfig;
+      "greetd/hyprland.lua".text = greeterHyprlandConfig;
     })
     (lib.mkIf enableRegreet {
       "greetd/regreet.toml".text = ''

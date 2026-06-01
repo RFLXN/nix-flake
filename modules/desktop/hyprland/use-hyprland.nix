@@ -10,11 +10,25 @@
 }:
 { pkgs, lib, username, ... }@args:
 let
+  hyprLua = import ./lua-helpers.nix { inherit lib; };
   system = pkgs.stdenv.hostPlatform.system;
   hyprlandInput = args.hyprland or null;
   useHyprlandGit = hyprlandInput != null;
   hyprlandPackages = if useHyprlandGit then hyprlandInput.packages.${system} else null;
 in {
+  _module.args.hyprLua = hyprLua;
+
+  assertions = [
+    {
+      assertion = monitors == null || lib.all lib.isAttrs monitors;
+      message = "hyprland.useHyprland: monitors must be a list of hl.monitor spec attrsets.";
+    }
+    {
+      assertion = workspaces == null || lib.all lib.isAttrs workspaces;
+      message = "hyprland.useHyprland: workspaces must be a list of hl.workspace_rule spec attrsets.";
+    }
+  ];
+
   programs.uwsm.enable = true;
   programs.hyprland = {
     enable = true;
@@ -47,35 +61,47 @@ in {
     package = null;
     portalPackage = null;
     systemd.enable = false;
-    configType = "hyprlang";
+    configType = "lua";
     xwayland.enable = enableXWayland;
 
     settings = {
-      exec-once = [ "fcitx5 -d" ];
+      on = [ (hyprLua.onStart [ "fcitx5 -d" ]) ];
 
-      monitor = if monitors != null then monitors else [ ",preferred,auto,1" ];
+      monitor =
+        if monitors != null
+        then monitors
+        else [
+          {
+            output = "";
+            mode = "preferred";
+            position = "auto";
+            scale = 1;
+          }
+        ];
 
-      workspace = if workspaces != null then workspaces else [];
+      workspace_rule = if workspaces != null then workspaces else [];
 
-      input = {
-        kb_layout = "us";
-        follow_mouse = followMouse;
-        sensitivity = pointerSpeed;
-        accel_profile = if enableMouseAcceleration then "adaptive" else "flat";
-      };
+      config = {
+        input = {
+          kb_layout = "us";
+          follow_mouse = followMouse;
+          sensitivity = pointerSpeed;
+          accel_profile = if enableMouseAcceleration then "adaptive" else "flat";
+        };
 
-      general.resize_on_border = true;
+        general.resize_on_border = true;
 
-      cursor = {
-        no_warps = noCursorWarps;
-      } // lib.optionalAttrs disableHardwareCursors {
-        no_hardware_cursors = true;
-      };
+        cursor = {
+          no_warps = noCursorWarps;
+        } // lib.optionalAttrs disableHardwareCursors {
+          no_hardware_cursors = true;
+        };
 
-      misc = {
-        force_default_wallpaper = 0;
-        disable_hyprland_logo = true;
-        key_press_enables_dpms = true;
+        misc = {
+          force_default_wallpaper = 0;
+          disable_hyprland_logo = true;
+          key_press_enables_dpms = true;
+        };
       };
     };
   };

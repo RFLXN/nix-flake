@@ -1,5 +1,5 @@
 { }:
-{ lib, username, ... }:
+{ hyprLua, lib, username, ... }:
 {
   security.pam.services.hyprlock = { };
 
@@ -120,6 +120,8 @@
       };
     };
 
-    wayland.windowManager.hyprland.settings.exec-once = lib.mkAfter [ "sleep 1 && hyprlock" ];
+    wayland.windowManager.hyprland.settings.on = lib.mkAfter [
+      (hyprLua.onStart [ "sleep 1 && hyprlock" ])
+    ];
   };
 }

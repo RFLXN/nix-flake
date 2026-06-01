@@ -23,6 +23,6 @@
       size = cursorSize;
     };
 
-    wayland.windowManager.hyprland.settings.cursor.enable_hyprcursor = true;
+    wayland.windowManager.hyprland.settings.config.cursor.enable_hyprcursor = true;
   };
 }

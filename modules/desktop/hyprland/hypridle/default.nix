@@ -8,22 +8,22 @@
       general = {
         lock_cmd = "pidof hyprlock || hyprlock";
         before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
+        after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
       };
 
       listener = [
         {
-          timeout = 600;
-          on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
+          timeout = timeToScreenOff;
+          on-timeout = "hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
+          on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
         }
         {
-          timeout = 900;
-          on-timeout = "loginctl lock-session && hyprctl dispatch dpms off";
-          on-resume = "hyprctl dispatch dpms on";
+          timeout = timeToLock;
+          on-timeout = "loginctl lock-session && hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'";
+          on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'";
         }
         {
-          timeout = 1800;
+          timeout = timeToSuspend;
           on-timeout = "systemctl suspend";
         }
       ];

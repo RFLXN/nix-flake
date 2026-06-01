@@ -1,7 +1,7 @@
 { key ? "SUPER, backslash" }:
-{ username, ... }:
+{ hyprLua, username, ... }:
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings.bind = [
-    "${key}, exec, ags quit; ags run"
+    (hyprLua.execBind key "ags quit; ags run")
   ];
 }

@@ -305,7 +305,7 @@ modules = {
 ### `modules.desktop.hyprland`
 
 - `hyprland.appearance { gapSize ? 5, borderSize ? 2, rounding ? 5, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
-  Applies the repo's default Hyprland window decoration, animation, dwindle, and scrolling settings.
+  Applies the repo's default Hyprland window decoration, animation, dwindle, and scrolling settings through the Lua config API.
 
 - `hyprland.useAgs { agsPackage ? null, autostartCommand ? "ags run", enableAutostart ? true, layout ? null, package ? null, runtimePackages ? null, systemControlMenu ? {} }`
   Enables the `rflxn-shell` Home Manager module, configures `programs.ags-shell`, and starts `ags run` from Hyprland.
@@ -316,10 +316,10 @@ modules = {
 
 - `hyprland.useHypridle { timeToScreenOff ? 600, timeToLock ? 900, timeToSuspend ? 1800 }`
   Enables Hypridle with DPMS off, lock, and suspend listeners.
-  Note: the module currently hardcodes `600`, `900`, and `1800` in the listener list, so the declared arguments are currently no-ops.
 
 - `hyprland.useHyprland { enableXWayland ? true, monitors ? null, workspaces ? null, followMouse ? 1, pointerSpeed ? 0, enableMouseAcceleration ? false, disableHardwareCursors ? false, noCursorWarps ? true }`
-  Enables Hyprland and UWSM, exports Wayland/IME session variables, starts `fcitx5`, and applies monitor/workspace/input/cursor settings.
+  Enables Hyprland and UWSM, writes Home Manager's Lua `hyprland.lua`, exports Wayland/IME session variables, starts `fcitx5`, and applies monitor/workspace/input/cursor settings.
+  `monitors` must be a list of `hl.monitor` spec attrsets, and `workspaces` must be a list of `hl.workspace_rule` spec attrsets.
   If a `hyprland` flake input is present in `specialArgs`, it uses that package and matching portal.
 
 - `hyprland.useHyprlock {}`
@@ -343,7 +343,7 @@ modules = {
 #### `modules.desktop.hyprland.keybinds`
 
 - `hyprland.keybinds.useDefaults { mod ? "SUPER", subMod ? "SUPER SHIFT" }`
-  Adds the repo's default Hyprland keybind pack, including workspace movement and the `hypr-smart-step` helper for tiled/floating resize and movement.
+  Adds the repo's default Lua-backed Hyprland keybind pack, including workspace movement and the `hypr-smart-step` helper for tiled/floating resize and movement.
 
 - `hyprland.keybinds.useAgsLauncher { key ? "SUPER, D" }`
   Binds `ags request launcher toggle`.
@@ -358,20 +358,21 @@ modules = {
   Binds `gsr-save-replay`.
 
 - `hyprland.keybinds.useScreenOff { key ? "SUPER SHIFT, O", delaySeconds ? 1 }`
-  Binds a delayed `hyprctl dispatch dpms toggle`.
+  Binds a delayed Lua `hl.dsp.dpms` toggle.
 
 - `hyprland.keybinds.useHyprshot { key ? "Print" }`
   Binds region capture to `Print` and active-window capture to `Alt+Print`.
 
 - `hyprland.keybinds.useToggleMonitorSetup { settings ? [] }`
   Builds one toggle script per entry and binds each script to the configured key.
+  The generated keybind and runtime monitor change use Hyprland's Lua API.
   Each entry should look like:
 
 ```nix
 {
   monitorName = "eDP-1";
-  defaultSetup = "eDP-1, 3456x2160@60, 0x0, 1.6";
-  toggleSetup = "eDP-1, 3456x2160@120, 0x0, 1.6";
+  defaultSetup = { output = "eDP-1"; mode = "3456x2160@60"; position = "0x0"; scale = 1.6; };
+  toggleSetup = { output = "eDP-1"; mode = "3456x2160@120"; position = "0x0"; scale = 1.6; };
   key = "SUPER SHIFT, P";
 }
 ```
@@ -394,14 +395,14 @@ modules = {
   Assertion: one of the wallpaper forms must resolve to a non-empty config.
 
 - `hyprland.wallpaper.useLinuxWallpaperEngine { wallpapers, fps ? 60 }`
-  Starts Linux Wallpaper Engine via Hyprland `exec-once` and installs a restart helper.
+  Starts Linux Wallpaper Engine via Hyprland's Lua startup hook and installs a restart helper.
   `wallpapers` entries should look like `{ screen = "DP-3"; wallpaper = "2798192282"; }`.
   Assertion: `wallpapers` must not be empty.
 
 #### `modules.desktop.hyprland.windowRules`
 
 - `hyprland.windowRules.useDefaults {}`
-  Initializes `windowrule` with the repo's placeholder defaults.
+  Initializes `window_rule` with the repo's placeholder defaults.
 
 - `hyprland.windowRules.useFixedDiscord { workspace }`
   Pins Discord to a workspace by class match.
@@ -646,7 +647,7 @@ modules = {
 - `useLinuxWallpaperengine { wallpapers, fps ? 60, bindToPlasma ? false }`
   Creates a user service for Linux Wallpaper Engine and installs a `restart-wallpaper` helper.
   `wallpapers` entries should look like `{ screen = "DP-3"; wallpaper = "2798192282"; }`.
-  This is the systemd-service variant; `modules.desktop.hyprland.wallpaper.useLinuxWallpaperEngine` is the Hyprland `exec-once` variant.
+  This is the systemd-service variant; `modules.desktop.hyprland.wallpaper.useLinuxWallpaperEngine` is the Hyprland Lua startup-hook variant.
 
 - `useNginX { upstreams ? {} }`
   Alias for `services.nginx.useNginX`.
@@ -706,6 +707,6 @@ These files exist in the tree but are not part of the exported `modules` API:
 
 ## Current API Quirks
 
-- `hyprland.useHypridle` declares timeout arguments but currently hardcodes the listener values.
+- `hyprland.useHypridle` uses its timeout arguments for screen-off, lock, and suspend listeners.
 - `services.useSyncthing.persistPath` only affects the `serviceLevel = "system"` branch.
 - `services.useNginX` and `services.nginx.useNginX` are the same export surface.

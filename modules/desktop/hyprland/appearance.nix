@@ -12,50 +12,69 @@
   blurSize ? 8,
   blurPasses ? 2
 }:
-{ username, lib, ... }: {
+{ username, ... }: {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings = {
-    general = {
-      gaps_in = gapSize;
-      gaps_out = gapSize * 2;
-      border_size = borderSize;
-      "col.active_border" = activeBorderColor;
-      "col.inactive_border" = inactiveBorderColor;
-      layout = "dwindle";
-    };
-
-    decoration = {
-      rounding = rounding;
-      active_opacity = activeOpacity;
-      inactive_opacity = inactiveOpacity;
-      fullscreen_opacity = fullscreenOpacity;
-      blur = {
-        enabled = enableBlur;
-        size = blurSize;
-        passes = blurPasses;
-        new_optimizations = true;
+    config = {
+      general = {
+        gaps_in = gapSize;
+        gaps_out = gapSize * 2;
+        border_size = borderSize;
+        col = {
+          active_border = activeBorderColor;
+          inactive_border = inactiveBorderColor;
+        };
+        layout = "dwindle";
       };
-      shadow = {
-        enabled = true;
-        range = 10;
-        render_power = 3;
+
+      decoration = {
+        rounding = rounding;
+        active_opacity = activeOpacity;
+        inactive_opacity = inactiveOpacity;
+        fullscreen_opacity = fullscreenOpacity;
+        blur = {
+          enabled = enableBlur;
+          size = blurSize;
+          passes = blurPasses;
+          new_optimizations = true;
+        };
+        shadow = {
+          enabled = true;
+          range = 10;
+          render_power = 3;
+        };
+      };
+
+      animations = {
+        enabled = enableAnimations;
+      };
+
+      scrolling = {
+        fullscreen_on_one_column = false;
+        column_width = 0.45;
       };
     };
 
-    animations = {
-      enabled = enableAnimations;
-      bezier = [ "myBezier, 0.05, 0.9, 0.1, 1.05" ];
-      animation = [
-        "windows, 1, 7, myBezier"
-        "windowsOut, 1, 7, default, popin 80%"
-        "border, 1, 10, default"
-        "fade, 1, 7, default"
-        "workspaces, 1, 6, default"
-      ];
-    };
+    curve = [
+      {
+        _args = [
+          "myBezier"
+          {
+            type = "bezier";
+            points = [
+              [ 0.05 0.9 ]
+              [ 0.1 1.05 ]
+            ];
+          }
+        ];
+      }
+    ];
 
-    scrolling = {
-      fullscreen_on_one_column = false;
-      column_width = 0.45;
-    };
+    animation = [
+      { leaf = "windows"; enabled = true; speed = 7; bezier = "myBezier"; }
+      { leaf = "windowsOut"; enabled = true; speed = 7; bezier = "default"; style = "popin 80%"; }
+      { leaf = "border"; enabled = true; speed = 10; bezier = "default"; }
+      { leaf = "fade"; enabled = true; speed = 7; bezier = "default"; }
+      { leaf = "workspaces"; enabled = true; speed = 6; bezier = "default"; }
+    ];
   };
 }

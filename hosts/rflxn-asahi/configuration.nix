@@ -26,8 +26,8 @@
         settings = [
           {
             monitorName = "eDP-1";
-            defaultSetup = "eDP-1, 3456x2160@60, 0x0, 1.6";
-            toggleSetup = "eDP-1, 3456x2160@120, 0x0, 1.6";
+            defaultSetup = { output = "eDP-1"; mode = "3456x2160@60"; position = "0x0"; scale = 1.6; };
+            toggleSetup = { output = "eDP-1"; mode = "3456x2160@120"; position = "0x0"; scale = 1.6; };
             key = "SUPER SHIFT, P";
           }
         ];
@@ -66,16 +66,16 @@
         pointerSpeed = -0.25;
         enableMouseAcceleration = false;
         monitors = [
-          "eDP-1, 3456x2160@60, 0x0, 1.6"
+          { output = "eDP-1"; mode = "3456x2160@60"; position = "0x0"; scale = 1.6; }
         ];
         workspaces = [
-          "1, monitor:eDP-1, default:true, persistent:true, layout:master"
-          "2, monitor:eDP-1, persistent:true, layout:master"
-          "3, monitor:eDP-1, persistent:true, layout:master"
-          "4, monitor:eDP-1, persistent:true, layout:master"
-          "5, monitor:eDP-1, persistent:true, layout:master"
-          "6, monitor:eDP-1, persistent:true, layout:master"
-          "7, monitor:eDP-1, persistent:true, layout:master"
+          { workspace = "1"; monitor = "eDP-1"; default = true; persistent = true; layout = "master"; }
+          { workspace = "2"; monitor = "eDP-1"; persistent = true; layout = "master"; }
+          { workspace = "3"; monitor = "eDP-1"; persistent = true; layout = "master"; }
+          { workspace = "4"; monitor = "eDP-1"; persistent = true; layout = "master"; }
+          { workspace = "5"; monitor = "eDP-1"; persistent = true; layout = "master"; }
+          { workspace = "6"; monitor = "eDP-1"; persistent = true; layout = "master"; }
+          { workspace = "7"; monitor = "eDP-1"; persistent = true; layout = "master"; }
         ];
       })
       (hyprland.useXdgMenu {})

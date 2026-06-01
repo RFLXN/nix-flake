@@ -1,7 +1,7 @@
 { key ? "SUPER, D" }:
-{ username, ... }:
+{ hyprLua, username, ... }:
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings.bind = [
-    "${key}, exec, ags request launcher toggle"
+    (hyprLua.execBind key "ags request launcher toggle")
   ];
 }

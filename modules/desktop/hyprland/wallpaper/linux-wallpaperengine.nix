@@ -1,5 +1,5 @@
 { wallpapers, fps ? 60 }:
-{ pkgs, lib, username, ... }:
+{ hyprLua, pkgs, lib, username, ... }:
 let
   wallpaperArgs = lib.concatMapStringsSep " " (w: "--screen-root ${w.screen} --bg ${w.wallpaper}") wallpapers;
   wallpaperCommand = "${pkgs.linux-wallpaperengine}/bin/linux-wallpaperengine --fps ${toString fps} --silent ${wallpaperArgs}";
@@ -30,8 +30,6 @@ in
   home-manager.users.${username} = {
     home.packages = [ restart-wallpaper restart-wallpaper-desktop ];
 
-    wayland.windowManager.hyprland.settings.exec-once = [
-      wallpaperCommand
-    ];
+    wayland.windowManager.hyprland.settings.on = [ (hyprLua.onStart [ wallpaperCommand ]) ];
   };
 }

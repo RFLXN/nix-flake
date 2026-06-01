@@ -1,7 +1,7 @@
 { key ? "SUPER, R" }:
-{ username, ... }:
+{ hyprLua, username, ... }:
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings.bind = [
-    "${key}, exec, kitty"
+    (hyprLua.execBind key "kitty")
   ];
 }

@@ -7,7 +7,7 @@
   runtimePackages ? null,
   systemControlMenu ? {},
 }:
-{ lib, pkgs, rflxn-shell, username, ... }:
+{ hyprLua, lib, pkgs, rflxn-shell, username, ... }:
 let
   system = pkgs.stdenv.hostPlatform.system;
   agsPackages = rflxn-shell.inputs.ags.packages.${system};
@@ -71,7 +71,7 @@ in
     programs.ags-shell = agsShellConfig;
 
     wayland.windowManager.hyprland.settings = lib.mkIf enableAutostart {
-      exec-once = [ autostartCommand ];
+      on = [ (hyprLua.onStart [ autostartCommand ]) ];
     };
   };
 }

@@ -61,6 +61,7 @@ modules = {
     gtk.theme = { ... };
     hyprland = {
       cursors = { ... };
+      keybind = { ... }; # alias of keybinds
       keybinds = { ... };
       touchpad = {
         gestures = { ... };
@@ -362,6 +363,9 @@ modules = {
 
 - `hyprland.keybinds.useHyprshot { key ? "Print" }`
   Binds region capture to `Print` and active-window capture to `Alt+Print`.
+
+- `hyprland.keybinds.useMediaFunctions { enableMicMute ? true, enableStop ? true, maxVolume ? "1.0", playerctlPackage ? null, sink ? "@DEFAULT_AUDIO_SINK@", source ? "@DEFAULT_AUDIO_SOURCE@", volumeStep ? "5%", wireplumberPackage ? null }`
+  Binds standard media function keys with `wpctl` and `playerctl`. `hyprland.keybind.useMediaFunctions` is available as a singular alias.
 
 - `hyprland.keybinds.useToggleMonitorSetup { settings ? [] }`
   Builds one toggle script per entry and binds each script to the configured key.

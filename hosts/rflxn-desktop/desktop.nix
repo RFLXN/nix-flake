@@ -22,6 +22,7 @@
     (hyprland.keybinds.useGsrSaveReplay {})
     (hyprland.keybinds.useHyprshot {})
     (hyprland.keybinds.useKitty {})
+    (hyprland.keybinds.useMediaFunctions {})
     (hyprland.keybinds.useScreenOff { key = "CTRL SHIFT, P"; })
     (hyprland.useAgs {
       systemControlMenu = {

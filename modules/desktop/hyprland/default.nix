@@ -1,7 +1,11 @@
+let
+  keybinds = import ./keybind;
+in
 {
   appearance = import ./appearance.nix;
   cursors = import ./cursors;
-  keybinds = import ./keybind;
+  keybind = keybinds;
+  keybinds = keybinds;
   touchpad = import ./touchpad;
   useAgs = import ./ags;
   useDarkMode = import ./dark-mode.nix;

@@ -22,6 +22,7 @@
       (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
       (hyprland.keybinds.useDefaults {})
       (hyprland.keybinds.useKitty {})
+      (hyprland.keybinds.useMediaFunctions {})
       (hyprland.keybinds.useToggleMonitorSetup {
         settings = [
           {

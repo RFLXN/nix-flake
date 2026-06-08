@@ -28,6 +28,12 @@
         volume.program = pkgs.pwvucontrol;
         bluetooth.program = pkgs.blueman;
       };
+      notificationPopups = {
+        monitor = "DP-3";
+        position = "bottom-left";
+        timeoutMs = 5000;
+        maxVisible = 3;
+      };
       layout = {
         layouts = [
           {

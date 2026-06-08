@@ -3,6 +3,7 @@
   autostartCommand ? "ags run",
   enableAutostart ? true,
   layout ? null,
+  notificationPopups ? null,
   package ? null,
   runtimePackages ? null,
   systemControlMenu ? {},
@@ -55,6 +56,9 @@ let
     }
     // lib.optionalAttrs (layout != null) {
       inherit layout;
+    }
+    // lib.optionalAttrs (notificationPopups != null) {
+      inherit notificationPopups;
     }
     // lib.optionalAttrs (package != null) {
       inherit package;

@@ -34,31 +34,37 @@
       })
       (hyprland.touchpad.gestures.useWorkspaces {})
       (hyprland.touchpad.useDefaults {})
-    (hyprland.useAgs {
-      systemControlMenu = {
-        volume.program = pkgs.pwvucontrol;
-        bluetooth.program = pkgs.blueman;
+      (hyprland.useAgs {
+        systemControlMenu = {
+          volume.program = pkgs.pwvucontrol;
+          bluetooth.program = pkgs.blueman;
+        };
+      notificationPopups = {
+        monitor = "eDP-1";
+        position = "bottom-left";
+        timeoutMs = 5000;
+        maxVisible = 3;
       };
-      layout = {
-        layouts = [
-          {
-            monitor = "eDP-1";
-            widgets = {
-              left = [ "feed-hub" "window-title" ];
-              center = [ "workspaces" "datetime" ];
-              right = [ "system-controls" ];
-            };
-            components = [
-              "app-launcher-menu"
-              "feed-hub-menu"
-              "system-controls-menu"
-              "shutdown-confirmation-overlay"
-              "global-menu-close-layer"
-            ];
-          }
-        ];
-      };
-    })
+        layout = {
+          layouts = [
+            {
+              monitor = "eDP-1";
+              widgets = {
+                left = [ "feed-hub" "window-title" ];
+                center = [ "workspaces" "datetime" ];
+                right = [ "system-controls" ];
+              };
+              components = [
+                "app-launcher-menu"
+                "feed-hub-menu"
+                "system-controls-menu"
+                "shutdown-confirmation-overlay"
+                "global-menu-close-layer"
+              ];
+            }
+          ];
+        };
+      })
       (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
       (hyprland.useHypridle {})
       (hyprland.useHyprland {

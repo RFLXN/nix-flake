@@ -61,6 +61,7 @@
                 "system-controls-menu"
                 "shutdown-confirmation-overlay"
                 "global-menu-close-layer"
+                "system-controls-volume-osd"
               ];
             }
           ];

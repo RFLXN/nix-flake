@@ -1,4 +1,73 @@
-{ config, lib, pkgs, username, shared, modules, ... }: {
+{ config, lib, pkgs, username, shared, modules, ... }:
+let
+  asahiRenderNode = "/dev/dri/by-path/platform-406400000.gpu-render";
+
+  aquamarineForceRenderNodePatch = builtins.toFile "aquamarine-force-render-node.patch" ''
+    diff --git a/src/backend/Session.cpp b/src/backend/Session.cpp
+    index 5b159cf..84ed8b8 100644
+    --- a/src/backend/Session.cpp
+    +++ b/src/backend/Session.cpp
+    @@ -1,4 +1,5 @@
+     #include <aquamarine/backend/Backend.hpp>
+    +#include <cstdlib>
+     #include <fcntl.h>
+     
+     extern "C" {
+    @@ -164,6 +165,20 @@ bool Aquamarine::CSessionDevice::supportsKMS() {
+     }
+     
+     void Aquamarine::CSessionDevice::resolveMatchingRenderNode(udev_device* cardDevice) {
+    +    const char* forcedRenderNode = std::getenv("AQ_RENDER_NODE");
+    +    if (forcedRenderNode && forcedRenderNode[0] != '\0') {
+    +        renderNodeFd = open(forcedRenderNode, O_RDWR | O_CLOEXEC);
+    +        if (renderNodeFd >= 0) {
+    +            session->backend->log(AQ_LOG_DEBUG, std::format("drm: Using forced render node {}", forcedRenderNode));
+    +            return;
+    +        }
+    +
+    +        session->backend->log(AQ_LOG_WARNING,
+    +                              std::format("drm: Failed to open forced render node {}, falling back to udev matching",
+    +                                          forcedRenderNode));
+    +        renderNodeFd = -1;
+    +    }
+    +
+         if (!cardDevice)
+             return;
+     
+  '';
+
+  aquamarineWithForcedRenderNode = pkgs.aquamarine.overrideAttrs (old: {
+    patches = (old.patches or []) ++ [
+      aquamarineForceRenderNodePatch
+    ];
+  });
+
+  hyprlandWithForcedRenderNode = pkgs.symlinkJoin {
+    name = "${pkgs.hyprland.name}-asahi-render-node";
+    version = pkgs.hyprland.version;
+    paths = [ pkgs.hyprland ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    passthru = (pkgs.hyprland.passthru or {}) // {
+      override = _: hyprlandWithForcedRenderNode;
+    };
+    meta = (pkgs.hyprland.meta or {}) // {
+      outputsToInstall = [ "out" ];
+    };
+
+    postBuild = ''
+      wrapProgram "$out/bin/Hyprland" \
+        --set AQ_RENDER_NODE ${asahiRenderNode} \
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ aquamarineWithForcedRenderNode ]}
+      wrapProgram "$out/bin/start-hyprland" \
+        --set AQ_RENDER_NODE ${asahiRenderNode} \
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ aquamarineWithForcedRenderNode ]}
+    '';
+  };
+
+  xdgDesktopPortalHyprlandCached = pkgs.xdg-desktop-portal-hyprland // {
+    override = _: xdgDesktopPortalHyprlandCached;
+  };
+in {
   imports =
     # Desktop
     (with modules.desktop; [
@@ -148,9 +217,7 @@
       (useBlueman {})
       (useClaudeCode {})
       (useCodex {})
-      (useCodexDesktop {
-        codexDmgHash = "sha256-QtVs+lj5wDyQabjx6imzjZmTLSFJXF7CsQNnxznbCw8=";
-      })
+      (useCodexDesktop {})
       (useCommonTools {})
       (useDirenv {})
       (useVesktop {})
@@ -207,6 +274,12 @@
 
   # Host-specific configuration
   networking.hostName = "rflxn-asahi";
+
+  programs.hyprland.package = lib.mkForce hyprlandWithForcedRenderNode;
+  programs.hyprland.portalPackage = lib.mkForce xdgDesktopPortalHyprlandCached;
+
+  environment.sessionVariables.AQ_RENDER_NODE = asahiRenderNode;
+  home-manager.users.${username}.systemd.user.sessionVariables.AQ_RENDER_NODE = asahiRenderNode;
 
   # Apple keyboard: F1-F12 as function keys by default, Fn+F1-F12 for media
   # Note: Asahi Linux inverts the meaning, so fnmode=2 gives us function keys by default

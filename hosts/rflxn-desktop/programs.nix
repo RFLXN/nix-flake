@@ -31,9 +31,7 @@
     (useBlueman {})
     (useClaudeCode {})
     (useCodex {})
-    (useCodexDesktop {
-      codexDmgHash = "sha256-QtVs+lj5wDyQabjx6imzjZmTLSFJXF7CsQNnxznbCw8=";
-    })
+    (useCodexDesktop {})
     (useCommonTools {})
     (useChrome {})
     (useDirenv {})

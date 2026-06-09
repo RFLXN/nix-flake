@@ -494,8 +494,8 @@ modules = {
 - `useCodex {}`
   Installs Codex CLI from the `codex-cli-nix` flake input.
 
-- `useCodexDesktop { codexDmgHash ? null, codexDmgUrl ? "https://persistent.oaistatic.com/codex-app-prod/Codex.dmg", package ? null }`
-  Enables the upstream Codex Desktop Linux Home Manager module from the `codex-desktop` flake input. `codexDmgHash` can temporarily override the upstream `Codex.dmg` fixed-output hash when the upstream package lags a release.
+- `useCodexDesktop {}`
+  Enables the upstream Codex Desktop Linux Home Manager module from the `codex-desktop` flake input.
 
 - `useCommonTools {}`
   Installs the repo's common CLI toolkit.

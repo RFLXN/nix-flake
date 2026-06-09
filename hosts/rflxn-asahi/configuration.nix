@@ -148,7 +148,9 @@
       (useBlueman {})
       (useClaudeCode {})
       (useCodex {})
-      (useCodexDesktop {})
+      (useCodexDesktop {
+        codexDmgHash = "sha256-QtVs+lj5wDyQabjx6imzjZmTLSFJXF7CsQNnxznbCw8=";
+      })
       (useCommonTools {})
       (useDirenv {})
       (useVesktop {})
@@ -168,6 +170,7 @@
       (useKolourpaint {})
       (useNixIndex {})
       (useSpotify {})
+      (useThunderbird {})
       (useVscode {})
       (usePeaZip {})
       (usePwvucontrol {})

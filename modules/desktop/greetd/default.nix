@@ -16,19 +16,19 @@ let
     exec > >(${lib.getExe' pkgs.systemd "systemd-cat"} --identifier=greetd-session --priority=info)
     exec 2> >(${lib.getExe' pkgs.systemd "systemd-cat"} --identifier=greetd-session --priority=warning)
   '';
-  sessionCommand = command: "${lib.getExe pkgs.bash} -lc ${lib.escapeShellArg ''
+  sessionCommand = name: command: pkgs.writeShellScript name ''
     ${clearTerminal}
     ${journalRedirect}
     ${command}
-  ''}";
-  hyprlandSessionCommand = sessionCommand ''
+  '';
+  hyprlandSessionCommand = sessionCommand "greetd-hyprland-session" ''
     if [ -x /run/current-system/sw/bin/start-hyprland ]; then
       exec /run/current-system/sw/bin/start-hyprland
     else
       exec /run/current-system/sw/bin/Hyprland
     fi
   '';
-  uwsmHyprlandSessionCommand = sessionCommand ''
+  uwsmHyprlandSessionCommand = sessionCommand "greetd-uwsm-hyprland-session" ''
     entry=/run/current-system/sw/bin/start-hyprland
     if [ ! -x "$entry" ]; then
       entry=/run/current-system/sw/bin/Hyprland

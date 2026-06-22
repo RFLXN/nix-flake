@@ -9,6 +9,7 @@
   useCodexDesktop = import ./codex-desktop;
   useCommonTools = import ./common-tools;
   useChrome = import ./chrome;
+  useChromium = import ./chromium;
   useDirenv = import ./direnv;
   useDiscord = import ./discord;
   useDolphin = import ./dolphin;

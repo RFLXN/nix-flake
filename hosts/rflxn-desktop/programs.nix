@@ -33,7 +33,7 @@
     (useCodex {})
     (useCodexDesktop {})
     (useCommonTools {})
-    (useChrome {})
+    (useChromium {})
     (useDirenv {})
     (useDiscord {})
     (useVesktop {})

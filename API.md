@@ -347,7 +347,7 @@ modules = {
   Adds the repo's default Hyprland keybind pack, including workspace movement and the `hypr-smart-step` helper for tiled/floating resize and movement.
 
 - `hyprland.keybinds.useQuickShellLauncher { key ? "SUPER, D" }`
-  Binds `quickshell ipc call launcher toggle`.
+  Binds `rflxn-shell-launcher-toggle`, which targets the running `rflxn-shell.service` Quickshell instance by PID and calls `launcher.toggle`.
 
 - `hyprland.keybinds.useQuickShellRestart { key ? "SUPER, backslash" }`
   Binds `systemctl --user restart rflxn-shell.service`.

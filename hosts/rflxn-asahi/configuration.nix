@@ -163,7 +163,7 @@
       (useCommonTools {})
       (useChromium {})
       (useDirenv {})
-      (useVesktop {})
+      # (useVesktop {})
       (useAyugram {})
       (useDolphin { withSilentKdeDeps = true; })
       (useFastfetch {

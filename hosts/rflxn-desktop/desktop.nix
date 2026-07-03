@@ -1,4 +1,4 @@
-{ pkgs, modules, username, ... }: {
+{ lib, pkgs, modules, username, ... }: {
   imports = with modules.desktop; [
     (gtk.theme.usePapirusIcon {})
     (gtk.theme.useMatcha {
@@ -16,26 +16,16 @@
       blurPasses = 3;
     })
     (hyprland.cursors.useRosePineCursor {})
-    (hyprland.keybinds.useAgsLauncher {})
-    (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
+    (hyprland.keybinds.useQuickShellLauncher {})
+    (hyprland.keybinds.useQuickShellRestart { key = "SUPER, backslash"; })
     (hyprland.keybinds.useDefaults {})
     (hyprland.keybinds.useGsrSaveReplay {})
     (hyprland.keybinds.useHyprshot {})
     (hyprland.keybinds.useKitty {})
     (hyprland.keybinds.useMediaFunctions {})
     (hyprland.keybinds.useScreenOff { key = "CTRL SHIFT, P"; })
-    (hyprland.useAgs {
-      systemControlMenu = {
-        volume.program = pkgs.pwvucontrol;
-        bluetooth.program = pkgs.blueman;
-      };
-      notificationPopups = {
-        monitor = "DP-3";
-        position = "bottom-left";
-        timeoutMs = 5000;
-        maxVisible = 3;
-      };
-      layout = {
+    (hyprland.useQuickShell {
+      configs = {
         layouts = [
           {
             monitor = "DP-3";
@@ -44,13 +34,34 @@
               center = [ "workspaces" "datetime" ];
               right = [ "system-controls" ];
             };
+            menus = {
+              system-controls.programs = {
+                volume = {
+                  command = lib.getExe pkgs.pwvucontrol;
+                  rules = "float; size 900 650; center";
+                };
+                bluetooth = {
+                  command = "${pkgs.blueman}/bin/blueman-manager";
+                  rules = "float; size 760 560; center";
+                };
+                network = {
+                  command = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
+                  rules = "float; size 880 640; center";
+                };
+              };
+            };
             components = [
               "app-launcher-menu"
+              "calendar-menu"
               "feed-hub-menu"
               "system-controls-menu"
-              "shutdown-confirmation-overlay"
+              {
+                id = "notification-popups";
+                position = "bottom-left";
+                timeoutMs = 5000;
+                maxVisible = 3;
+              }
               "global-menu-close-layer"
-              "system-controls-volume-osd"
             ];
           }
           {
@@ -58,9 +69,12 @@
             widgets = {
               left = [ "datetime" ];
               center = [ "workspaces" ];
-              right = [ "hw-monitor" ];
+              right = [];
             };
-            components = [];
+            components = [
+              "calendar-menu"
+              "global-menu-close-layer"
+            ];
           }
         ];
       };

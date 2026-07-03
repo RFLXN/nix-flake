@@ -2,6 +2,6 @@
 { username, ... }:
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings.bind = [
-    "${key}, exec, ags request launcher toggle"
+    "${key}, exec, quickshell ipc call launcher toggle"
   ];
 }

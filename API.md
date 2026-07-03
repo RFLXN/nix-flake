@@ -40,7 +40,7 @@ Required input-backed modules:
 | `modules.system.boot.grub.theme.useDistroTheme` | `distro-grub-themes` |
 | `modules.system.useImpermanence` | `impermanence` |
 | `modules.desktop.plasma6.usePlasma6` | `plasma-manager` |
-| `modules.desktop.hyprland.useAgs` | `rflxn-shell` |
+| `modules.desktop.hyprland.useQuickShell` | `rflxn-shell` |
 | `modules.desktop.hyprland.useHyprland` | optional `hyprland` input, otherwise falls back to `pkgs.hyprland` |
 | `modules.desktop.hyprland.useHyprshell` | optional `hyprshell` input, otherwise falls back to `pkgs.hyprshell` |
 | `modules.programs.useClaudeCode` | `claude-code` |
@@ -308,9 +308,9 @@ modules = {
 - `hyprland.appearance { gapSize ? 5, borderSize ? 2, rounding ? 5, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
   Applies the repo's default Hyprland window decoration, animation, dwindle, and scrolling settings.
 
-- `hyprland.useAgs { agsPackage ? null, autostartCommand ? "ags run", enableAutostart ? true, layout ? null, notificationPopups ? null, package ? null, runtimePackages ? null, systemControlMenu ? {} }`
-  Enables the `rflxn-shell` Home Manager module, configures `programs.ags-shell`, and starts `ags run` from Hyprland. `notificationPopups` is forwarded to the shell's popup placement and queue configuration.
-  Pass `layout` to render host-specific monitor/widget placement into the packaged shell config.
+- `hyprland.useQuickShell { configs ? null, package ? null, quickshellPackage ? null, runtimePackages ? null, systemdTarget ? null }`
+  Imports the `rflxn-shell` NixOS bridge module and enables `home-manager.users.${username}.services.rflxn-shell`.
+  Pass `configs` to render host-specific monitor, widget, menu, and overlay placement into the packaged Quickshell config.
 
 - `hyprland.useDarkMode { qtUseGtkPlatformTheme ? true }`
   Enables `dconf`, sets GNOME dark mode preference, and optionally exports `QT_QPA_PLATFORMTHEME=gtk3`.
@@ -346,11 +346,11 @@ modules = {
 - `hyprland.keybinds.useDefaults { mod ? "SUPER", subMod ? "SUPER SHIFT" }`
   Adds the repo's default Hyprland keybind pack, including workspace movement and the `hypr-smart-step` helper for tiled/floating resize and movement.
 
-- `hyprland.keybinds.useAgsLauncher { key ? "SUPER, D" }`
-  Binds `ags request launcher toggle`.
+- `hyprland.keybinds.useQuickShellLauncher { key ? "SUPER, D" }`
+  Binds `quickshell ipc call launcher toggle`.
 
-- `hyprland.keybinds.useAgsRestart { key ? "SUPER, backslash" }`
-  Binds `ags quit; ags run`.
+- `hyprland.keybinds.useQuickShellRestart { key ? "SUPER, backslash" }`
+  Binds `systemctl --user restart rflxn-shell.service`.
 
 - `hyprland.keybinds.useKitty { key ? "SUPER, R" }`
   Binds `kitty`.

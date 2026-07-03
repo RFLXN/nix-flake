@@ -159,8 +159,8 @@
       };
     };
   
-  useAgsLauncher = import ./ags-launcher.nix;
-  useAgsRestart = import ./ags-restart.nix;
+  useQuickShellLauncher = import ./quickshell-launcher.nix;
+  useQuickShellRestart = import ./quickshell-restart.nix;
   useKitty = import ./kitty.nix;
   useGsrSaveReplay = import ./gsr-save-replay.nix;
   useScreenOff = import ./screen-off.nix;

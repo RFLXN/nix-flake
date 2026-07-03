@@ -18,8 +18,8 @@
         blurPasses = 3;
       })
       (hyprland.cursors.useRosePineCursor {})
-      (hyprland.keybinds.useAgsLauncher {})
-      (hyprland.keybinds.useAgsRestart { key = "SUPER, backslash"; })
+      (hyprland.keybinds.useQuickShellLauncher {})
+      (hyprland.keybinds.useQuickShellRestart { key = "SUPER, backslash"; })
       (hyprland.keybinds.useDefaults {})
       (hyprland.keybinds.useKitty {})
       (hyprland.keybinds.useMediaFunctions {})
@@ -35,18 +35,8 @@
       })
       (hyprland.touchpad.gestures.useWorkspaces {})
       (hyprland.touchpad.useDefaults {})
-      (hyprland.useAgs {
-        systemControlMenu = {
-          volume.program = pkgs.pwvucontrol;
-          bluetooth.program = pkgs.blueman;
-        };
-      notificationPopups = {
-        monitor = "eDP-1";
-        position = "bottom-left";
-        timeoutMs = 5000;
-        maxVisible = 3;
-      };
-        layout = {
+      (hyprland.useQuickShell {
+        configs = {
           layouts = [
             {
               monitor = "eDP-1";
@@ -55,13 +45,34 @@
                 center = [ "workspaces" "datetime" ];
                 right = [ "system-controls" ];
               };
+              menus = {
+                system-controls.programs = {
+                  volume = {
+                    command = lib.getExe pkgs.pwvucontrol;
+                    rules = "float; size 900 650; center";
+                  };
+                  bluetooth = {
+                    command = "${pkgs.blueman}/bin/blueman-manager";
+                    rules = "float; size 760 560; center";
+                  };
+                  network = {
+                    command = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
+                    rules = "float; size 880 640; center";
+                  };
+                };
+              };
               components = [
                 "app-launcher-menu"
+                "calendar-menu"
                 "feed-hub-menu"
                 "system-controls-menu"
-                "shutdown-confirmation-overlay"
+                {
+                  id = "notification-popups";
+                  position = "bottom-left";
+                  timeoutMs = 5000;
+                  maxVisible = 3;
+                }
                 "global-menu-close-layer"
-                "system-controls-volume-osd"
               ];
             }
           ];

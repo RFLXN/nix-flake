@@ -89,7 +89,7 @@ Per-host entrypoints:
 
 - Platform: `x86_64-linux`
 - Role: main desktop and gaming workstation
-- Session stack: Hyprland with UWSM, greetd autologin, AGS, Hyprshell, Hyprlock, Hyprpolkit, and tray bridge
+- Session stack: Hyprland with UWSM, greetd autologin, QuickShell, Hyprshell, Hyprlock, Hyprpolkit, and tray bridge
 - Display layout: `DP-3` and rotated `HDMI-A-1`, with workspaces `1` to `5` on `DP-3` using `master` and workspace `6` on `HDMI-A-1` using `scrolling`
 - Theme: Rose Pine GTK and Qt, Papirus icons, Rose Pine cursor and hyprcursor
 - Wallpaper and rules: Linux Wallpaper Engine per monitor, Spotify and Vesktop pinned to workspace `6`
@@ -101,7 +101,7 @@ Per-host entrypoints:
 
 - Platform: `aarch64-linux`
 - Role: Apple Silicon laptop
-- Session stack: Hyprland with UWSM, greetd autologin, AGS, Hyprshell, Hyprlock, and Hyprpolkit
+- Session stack: Hyprland with UWSM, greetd autologin, QuickShell, Hyprshell, Hyprlock, and Hyprpolkit
 - Input and display: built-in `eDP-1`, touchpad defaults, 3-finger workspace gesture, and Mac-style key remaps through keyd
 - Monitor toggle: `SUPER SHIFT, P` switches `eDP-1` between `60 Hz` and `120 Hz`
 - Firmware: requires a local `hosts/rflxn-asahi/firmware` directory
@@ -175,11 +175,11 @@ printf 'API_KEY=your_cloudflare_api_token\n' > /persist/secrets/ddns.env
 
 See [API.md](./API.md) for the current exported module API.
 
-## AGS Workflow
+## QuickShell Workflow
 
-Current behavior of `modules/desktop/hyprland/ags/default.nix`:
+Current behavior of `modules/desktop/hyprland/quickshell/default.nix`:
 
-- The module imports `rflxn-shell.nixosModules.ags-shell`.
-- Home Manager enables `programs.ags-shell`.
-- Host files pass monitor-specific `programs.ags-shell.layout` data.
-- Hyprland autostarts `ags run` by default.
+- The module imports `rflxn-shell.nixosModules.default`.
+- Home Manager enables `services.rflxn-shell`.
+- Host files pass monitor-specific `services.rflxn-shell.configs` data.
+- Home Manager starts `rflxn-shell.service` as a user systemd service.

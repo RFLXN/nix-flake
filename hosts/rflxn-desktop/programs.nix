@@ -36,7 +36,6 @@
     (useChromium {})
     (useDirenv {})
     (useDiscord {})
-    (useVesktop {})
     (useDolphin { withSilentKdeDeps = true; })
     (useFastfetch {
       beforeModules = [

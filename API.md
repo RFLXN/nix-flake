@@ -503,6 +503,9 @@ modules = {
 - `useChrome {}`
   Installs Google Chrome.
 
+- `useChromium { commandLineArgs ? [], language ? "ko-KR", languageEnvironment ? null }`
+  Enables Chromium through the NixOS `programs.chromium` module and installs a localized Chromium wrapper. By default it sets `LANGUAGE=ko_KR:ko` and passes `--lang=ko-KR`; `language = null` disables both language settings. `languageEnvironment` can override the generated `LANGUAGE` value.
+
 - `useDirenv {}`
   Enables Home Manager Direnv with Bash, Zsh, and `nix-direnv` integration.
 

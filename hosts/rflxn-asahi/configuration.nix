@@ -161,6 +161,7 @@
       (useCodex {})
       (useCodexDesktop {})
       (useCommonTools {})
+      (useChromium {})
       (useDirenv {})
       (useVesktop {})
       (useAyugram {})

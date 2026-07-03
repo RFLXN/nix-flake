@@ -171,6 +171,49 @@ printf 'API_KEY=your_cloudflare_api_token\n' > /persist/secrets/ddns.env
   - `/persist/secrets/deluge.auth` in Deluge `auth` file format
   - `/persist/secrets/deluge-web.auth` as JSON with `pwd_salt` and `pwd_sha1`
 
+## Troubleshooting
+
+### Recover missing m1n1 payload on `rflxn-asahi`
+
+If the Asahi machine stops before systemd-boot and the boot log ends around
+`Running proxy...`, the stage-1 m1n1 loader may be unable to find the stage-2
+payload at `m1n1/boot.bin` on the NixOS EFI system partition.
+
+From macOS, mount the NixOS EFI partition and check whether the `m1n1` directory
+is missing:
+
+```zsh
+diskutil list internal
+diskutil mount <nixos-efi-partition>
+ls -la "/Volumes/EFI - NIXOS"
+```
+
+If the mounted partition contains `EFI/`, `loader/`, `vendorfw/`, and `asahi/`
+but no `m1n1/`, install a temporary UEFI-only payload:
+
+```zsh
+ESP="/Volumes/EFI - NIXOS"
+PKG_URL="https://cdn.asahilinux.org/os/uefi-only-20260301-asahi-6.18.10-1.zip"
+
+work="$(mktemp -d /tmp/asahi-m1n1.XXXXXX)"
+curl -fL --progress-bar -o "$work/uefi-only.zip" "$PKG_URL"
+ditto -x -k "$work/uefi-only.zip" "$work/extracted"
+
+sudo mkdir -p "$ESP/m1n1"
+sudo cp -f "$work/extracted/esp/m1n1/boot.bin" "$ESP/m1n1/boot.bin"
+sync
+diskutil unmount "$ESP"
+```
+
+This payload is only for recovery. After NixOS boots, reinstall the payload from
+the current NixOS generation:
+
+```bash
+sudo mkdir -p /boot/m1n1
+sudo /run/current-system/bin/switch-to-configuration switch
+sudo reboot
+```
+
 ## Module API
 
 See [API.md](./API.md) for the current exported module API.

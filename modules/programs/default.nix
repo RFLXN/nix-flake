@@ -13,6 +13,7 @@
   useDirenv = import ./direnv;
   useDiscord = import ./discord;
   useDolphin = import ./dolphin;
+  useEquibop = import ./equibop;
   useFastfetch = import ./fastfetch;
   useFirefox = import ./firefox;
   useForgeCode = import ./forge-code;

@@ -515,6 +515,9 @@ modules = {
 - `useDolphin {}`
   Installs KDE Dolphin.
 
+- `useEquibop { package ? null }`
+  Installs Equibop and registers it as the default handler for `x-scheme-handler/discord`.
+
 - `useFastfetch { beforeModules ? [], afterModules ? [] }`
   Installs Fastfetch and writes a JSON config with custom module lists prepended/appended around the repo default layout.
 

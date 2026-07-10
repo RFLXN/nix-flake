@@ -49,7 +49,7 @@
     };
 
     rflxn-shell = {
-      url = "github:RFLXN/rflxn-shell/qs";
+      url = "github:RFLXN/rflxn-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

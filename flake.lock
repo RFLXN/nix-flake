@@ -565,16 +565,15 @@
         "quickshell": "quickshell"
       },
       "locked": {
-        "lastModified": 1783064425,
-        "narHash": "sha256-8xslNGS88WZyviGaysyDZqNW8TLP0gPvY6FlPKu73I4=",
+        "lastModified": 1783669984,
+        "narHash": "sha256-qzLloUc3SJt1X0tdemhHBNRgrWV5f1zXlw19/L60nbo=",
         "owner": "RFLXN",
         "repo": "rflxn-shell",
-        "rev": "1e32e457d0628d17c3808149b697513183f62169",
+        "rev": "ea17905b3339bd4cb7806765e29ac457416eb707",
         "type": "github"
       },
       "original": {
         "owner": "RFLXN",
-        "ref": "qs",
         "repo": "rflxn-shell",
         "type": "github"
       }

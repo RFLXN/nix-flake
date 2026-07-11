@@ -539,6 +539,9 @@ modules = {
 - `useHyprshot {}`
   Installs Hyprshot.
 
+- `useK3b {}`
+  Installs K3b.
+
 - `useKcalc { enableWindowsAlias ? false }`
   Installs KCalc and optionally creates a `calc` desktop entry alias.
 
@@ -663,6 +666,10 @@ modules = {
 
 - `useNginX { upstreams ? {} }`
   Alias for `services.nginx.useNginX`.
+
+- `useRemovableStorageAutoMount { mountOnMedia ? false, notify ? true, tray ? "auto" }`
+  Enables `udisks2`, installs `udiskie`, and starts the Home Manager `udiskie` user service with automatic mounting enabled.
+  By default, removable devices mount under `/run/media/$USER`; set `mountOnMedia = true` to use `/media`.
 
 - `useRtkit {}`
   Enables realtime kit.

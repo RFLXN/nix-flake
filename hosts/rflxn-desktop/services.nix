@@ -8,6 +8,7 @@
     (useGpuScreenRecorder { window = "DP-3"; })
     (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
     (useKeyd { settings = import ./keyd-configs.nix; })
+    (useRemovableStorageAutoMount {})
     (useRtkit {})
     (useSyncthing {
       serviceLevel = "user";

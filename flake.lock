@@ -499,11 +499,11 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1777954456,
-        "narHash": "sha256-hGdgeU2Nk87RAuZyYjyDjFL6LK7dAZN5RE9+hrDTkDU=",
+        "lastModified": 1783522502,
+        "narHash": "sha256-iffAls3iaNTyJC2faYcUXSI+Gp02cDjYl+MygxKl2GI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "549bd84d6279f9852cae6225e372cc67fb91a4c1",
+        "rev": "0bb7ec54c8483066ec9d7720e780a5caa71f8612",
         "type": "github"
       },
       "original": {
@@ -721,11 +721,11 @@
         "xivlauncher-rb-src": "xivlauncher-rb-src"
       },
       "locked": {
-        "lastModified": 1778173087,
-        "narHash": "sha256-EhL9JZtqq/BtFzxKhuniEX16XzZhQjIy+Vw0jCTZx50=",
+        "lastModified": 1783787577,
+        "narHash": "sha256-rCLQcoWiVuv+hkwrivxMLvoedwupBGkeMbPQQOPlvkk=",
         "owner": "RFLXN",
         "repo": "XIVLauncher.Core",
-        "rev": "9c76753a43a431c87cb0b75e4af58068788a0b8a",
+        "rev": "10864dd51bc1e0759f67ce1bd989b0c34db1df26",
         "type": "github"
       },
       "original": {
@@ -738,20 +738,20 @@
     "xivlauncher-rb-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1776552466,
-        "narHash": "sha256-N92s7mtjtRiHhAt2gF9iBgWyuKEEy/QZLnJVpWsZtIw=",
+        "lastModified": 1782335894,
+        "narHash": "sha256-hZCuxGdaH+UuYK+pARocBDggE+pQ0WNJWfw+M96LFhY=",
         "ref": "RB-patched",
-        "rev": "35507de9418a2fd1139fd786f56b20c10cd4a58f",
-        "revCount": 631,
+        "rev": "cafb8186688ba4deb8736163abc1374533e1fdea",
+        "revCount": 676,
         "submodules": true,
         "type": "git",
-        "url": "https://github.com/RFLXN/XIVLauncher.Core.git"
+        "url": "https://github.com/rankynbass/XIVLauncher.Core.git"
       },
       "original": {
         "ref": "RB-patched",
         "submodules": true,
         "type": "git",
-        "url": "https://github.com/RFLXN/XIVLauncher.Core.git"
+        "url": "https://github.com/rankynbass/XIVLauncher.Core.git"
       }
     },
     "xivmitm-nix": {

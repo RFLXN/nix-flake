@@ -135,6 +135,7 @@
       (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
       (useKeyd { settings = import ./keyd-configs.nix; })
       (useLibinput {})
+      (useRemovableStorageAutoMount {})
       (useRtkit {})
       (useSyncthing {
         serviceLevel = "user";

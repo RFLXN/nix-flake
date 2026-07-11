@@ -47,6 +47,7 @@
     (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
     (useHaruna {})
     (useHyprshot {})
+    (useK3b {})
     (useKcalc { enableWindowsAlias = true; })
     (useKitty {})
     (useKolourpaint { enableWindowsAlias = true; })

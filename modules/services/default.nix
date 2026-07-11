@@ -15,6 +15,7 @@ in {
   useLibinput = import ./libinput;
   useLinuxWallpaperengine = import ./linux-wallpaperengine;
   useNginX = nginx.useNginX;
+  useRemovableStorageAutoMount = import ./removable-storage-auto-mount;
   useRtkit = import ./rtkit;
   useSamba = import ./samba;
   useSsh = import ./ssh;

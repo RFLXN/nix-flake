@@ -21,6 +21,7 @@
   useGptOauthServer = import ./gpt-oauth-server;
   useHaruna = import ./haruna;
   useHyprshot = import ./hyprshot;
+  useK3b = import ./k3b;
   useKcalc = import ./kcalc;
   useKitty = import ./kitty;
   useKolourpaint = import ./kolourpaint;

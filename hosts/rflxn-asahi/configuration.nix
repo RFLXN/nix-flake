@@ -148,7 +148,10 @@
           };
         };
       })
-      (useTailscale { enableSystemTray = true; })
+      (useTailscale {
+        enableSystemTray = true;
+        openFirewall = true;
+      })
     ]) ++
 
     # Programs
@@ -205,6 +208,9 @@
       (nix.useUnfreePackage {})
       (useCjkFonts {})
       (useFcitx5 {})
+      (useFirewall {
+        trustedInterfaces = [ config.services.tailscale.interfaceName ];
+      })
       (useImpermanence { rootUuid = "4493ff63-f4f8-48af-b74b-df4434b45fff"; })
       (useMe { hashedPasswordFile = "/persist/secrets/rflxn.hashedPassword"; })
       (useNetworkManager { useWifi = true; })
@@ -241,8 +247,6 @@
     in if builtins.pathExists path
       then path
       else throw "Asahi firmware not found at hosts/rflxn-asahi/firmware/. Extract your firmware there.";
-
-  networking.firewall.enable = false;
 
   system.copySystemConfiguration = false;
   system.stateVersion = "25.11";

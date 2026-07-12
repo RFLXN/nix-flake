@@ -166,6 +166,9 @@ modules = {
 - `useFcitx5 {}`
   Enables `fcitx5` with GTK, Hangul, and Mozc addons.
 
+- `useFirewall { trustedInterfaces ? [] }`
+  Enables the NixOS stateful firewall and unconditionally accepts incoming traffic from the specified interfaces.
+
 - `useImpermanence { rootUuid, persistPath ? null, directories ? [], files ? [], enableWipeRoot ? true }`
   Enables impermanence, optionally resets `@root` from `@root-blank` during initrd, writes wipe-root diagnostics to `/persist/log/wipe-root.log` when `@persist` exists, persists `/home`, logs, `machine-id`, and any extra directories/files provided.
 
@@ -699,8 +702,8 @@ modules = {
 
   Note: `persistPath` only affects the system-service branch.
 
-- `useTailscale { persistPath ? null, enableSystemTray ? false }`
-  Enables Tailscale, optionally adds a user systray service with `--operator=${username}`, and persists `/var/lib/tailscale` when a persistence path is available.
+- `useTailscale { persistPath ? null, enableSystemTray ? false, openFirewall ? false }`
+  Enables Tailscale, optionally opens its UDP transport port through the NixOS firewall, optionally adds a user systray service with `--operator=${username}`, and persists `/var/lib/tailscale` when a persistence path is available.
 
 - `useVscodeServer {}`
   Imports the `nixos-vscode-server` module and enables the service.

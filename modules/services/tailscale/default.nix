@@ -1,10 +1,19 @@
-{ persistPath ? null, enableSystemTray ? false }:
+{
+  persistPath ? null,
+  enableSystemTray ? false,
+  openFirewall ? false,
+}:
 { lib, pkgs, username, defaultPersistPath ? null, ... }:
 let
   path = if persistPath != null then persistPath else defaultPersistPath;
 in
 lib.mkMerge [
-  { services.tailscale.enable = true; }
+  {
+    services.tailscale = {
+      enable = true;
+      inherit openFirewall;
+    };
+  }
   (lib.mkIf enableSystemTray {
     services.tailscale.extraSetFlags = [ "--operator=${username}" ];
 

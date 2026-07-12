@@ -93,7 +93,7 @@ Per-host entrypoints:
 - Display layout: `DP-3` and rotated `HDMI-A-1`; workspaces `1` to `7` use `master` on `DP-3`, while workspace `8` uses vertical `scrolling` on `HDMI-A-1`
 - Theme: Matcha GTK and Qt/Kvantum, Papirus icons, and the Rose Pine cursor/hyprcursor theme
 - Wallpaper and rules: Linux Wallpaper Engine per monitor; Discord, MopiMopi, Spotify, and Vesktop are assigned to workspace `8`
-- Services: PipeWire with low-latency and denoised-mic config, Docker with both the system daemon and rootless user daemon enabled, Flatpak, GPU Screen Recorder, keyd, removable-storage automounting, Home Manager, Syncthing user service, Tailscale, and rtkit
+- Services: PipeWire with low-latency and denoised-mic config, Docker with both the system daemon and rootless user daemon enabled, Flatpak, GPU Screen Recorder in replay mode with the NixOS capability wrapper, keyd, removable-storage automounting, Home Manager, Syncthing user service, Tailscale, and rtkit
 - Programs: browsers, IDEs, AI tooling including Codex CLI/Desktop, gaming tools, media tools, and general desktop apps
 - System: EFI GRUB with the NixOS distro theme, Plymouth, the latest nixpkgs kernel, impermanence, NetworkManager with iwd, zram, AMD GPU overdrive support, Bluetooth, and shared font and IME setup
 - Secure Boot: the Lanzaboote input and reusable module remain available, but the desktop host does not currently import the module
@@ -192,7 +192,6 @@ Desktop and Server currently assume a trusted home network, while Asahi treats i
 - Desktop and Asahi bind the Syncthing GUI to `0.0.0.0:8384`; Asahi's physical interfaces are blocked by its firewall, while permitted tailnet peers can still reach the GUI. GUI authentication is not enforced declaratively by this repository.
 - Server nginx listens on the default all-interface HTTP port `80` and proxies `/torrent` and `/syncthing` without TLS at the proxy layer.
 - Server SSH permits password authentication, and Deluge enables remote daemon access.
-- The desktop GPU Screen Recorder module currently grants passwordless Polkit authorization by matching any executable path containing `gpu-screen-recorder`. Treat this as a local privilege-escalation risk until the rule is removed or restricted to an exact immutable path.
 
 Actual internet reachability still depends on routing, NAT, IPv6, and upstream firewall rules. Review Desktop and Server bindings before exposing either host beyond the trusted home network.
 

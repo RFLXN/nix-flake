@@ -647,8 +647,8 @@ modules = {
 - `useFlatpak { persistPath ? null }`
   Enables Flatpak and persists `/var/lib/flatpak` when a persistence path is available.
 
-- `useGpuScreenRecorder { window ? "screen", framerate ? 60, replaySeconds ? 300, quality ? "high", container ? "mp4", audioSource ? "default_output", outputDir ? null }`
-  Creates a user service for replay-mode GPU Screen Recorder, adds a `gsr-save-replay` helper, and allows the repo user through Polkit.
+- `useGpuScreenRecorder { window ? "screen", framerate ? 60, replaySeconds ? 300, replayStorage ? "ram", restartReplayOnSave ? false, bitrateMode ? "cbr", bitrate ? 40000, quality ? "high", container ? "mp4", audioSource ? "default_output", makeDateFolders ? false, postSaveScript ? null, outputDir ? null }`
+  Enables the upstream NixOS GPU Screen Recorder capability wrapper, creates a replay-mode user service, and adds a `gsr-save-replay` helper that signals only the service's main process. `bitrate` is used as the CBR kbps value; `quality` is used for the other bitrate modes.
 
 - `useHomeManager { stateVersion ? "25.11", backupCommand ? null }`
   Imports the Home Manager NixOS module, sets `useGlobalPkgs` and `useUserPackages`, enables `programs.home-manager`, and configures backup behavior.

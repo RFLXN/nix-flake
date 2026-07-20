@@ -1,248 +1,180 @@
-# RFLXN's NixOS Flake
+# RFLXN's NixOS Configuration
 
-This repository manages three NixOS machines from one flake using small curried modules and host-level composition.
+## Overview
 
-- `rflxn-desktop`: `x86_64-linux` AMD desktop, Hyprland workstation and gaming box
-- `rflxn-asahi`: `aarch64-linux` Apple Silicon laptop, Asahi Linux plus Hyprland
-- `rflxn-server`: `x86_64-linux` headless server for remote development and network services
+RFLXN's multi-system NixOS configuration repository. One flake manages three machines while a shared module library keeps reusable behavior separate from host-specific composition.
 
-![3 NixOS Systems](./vdg.jpg)
+| Host | Platform | Role |
+| --- | --- | --- |
+| `rflxn-desktop` | `x86_64-linux` | Hyprland workstation and gaming desktop |
+| `rflxn-asahi` | `aarch64-linux` | Apple Silicon laptop running NixOS with Asahi support |
+| `rflxn-server` | `x86_64-linux` | Headless storage, sync, remote-development, and network-services server |
 
-## Repository Layout
+The flake entry point is [`flake.nix`](./flake.nix). Host definitions live under [`hosts/`](./hosts), and the reusable module library is exported from [`modules/default.nix`](./modules/default.nix).
 
-```text
-nix/
-├── flake.nix
-├── modules/
-│   ├── desktop/
-│   ├── hardware/
-│   ├── programs/
-│   ├── services/
-│   └── system/
-└── hosts/
-    ├── rflxn-asahi/
-    ├── rflxn-desktop/
-    └── rflxn-server/
-```
+## Module–Host Composition
 
-## Composition Model
+### Two-stage curried modules
 
-Most reusable modules follow this pattern:
+Most modules use a two-stage curried function:
 
 ```nix
 { optionA ? defaultA, ... }:
-{ pkgs, lib, username, ... }:
-{ ... }
+{ config, lib, pkgs, username, ... }:
+{
+  # NixOS or Home Manager configuration
+}
 ```
 
-`flake.nix` passes shared `specialArgs` into each host:
+The two layers have different responsibilities:
 
-- `modules`: the module library exported from `./modules`
-- `shared`: common values such as `username`, timezone, locale, and Syncthing device IDs
-- `username`: convenience alias from `shared.username`
-- `defaultPersistPath = "/persist"`
-- selected flake inputs needed by each host, such as `home-manager`, `impermanence`, `rflxn-shell`, `distro-grub-themes`, `aarch64-widevine`, and `vscode-server`
+1. The first attribute set is the module's repository-local API. A host supplies simple values such as ports, devices, feature switches, or persistence paths.
+2. The second attribute set receives the normal NixOS module arguments from `nixosSystem`, including `config`, `lib`, `pkgs`, and values passed through `specialArgs`.
 
-Host composition style:
+Calling the first layer returns a regular NixOS module, so hosts can compose configured modules directly in `imports`:
 
-- `hosts/rflxn-desktop/` splits its config into `desktop.nix`, `services.nix`, `programs.nix`, and `systems.nix`
-- `hosts/rflxn-asahi/configuration.nix` composes most modules inline because the machine is more specialized
-- `hosts/rflxn-server/configuration.nix` keeps most of the headless service stack in one place
+```nix
+{ modules, ... }:
+{
+  imports = with modules.services; [
+    (useDocker {
+      isBtrfs = true;
+      isRootless = true;
+    })
+    (useTailscale {})
+  ];
+}
+```
 
-## Flake Overview
+`flake.nix` imports the module tree once and passes it to every host as `specialArgs.modules`. It also passes shared values such as `username`, locale, timezone, Syncthing device IDs, and `defaultPersistPath`.
 
-`flake.nix` currently tracks:
+### Why this structure is used
 
-- `nixpkgs = github:NixOS/nixpkgs/nixos-unstable`
-- `apple-silicon`
-- `home-manager`
-- `impermanence`
-- `vscode-server`
-- `lanzaboote`
-- `distro-grub-themes`
-- `aarch64-widevine`
-- `rflxn-shell`
-- `claude-code`
-- `codex-cli-nix`
-- `codex-desktop`
-- `battery-logger`
-- `xivlauncher-rb`
-- `xivmitm-nix`
+![Three-host module composition](./vdg.jpg)
 
-Shared values defined directly in the flake:
+In the diagram, Host A represents `rflxn-desktop`, Host B represents `rflxn-asahi`, and Host C represents `rflxn-server`.
 
-- `username = "rflxn"`
-- `timezone = "Asia/Seoul"`
-- `locale = "en_US.UTF-8"`
-- Syncthing device IDs for all three hosts
+- The center represents modules shared by all three hosts, such as user creation, Nix settings, impermanence, and common CLI tools.
+- Pairwise overlaps represent features shared by only two hosts, such as the Hyprland desktop stack or selected network services.
+- The non-overlapping areas remain host-specific: AMD gaming configuration, Apple Silicon support and firmware, or headless server services.
 
-Per-host entrypoints:
+This keeps reusable behavior independent of host names, makes differences visible at each host's `imports`, and avoids one large module filled with per-machine conditionals. Each host can reuse the same module with its own first-layer arguments.
 
-- `hosts/rflxn-desktop/default.nix`
-- `hosts/rflxn-asahi/default.nix`
-- `hosts/rflxn-server/default.nix`
+```text
+.
+├── flake.nix
+├── hosts/
+│   ├── rflxn-desktop/
+│   ├── rflxn-asahi/
+│   └── rflxn-server/
+└── modules/
+    ├── desktop/
+    ├── hardware/
+    ├── programs/
+    ├── services/
+    └── system/
+```
 
-## Host Profiles
+## Hosts
 
 ### `rflxn-desktop`
 
-- Platform: `x86_64-linux`
-- Role: main desktop and gaming workstation
-- Session stack: Hyprland from nixpkgs with UWSM, greetd autologin, QuickShell, Hyprshell, Hyprlock, and Hyprpolkit
-- Display layout: `DP-3` and rotated `HDMI-A-1`; workspaces `1` to `7` use `master` on `DP-3`, while workspace `8` uses vertical `scrolling` on `HDMI-A-1`
-- Theme: Matcha GTK and Qt/Kvantum, Papirus icons, and the Rose Pine cursor/hyprcursor theme
-- Wallpaper and rules: Linux Wallpaper Engine per monitor; Discord, MopiMopi, Spotify, and Vesktop are assigned to workspace `8`
-- Services: PipeWire with low-latency and denoised-mic config, Docker with both the system daemon and rootless user daemon enabled, Flatpak, GPU Screen Recorder in replay mode with the NixOS capability wrapper, keyd, removable-storage automounting, Home Manager, Syncthing user service, Tailscale, and rtkit
-- Programs: browsers, IDEs, AI tooling including Codex CLI/Desktop, gaming tools, media tools, and general desktop apps
-- System: EFI GRUB with the NixOS distro theme, Plymouth, the latest nixpkgs kernel, impermanence, NetworkManager with iwd, zram, AMD GPU overdrive support, Bluetooth, and shared font and IME setup
-- Secure Boot: the Lanzaboote input and reusable module remain available, but the desktop host does not currently import the module
+- AMD `x86_64-linux` desktop with Hyprland, UWSM, greetd autologin, QuickShell, and a two-monitor workspace layout.
+- Uses EFI GRUB with Plymouth, the latest nixpkgs kernel, Btrfs impermanence, NetworkManager, zram, and AMD GPU overdrive.
+- Includes desktop applications, development tools, Steam/Wine tooling, GPU Screen Recorder, FFXIV tooling, Syncthing, and Tailscale.
+- Composition is split into `desktop.nix`, `programs.nix`, `services.nix`, and `systems.nix` under [`hosts/rflxn-desktop`](./hosts/rflxn-desktop).
 
 ### `rflxn-asahi`
 
-- Platform: `aarch64-linux`
-- Role: Apple Silicon laptop
-- Session stack: Hyprland from nixpkgs with UWSM, greetd autologin, QuickShell, Hyprshell, Hypridle, Hyprlock, Hyprpolkit, and the tray bridge
-- Input and display: built-in `eDP-1`, touchpad defaults, 3-finger workspace gesture, and Mac-style key remaps through keyd
-- Monitor toggle: `SUPER SHIFT, P` switches `eDP-1` between `60 Hz` and `120 Hz`
-- Firmware: the Apple peripheral firmware extraction step expects `firmware.cpio`; see the firmware caveat below
-- Services: PipeWire, Docker with both the system daemon and rootless user daemon enabled, Flatpak, keyd, libinput, removable-storage automounting, rtkit, Home Manager, Syncthing user service, and Tailscale with systray support and its UDP transport port open
-- Programs: desktop and development tools, including Firefox with aarch64 Widevine support
-- System: Apple Silicon support module, EFI with `canTouchEfiVariables = false`, systemd-boot, impermanence, NetworkManager Wi-Fi, Bluetooth, graphics with `enable32Bit = false`, zram, shared font and IME setup
-- Battery logger: the input and reusable module are present, but the host import is currently commented out
+- Apple Silicon `aarch64-linux` laptop using the `nixos-apple-silicon` module.
+- Uses Hyprland on the built-in `eDP-1` display, including touchpad gestures and a `60 Hz`/`120 Hz` monitor toggle.
+- Uses systemd-boot with five retained configurations, Btrfs impermanence, NetworkManager Wi-Fi, zram, and an enabled stateful firewall.
+- Includes Apple peripheral firmware, aarch64 Widevine support, Syncthing, and Tailscale.
+- The specialized composition is kept mainly in [`hosts/rflxn-asahi/configuration.nix`](./hosts/rflxn-asahi/configuration.nix).
 
 ### `rflxn-server`
 
-- Platform: `x86_64-linux`
-- Role: headless server, remote development host, and sync box
-- Services: Docker, Cloudflare DDNS OCI container, Home Manager, JetBrains Remote, SSH, Samba, Tailscale, VS Code server, Syncthing system service, Deluge, and nginx
-- Reverse proxy: nginx exposes Deluge under `/torrent` and Syncthing under `/syncthing` over plain HTTP on port `80`
-- Programs: zsh, git, direnv, nix-index, Claude Code, and common CLI tooling
-- System: EFI, systemd-boot, impermanence, and standard nix cache, GC, and optimise settings
-- Network role: XIVMitm gateway rules assume server interface `enp5s0`, server address `192.168.100.100`, and desktop client `192.168.100.101`; the fixed addressing or DHCP reservation is managed outside this repository
+- Headless `x86_64-linux` server using systemd-boot and Btrfs impermanence.
+- Runs Docker, Cloudflare DDNS, SSH, Samba, Deluge, Syncthing, Tailscale, nginx reverse proxies, JetBrains Remote, and VS Code Server.
+- Acts as the XivMitm gateway for the desktop and as the central Syncthing peer for the other hosts.
+- The service-oriented composition is in [`hosts/rflxn-server/configuration.nix`](./hosts/rflxn-server/configuration.nix).
 
-## Build and Inspection
+## Build Requirements
+
+### Common requirements
+
+- Nix must have the `nix-command` and `flakes` experimental features enabled.
+- The checked-in `hardware-configuration.nix` files and filesystem UUIDs are machine-specific. Regenerate or update them before installing on different hardware.
+- Impermanence expects Btrfs subvolumes named `@root`, `@root-blank`, `@nix`, and `@persist`. The server mounts its persistence filesystem separately.
+- All hosts expect the user password hash at `/persist/secrets/rflxn.hashedPassword`. The desktop also uses it for the root account.
+
+Create the shared password secret without committing it:
 
 ```bash
-# Inspect the flake
-nix flake show
-nix flake check --no-build
+sudo install -d -m 0700 /persist/secrets
+mkpasswd -m sha-512 | sudo tee /persist/secrets/rflxn.hashedPassword >/dev/null
+sudo chmod 0600 /persist/secrets/rflxn.hashedPassword
+```
 
-# Build without switching
+### `rflxn-desktop`
+
+The desktop requires the common password secret and its machine-specific storage layout. Its XivMitm route also assumes gateway `192.168.100.100` on interface `eno1`.
+
+```bash
+# Build only
 nix build .#nixosConfigurations.rflxn-desktop.config.system.build.toplevel
-nix build .#nixosConfigurations.rflxn-asahi.config.system.build.toplevel
+
+# Build and activate
+sudo nixos-rebuild switch --flake .#rflxn-desktop
+```
+
+### `rflxn-asahi`
+
+The Asahi host requires device-specific, non-redistributable Apple firmware at:
+
+```text
+hosts/rflxn-asahi/firmware/firmware.cpio
+```
+
+The file can be copied from the machine's EFI system partition after the Asahi installer has generated it:
+
+```bash
+install -m 0600 /boot/vendorfw/firmware.cpio \
+  hosts/rflxn-asahi/firmware/firmware.cpio
+```
+
+The firmware directory is intentionally ignored by Git. Use an explicit `path:` flake reference so Nix includes the ignored firmware without moving `.git` or committing proprietary files:
+
+```bash
+# Build only
+nix build 'path:.#nixosConfigurations.rflxn-asahi.config.system.build.toplevel'
+
+# Build and activate
+sudo nixos-rebuild switch --flake 'path:.#rflxn-asahi'
+```
+
+Firmware is device-specific. Replace `firmware.cpio` with the target Mac's copy before building for another Apple Silicon machine.
+
+### `rflxn-server`
+
+In addition to the common password hash, the server expects these runtime secrets:
+
+| Path | Purpose |
+| --- | --- |
+| `/persist/secrets/ddns.env` | Cloudflare DDNS environment file containing `API_KEY=...` |
+| `/persist/secrets/deluge.auth` | Deluge daemon authentication file |
+| `/persist/secrets/deluge-web.auth` | JSON object containing `pwd_salt` and `pwd_sha1` |
+
+The configured XivMitm gateway assumes interface `enp5s0` and desktop client `192.168.100.101/32`. Address assignment is managed outside this repository.
+
+```bash
+# Build only
 nix build .#nixosConfigurations.rflxn-server.config.system.build.toplevel
 
-# Switch
-sudo nixos-rebuild switch --flake .#rflxn-desktop
-sudo nixos-rebuild switch --flake .#rflxn-asahi
+# Build and activate
 sudo nixos-rebuild switch --flake .#rflxn-server
-```
-
-`nix flake check --no-build` verifies evaluation, not the availability or buildability of every runtime asset. In particular, check the Asahi firmware caveat before relying on a successful evaluation.
-
-## Prerequisites and Secrets
-
-### Global
-
-1. The hosts assume `btrfs` subvolumes named `@root`, `@root-blank`, `@nix`, and `@persist`. The server keeps `@persist` on a separate Btrfs filesystem from `@root`.
-2. `/persist` is the default persistence root passed into modules.
-3. Create the user password hash file:
-
-```bash
-mkdir -p /persist/secrets
-mkpasswd -m sha-512 > /persist/secrets/rflxn.hashedPassword
-```
-
-### Desktop (`rflxn-desktop`)
-
-- The active boot loader is GRUB. Lanzaboote and Secure Boot are not currently enabled by the host.
-- If Lanzaboote is enabled later, create and enroll `sbctl` keys first. The reusable Lanzaboote module persists `/var/lib/sbctl`.
-
-### Asahi (`rflxn-asahi`)
-
-The Apple Silicon support module expects the non-redistributable `firmware.cpio` file.
-
-The current configuration points at `hosts/rflxn-asahi/firmware`, while that directory's `.gitignore` excludes all firmware files. Because `.gitignore` itself is tracked, the directory-existence check succeeds even when the required files are absent. Git-backed flake evaluation also excludes ignored files from the copied Nix store source.
-
-The local build workflow temporarily moves `.git` out of the repository so Nix evaluates it as a plain path and includes the ignored firmware. With the Git metadata present, a normal `nix build .#...` excludes `firmware.cpio` and fails. When building for another Mac, replace the local file with that machine's `/boot/vendorfw/firmware.cpio` first. A successful `nix flake check` alone does not validate this firmware payload.
-
-### Server (`rflxn-server`)
-
-- Cloudflare DDNS expects:
-
-```bash
-mkdir -p /persist/secrets
-printf 'API_KEY=your_cloudflare_api_token\n' > /persist/secrets/ddns.env
-```
-
-- Deluge expects:
-  - `/persist/secrets/deluge.auth` in Deluge `auth` file format
-  - `/persist/secrets/deluge-web.auth` as JSON with `pwd_salt` and `pwd_sha1`
-
-## Current Security And Network Posture
-
-Desktop and Server currently assume a trusted home network, while Asahi treats its physical networks as untrusted:
-
-- Desktop and Server keep `networking.firewall.enable = false`; their LAN and permitted tailnet peers can reach listening services.
-- Asahi enables the stateful firewall, trusts incoming traffic on `tailscale0`, and opens UDP `41641` on physical interfaces for direct Tailscale transport.
-- Desktop and Asahi bind the Syncthing GUI to `0.0.0.0:8384`; Asahi's physical interfaces are blocked by its firewall, while permitted tailnet peers can still reach the GUI. GUI authentication is not enforced declaratively by this repository.
-- Server nginx listens on the default all-interface HTTP port `80` and proxies `/torrent` and `/syncthing` without TLS at the proxy layer.
-- Server SSH permits password authentication, and Deluge enables remote daemon access.
-
-Actual internet reachability still depends on routing, NAT, IPv6, and upstream firewall rules. Review Desktop and Server bindings before exposing either host beyond the trusted home network.
-
-## Troubleshooting
-
-### Recover missing m1n1 payload on `rflxn-asahi`
-
-If the Asahi machine stops before systemd-boot and the boot log ends around
-`Running proxy...`, the stage-1 m1n1 loader may be unable to find the stage-2
-payload at `m1n1/boot.bin` on the NixOS EFI system partition.
-
-From macOS, mount the NixOS EFI partition and check whether the `m1n1` directory
-is missing:
-
-```zsh
-diskutil list internal
-diskutil mount <nixos-efi-partition>
-ls -la "/Volumes/EFI - NIXOS"
-```
-
-If the mounted partition contains `EFI/`, `loader/`, `vendorfw/`, and `asahi/`
-but no `m1n1/`, install a temporary UEFI-only payload:
-
-```zsh
-ESP="/Volumes/EFI - NIXOS"
-PKG_URL="https://cdn.asahilinux.org/os/uefi-only-20260301-asahi-6.18.10-1.zip"
-
-work="$(mktemp -d /tmp/asahi-m1n1.XXXXXX)"
-curl -fL --progress-bar -o "$work/uefi-only.zip" "$PKG_URL"
-ditto -x -k "$work/uefi-only.zip" "$work/extracted"
-
-sudo mkdir -p "$ESP/m1n1"
-sudo cp -f "$work/extracted/esp/m1n1/boot.bin" "$ESP/m1n1/boot.bin"
-sync
-diskutil unmount "$ESP"
-```
-
-This payload is only for recovery. After NixOS boots, reinstall the payload from
-the current NixOS generation:
-
-```bash
-sudo mkdir -p /boot/m1n1
-sudo /run/current-system/bin/switch-to-configuration switch
-sudo reboot
 ```
 
 ## Module API
 
-See [API.md](./API.md) for the detailed module API reference.
-
-## QuickShell Workflow
-
-Current behavior of `modules/desktop/hyprland/quickshell/default.nix`:
-
-- The module imports `rflxn-shell.nixosModules.default`.
-- Home Manager enables `services.rflxn-shell`.
-- Host files pass monitor-specific `services.rflxn-shell.configs` data.
-- Home Manager starts `rflxn-shell.service` as a user systemd service.
+See [`API.md`](./API.md) for the exported `modules.system`, `modules.hardware`, `modules.desktop`, `modules.programs`, and `modules.services` API, including function arguments, defaults, required `specialArgs`, and known constraints.

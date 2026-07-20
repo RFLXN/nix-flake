@@ -1,4 +1,4 @@
-# API.md
+# Module API
 
 Reference for the current exported API under `./modules`.
 
@@ -47,10 +47,13 @@ Required input-backed modules:
 | `modules.programs.useCodex` | `codex-cli-nix` |
 | `modules.programs.useCodexDesktop` | `codex-desktop` |
 | `modules.programs.useFirefox { enableWidevine = true; }` | optional `aarch64-widevine` on Asahi |
+| `modules.programs.gaming.ffxiv.useFFXIV` | `xivlauncher-rb` |
 | `modules.programs.gaming.ffxiv.useXivMitmClientRoutes` / `useXivMitmGateway` | `xivmitm-nix` |
 | `modules.services.useBatteryLogger` | `battery-logger` |
 | `modules.services.useHomeManager` | `home-manager` |
 | `modules.services.useVscodeServer` | `vscode-server` |
+
+`modules.desktop.plasma6.usePlasma6` remains exported, but the current root flake does not define or pass a `plasma-manager` input. Add that input to the target host before importing the module.
 
 ## Export Tree
 
@@ -78,7 +81,10 @@ modules = {
       theme = { ... };
       ...
     };
-    qt.theme = { ... };
+    qt = {
+      theme = { ... };
+      useDolphinQtTheme = ...;
+    };
     xdgPortal = {
       useHyprlandPortal = ...;
       useKdePortal = ...;
@@ -258,7 +264,12 @@ modules = {
   Configures Rose Pine GTK theme and optional transparency CSS.
   Allowed variants: `main`, `moon`, `dawn`.
 
-### `modules.desktop.qt.theme`
+### `modules.desktop.qt`
+
+- `qt.useDolphinQtTheme { colorScheme ? "*" }`
+  Sets Dolphin's Qt/KDE color scheme through Home Manager. The wildcard default lets the active Qt theme supply the color scheme.
+
+#### `modules.desktop.qt.theme`
 
 - `qt.theme.useMatcha { color ? "dark", kvantumTranslucentWindows ? true, kvantumBlurring ? true, kvantumPopupBlurring ? true, kvantumReduceWindowOpacity ? 12 }`
   Packages `vinceliuice/Matcha-kde`, installs Qt/Kvantum support, and configures Qt5/Qt6 to use the Matcha Kvantum theme.
@@ -320,7 +331,6 @@ modules = {
 
 - `hyprland.useHypridle { timeToScreenOff ? 600, timeToLock ? 900, timeToSuspend ? 1800 }`
   Enables Hypridle with DPMS off, lock, and suspend listeners.
-  Note: the module currently hardcodes `600`, `900`, and `1800` in the listener list, so the declared arguments are currently no-ops.
 
 - `hyprland.useHyprland { enableXWayland ? true, monitors ? null, workspaces ? null, followMouse ? 1, pointerSpeed ? 0, enableMouseAcceleration ? false, disableHardwareCursors ? false, noCursorWarps ? true }`
   Enables Hyprland and UWSM, exports Wayland/IME session variables, starts `fcitx5`, and applies monitor/workspace/input/cursor settings.
@@ -338,6 +348,12 @@ modules = {
 
 - `hyprland.useTrayBridge {}`
   Enables `snixembed`.
+
+- `hyprland.useXdgMenu { prefix ? "hyprland-" }`
+  Sets `XDG_MENU_PREFIX` and generates an applications menu so non-Plasma sessions can resolve desktop applications and “Open With” handlers.
+
+- `hyprland.useXdgUserDirs { createDirectories ? true }`
+  Enables Home Manager XDG user directories, exports their session variables, and optionally creates the standard Desktop, Documents, Downloads, Music, Pictures, and Videos directories.
 
 #### `modules.desktop.hyprland.cursors`
 
@@ -461,8 +477,8 @@ modules = {
 - `programs.gaming.ffxiv.useXivMitmClientRoutes { gateway, interface, ranges ? null }`
   Wraps `xivmitm-nix.nixosModules.client` and enables client-side FFXIV routes through the given gateway/interface.
 
-- `programs.gaming.ffxiv.useXivMitmGateway { listenPort ? 10514, incomingInterface ? null, outgoingInterface ? incomingInterface, clientCidr ? null, portRange ? "1024:65535", ranges ? null, manageDocker ? false, runContainer ? false, ... }`
-  Wraps `xivmitm-nix.nixosModules.server` and enables server-side sysctls and iptables routing for XivMitmLatencyMitigator. Docker container management stays disabled by default for raw Compose usage.
+- `programs.gaming.ffxiv.useXivMitmGateway { listenPort ? 10514, incomingInterface ? null, outgoingInterface ? incomingInterface, clientCidr ? null, portRange ? "1024:65535", ranges ? null, manageDocker ? false, runContainer ? false, ffxivDx11Exe ? null, dataDir ? null, listenAddress ? null, measurePing ? null, webStatistics ? null, extraMitmArgs ? null }`
+  Wraps `xivmitm-nix.nixosModules.server` and enables server-side sysctls and iptables routing for XivMitmLatencyMitigator. Non-null optional values are forwarded to the upstream server module; Docker container management stays disabled by default for raw Compose usage.
 
 ### `modules.programs.jetbrains`
 
@@ -515,8 +531,8 @@ modules = {
 - `useDiscord {}`
   Installs the stock Discord package with an XWayland/fcitx desktop entry for stable IME behavior.
 
-- `useDolphin {}`
-  Installs KDE Dolphin.
+- `useDolphin { withSilentKdeDeps ? false }`
+  Installs KDE Dolphin. When `withSilentKdeDeps = true`, wraps it with the KService, KDE CLI, and KIO data needed for working “Open With” handlers outside Plasma while suppressing cache rebuild output.
 
 - `useEquibop { package ? null }`
   Installs Equibop and registers it as the default handler for `x-scheme-handler/discord`.
@@ -593,9 +609,6 @@ modules = {
 
 - `useThunderbird { package ? null }`
   Enables Thunderbird through the NixOS `programs.thunderbird` module.
-
-- `useThunar {}`
-  Enables Thunar plus archive, GVFS, and tumbler support.
 
 - `useVesktop {}`
   Installs a Vesktop variant with Wayland IME flags baked into the desktop entry.
@@ -727,8 +740,7 @@ These files exist in the tree but are not part of the exported `modules` API:
 - `modules/system/boot/grub/theme/hyperfluent.nix`
   GRUB theme derivation, currently not exported from `modules.system.boot`.
 
-## Current API Quirks
+## Current API Constraints
 
-- `hyprland.useHypridle` declares timeout arguments but currently hardcodes the listener values.
 - `services.useSyncthing.persistPath` only affects the `serviceLevel = "system"` branch.
 - `services.useNginX` and `services.nginx.useNginX` are the same export surface.

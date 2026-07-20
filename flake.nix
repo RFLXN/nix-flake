@@ -16,13 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-utils-systems-linux.url = "github:nix-systems/default-linux";
-
-    vscode-server = {
-      url = "github:nix-community/nixos-vscode-server";
-      inputs.flake-utils.inputs.systems.follows = "flake-utils-systems-linux";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";

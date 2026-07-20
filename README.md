@@ -57,7 +57,6 @@ Host composition style:
 - `apple-silicon`
 - `home-manager`
 - `impermanence`
-- `flake-utils-systems-linux`
 - `vscode-server`
 - `lanzaboote`
 - `distro-grub-themes`
@@ -105,7 +104,7 @@ Per-host entrypoints:
 - Session stack: Hyprland from nixpkgs with UWSM, greetd autologin, QuickShell, Hyprshell, Hypridle, Hyprlock, Hyprpolkit, and the tray bridge
 - Input and display: built-in `eDP-1`, touchpad defaults, 3-finger workspace gesture, and Mac-style key remaps through keyd
 - Monitor toggle: `SUPER SHIFT, P` switches `eDP-1` between `60 Hz` and `120 Hz`
-- Firmware: the Apple peripheral firmware extraction step expects `all_firmware.tar.gz` and `kernelcache*`; see the firmware caveat below
+- Firmware: the Apple peripheral firmware extraction step expects `firmware.cpio`; see the firmware caveat below
 - Services: PipeWire, Docker with both the system daemon and rootless user daemon enabled, Flatpak, keyd, libinput, removable-storage automounting, rtkit, Home Manager, Syncthing user service, and Tailscale with systray support and its UDP transport port open
 - Programs: desktop and development tools, including Firefox with aarch64 Widevine support
 - System: Apple Silicon support module, EFI with `canTouchEfiVariables = false`, systemd-boot, impermanence, NetworkManager Wi-Fi, Bluetooth, graphics with `enable32Bit = false`, zram, shared font and IME setup
@@ -161,14 +160,11 @@ mkpasswd -m sha-512 > /persist/secrets/rflxn.hashedPassword
 
 ### Asahi (`rflxn-asahi`)
 
-The Apple Silicon support module expects these non-redistributable firmware files:
-
-- `all_firmware.tar.gz`
-- one or more `kernelcache*` files
+The Apple Silicon support module expects the non-redistributable `firmware.cpio` file.
 
 The current configuration points at `hosts/rflxn-asahi/firmware`, while that directory's `.gitignore` excludes all firmware files. Because `.gitignore` itself is tracked, the directory-existence check succeeds even when the required files are absent. Git-backed flake evaluation also excludes ignored files from the copied Nix store source.
 
-Consequently, copying firmware into the ignored directory is not sufficient for a normal pure `nix build .#...`: the firmware must be supplied through a source visible to the flake, such as a deliberately managed private source or an explicit external/impure path after adjusting the host configuration. A successful `nix flake check` alone does not validate this firmware payload.
+The local build workflow temporarily moves `.git` out of the repository so Nix evaluates it as a plain path and includes the ignored firmware. With the Git metadata present, a normal `nix build .#...` excludes `firmware.cpio` and fails. When building for another Mac, replace the local file with that machine's `/boot/vendorfw/firmware.cpio` first. A successful `nix flake check` alone does not validate this firmware payload.
 
 ### Server (`rflxn-server`)
 

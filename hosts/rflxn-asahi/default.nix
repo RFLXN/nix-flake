@@ -7,7 +7,6 @@
         inherit shared modules;
         inherit (inputs)
           nixpkgs
-          plasma-manager
           impermanence
           home-manager
           aarch64-widevine

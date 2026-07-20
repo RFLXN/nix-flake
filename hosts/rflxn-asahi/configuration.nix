@@ -200,7 +200,7 @@
     # System
     (with modules.system; [
       (boot.useEfiBoot { canTouchEfiVariables = false; })
-      (boot.useSystemdBoot { consoleMode = "0"; configurationLimit = 15; })
+      (boot.useSystemdBoot { consoleMode = "0"; configurationLimit = 5; })
       (nix.useCache {})
       (nix.useExperimentalFeatures {})
       (nix.useGc { dates = "Wed 05:00"; })
@@ -224,6 +224,8 @@
 
   # Host-specific configuration
   networking.hostName = "rflxn-asahi";
+
+  hardware.asahi.enable = true;
 
   # Apple keyboard: F1-F12 as function keys by default, Fn+F1-F12 for media
   # Note: Asahi Linux inverts the meaning, so fnmode=2 gives us function keys by default

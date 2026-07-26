@@ -4,6 +4,7 @@
     (pipewire.useLowLatency {})
     (pipewire.usePipewire {})
     (useDocker { isBtrfs = true; isRootless = true; })
+    (useEasyEffects {})
     (useFlatpak {})
     (useGpuScreenRecorder { window = "DP-3"; })
     (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })

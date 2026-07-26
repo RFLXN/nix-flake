@@ -657,6 +657,10 @@ modules = {
 - `useDeluge { authFile ? null, downloadDir ? null, webAuthFile ? null, webHost ? "0.0.0.0", webPort ? 8112, persistPath ? null }`
   Enables Deluge, writes `core.conf`, optionally installs `auth` and `web.conf` from secret files, and persists `/var/lib/deluge` when a persistence path is available.
 
+- `useEasyEffects { preset ? "", extraPresets ? {} }`
+  Enables the Home Manager EasyEffects user service and the system dconf integration it requires. EasyEffects stores its settings and presets under the user's XDG directories, so this module does not add `/var` persistence.
+  Assertion: PipeWire must be enabled.
+
 - `useFlatpak { persistPath ? null }`
   Enables Flatpak and persists `/var/lib/flatpak` when a persistence path is available.
 

@@ -81,7 +81,7 @@ This keeps reusable behavior independent of host names, makes differences visibl
 
 - AMD `x86_64-linux` desktop with Hyprland, UWSM, greetd autologin, QuickShell, and a two-monitor workspace layout.
 - Uses EFI GRUB with Plymouth, the latest nixpkgs kernel, Btrfs impermanence, NetworkManager, zram, and AMD GPU overdrive.
-- Includes desktop applications, development tools, Steam/Wine tooling, GPU Screen Recorder, FFXIV tooling, Syncthing, and Tailscale.
+- Includes desktop applications, development tools, Steam/Wine tooling, EasyEffects, GPU Screen Recorder, FFXIV tooling, Syncthing, and Tailscale.
 - Composition is split into `desktop.nix`, `programs.nix`, `services.nix`, and `systems.nix` under [`hosts/rflxn-desktop`](./hosts/rflxn-desktop).
 
 ### `rflxn-asahi`

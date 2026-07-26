@@ -7,6 +7,7 @@ in {
   useBatteryLogger = import ./battery-logger;
   useDocker = import ./docker;
   useDeluge = import ./deluge;
+  useEasyEffects = import ./easyeffects;
   useFlatpak = import ./flatpak;
   useGpuScreenRecorder = import ./gpu-screen-recorder;
   useHomeManager = import ./home-manager;

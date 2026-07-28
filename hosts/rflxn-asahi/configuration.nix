@@ -182,6 +182,7 @@
       (useKitty {})
       (useKolourpaint {})
       (useNixIndex {})
+      (useObsidian {})
       (useSpotify {})
       (useThunderbird {})
       (useVscode {})

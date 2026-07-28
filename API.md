@@ -586,6 +586,9 @@ modules = {
 - `useNmApplet {}`
   Installs `networkmanagerapplet`.
 
+- `useObsidian {}`
+  Installs Obsidian.
+
 - `useObsStudio { enableVirtualCamera ? false, enableAmdVaapi ? true, extraPlugins ? [] }`
   Enables OBS Studio with the repo's default plugin set and optional VAAPI/extra plugins.
 

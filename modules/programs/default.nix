@@ -30,6 +30,7 @@
   useMoonlight = import ./moonlight;
   useNixIndex = import ./nix-index;
   useNmApplet = import ./nm-applet;
+  useObsidian = import ./obsidian;
   useObsStudio = import ./obs-studio;
   usePeaZip = import ./peazip;
   usePwvucontrol = import ./pwvucontrol;

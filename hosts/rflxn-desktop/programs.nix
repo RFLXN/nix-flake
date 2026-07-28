@@ -56,6 +56,7 @@
     (useMoonlight {})
     (useNixIndex {})
     (useNmApplet {})
+    (useObsidian {})
     (useObsStudio {})
     (usePeaZip {})
     (usePwvucontrol {})

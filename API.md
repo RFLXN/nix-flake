@@ -513,8 +513,9 @@ modules = {
 - `useCodex {}`
   Installs Codex CLI from the `codex-cli-nix` flake input.
 
-- `useCodexDesktop {}`
+- `useCodexDesktop { quitOnClose ? false }`
   Enables the upstream Codex Desktop Linux Home Manager module from the `codex-desktop` flake input.
+  When `quitOnClose` is enabled, prevents the final Codex window from being hidden to the system tray and exits the application when that window is closed.
 
 - `useCommonTools {}`
   Installs the repo's common CLI toolkit.

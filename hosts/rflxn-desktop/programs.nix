@@ -31,7 +31,7 @@
     (useBlueman {})
     (useClaudeCode {})
     (useCodex {})
-    (useCodexDesktop {})
+    (useCodexDesktop { quitOnClose = true; })
     (useCommonTools {})
     (useChromium {})
     (useDirenv {})

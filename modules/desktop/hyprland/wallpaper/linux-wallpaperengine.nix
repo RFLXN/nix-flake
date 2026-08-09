@@ -2,16 +2,15 @@
 { pkgs, lib, username, ... }:
 let
   wallpaperArgs = lib.concatMapStringsSep " " (w: "--screen-root ${w.screen} --bg ${w.wallpaper}") wallpapers;
-  wallpaperCommand = "${pkgs.linux-wallpaperengine}/bin/linux-wallpaperengine --fps ${toString fps} --silent ${wallpaperArgs}";
+  wallpaperCommand = "${pkgs.coreutils}/bin/env SDL_AUDIODRIVER=dummy SDL_AUDIO_DRIVER=dummy ${pkgs.linux-wallpaperengine}/bin/linux-wallpaperengine --fps ${toString fps} --silent ${wallpaperArgs}";
 
   restart-wallpaper = pkgs.writeShellScriptBin "restart-wallpaper" ''
     pkill -x linux-wallpaperengine >/dev/null 2>&1 || true
-    nohup ${wallpaperCommand} >/dev/null 2>&1 &
+    ${wallpaperCommand} &
   '';
-
   restart-wallpaper-desktop = pkgs.makeDesktopItem {
     name = "restart-wallpaper";
-    desktopName = "Restart Wallpaper Engine";
+    desktopName = "Restart Wallpaper";
     exec = "${restart-wallpaper}/bin/restart-wallpaper";
     icon = "preferences-desktop-wallpaper";
     terminal = false;

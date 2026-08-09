@@ -12,4 +12,5 @@
 
   useDenoisedMic = import ./denoised-mic.nix;
   useLowLatency = import ./low-latency.nix;
+  useProfileChanger = import ./profile-changer.nix;
 }

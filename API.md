@@ -418,6 +418,7 @@ modules = {
 
 - `hyprland.wallpaper.useLinuxWallpaperEngine { wallpapers, fps ? 60 }`
   Starts Linux Wallpaper Engine via Hyprland `exec-once` and installs a restart helper.
+  Its silent mode uses SDL's dummy audio backend so muted wallpapers do not occupy a PipeWire sink.
   `wallpapers` entries should look like `{ screen = "DP-3"; wallpaper = "2798192282"; }`.
   Assertion: `wallpapers` must not be empty.
 
@@ -605,8 +606,9 @@ modules = {
   Enables Home Manager SSH client config and writes OpenSSH blocks to `programs.ssh.settings`.
   When `enableDefaultConfig = false`, it writes the Home Manager legacy `Host *` defaults explicitly.
 
-- `useSpotify {}`
+- `useSpotify { withAlsaExclusive ? {} }`
   Installs Spotify on most systems, or `spotify-qt` plus `librespot` on `aarch64-linux`. On `aarch64-linux`, it patches `spotify-qt.json` if that file already exists.
+  Set `withAlsaExclusive = { enable = true; pipewire-target = "<sink node.name>"; profile ? null; rate ? 44100; suspend-existing ? false; parking-target ? "spotify-exclusive-park"; }` to additionally install the `spotify-alsa` command and the `Spotify: Alsa Exclusive` desktop entry. The command optionally activates a `pipewire-profile` and injects the exclusive target, clock, and DSP-bypass properties directly into Spotify's normal PulseAudio stream. With `suspend-existing = true`, the module creates a silent virtual parking sink. Existing PulseAudio-compatible streams are moved there, native PipeWire links are temporarily disconnected, and the parking sink becomes the default so clients opened during the session stay silent instead of taking the hardware target. The original default and stream routing are restored when Spotify exits or fails. This avoids restarting the shared `pipewire-pulse` server while still disabling remixing, resampling, fallback routing, and dither. Spotify's `FLOAT_LE` output is still converted to the hardware format by PipeWire.
 
 - `useTauon {}`
   Installs Tauon.
@@ -646,8 +648,15 @@ modules = {
 - `services.pipewire.useDenoisedMic {}`
   Adds an `rnnoise` filter-chain source called `Noise Canceling Source`.
 
-- `services.pipewire.useLowLatency {}`
-  Applies a fixed `48000 Hz` / `64 quantum` low-latency PipeWire config.
+- `services.pipewire.useLowLatency { defaultRate ? 48000, allowedRates ? [ 44100 48000 88200 96000 176400 192000 ], defaultQuantum ? 256, minQuantum ? 64, maxQuantum ? 2048 }`
+  Configures a flexible PipeWire clock range suitable for runtime profile switching.
+  Assertions require positive rates and ordered quantum bounds, and `allowedRates` must include `defaultRate`.
+
+- `services.pipewire.useProfileChanger { profiles, defaultProfile ? null }`
+  Installs the `pipewire-profile` CLI and a persistent StatusNotifierItem tray service.
+  Profile entries look like `{ name, label ? name, description ? label, icon ? "audio-card", rate ? null, quantum ? null, deviceProfiles ? [], startUserServices ? [], stopUserServices ? [] }`.
+  `deviceProfiles` entries look like `{ device, profile, required ? false }`, where `device` is a stable PipeWire `device.name`. A null clock value releases the corresponding PipeWire runtime override.
+  The selected profile is remembered and continuously enforced across PipeWire restarts and USB device reconnections.
 
 ### Other `modules.services` exports
 

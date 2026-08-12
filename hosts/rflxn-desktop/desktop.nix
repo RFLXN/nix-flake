@@ -38,15 +38,27 @@
               system-controls.programs = {
                 volume = {
                   command = lib.getExe pkgs.pwvucontrol;
-                  rules = "float; size 900 650; center";
+                  rules = {
+                    float = true;
+                    size = [ 900 650 ];
+                    center = true;
+                  };
                 };
                 bluetooth = {
                   command = "${pkgs.blueman}/bin/blueman-manager";
-                  rules = "float; size 760 560; center";
+                  rules = {
+                    float = true;
+                    size = [ 760 560 ];
+                    center = true;
+                  };
                 };
                 network = {
                   command = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
-                  rules = "float; size 880 640; center";
+                  rules = {
+                    float = true;
+                    size = [ 880 640 ];
+                    center = true;
+                  };
                 };
               };
             };
@@ -86,18 +98,42 @@
       enableMouseAcceleration = false;
       disableHardwareCursors = true;
       monitors = [
-        "DP-3, 1920x1080@200, 1080x220, 1"
-        "HDMI-A-1, 1920x1080@60, 0x0, 1, transform, 1"
+        {
+          output = "DP-3";
+          mode = "1920x1080@200";
+          position = "1080x220";
+          scale = 1;
+        }
+        {
+          output = "HDMI-A-1";
+          mode = "1920x1080@60";
+          position = "0x0";
+          scale = 1;
+          transform = 1;
+        }
       ];
       workspaces = [
-        "1, monitor:DP-3, default:true, persistent:true, layout:master"
-        "2, monitor:DP-3, persistent:true, layout:master"
-        "3, monitor:DP-3, persistent:true, layout:master"
-        "4, monitor:DP-3, persistent:true, layout:master"
-        "5, monitor:DP-3, persistent:true, layout:master"
-        "6, monitor:DP-3, persistent:true, layout:master"
-        "7, monitor:DP-3, persistent:true, layout:master"
-        "8, monitor:HDMI-A-1, default:true, persistent:true, layout:scrolling, layoutopt:direction:down"
+        {
+          workspace = "1";
+          monitor = "DP-3";
+          default = true;
+          persistent = true;
+          layout = "master";
+        }
+        { workspace = "2"; monitor = "DP-3"; persistent = true; layout = "master"; }
+        { workspace = "3"; monitor = "DP-3"; persistent = true; layout = "master"; }
+        { workspace = "4"; monitor = "DP-3"; persistent = true; layout = "master"; }
+        { workspace = "5"; monitor = "DP-3"; persistent = true; layout = "master"; }
+        { workspace = "6"; monitor = "DP-3"; persistent = true; layout = "master"; }
+        { workspace = "7"; monitor = "DP-3"; persistent = true; layout = "master"; }
+        {
+          workspace = "8";
+          monitor = "HDMI-A-1";
+          default = true;
+          persistent = true;
+          layout = "scrolling";
+          layout_opts.direction = "down";
+        }
       ];
     })
     (hyprland.useXdgMenu {})

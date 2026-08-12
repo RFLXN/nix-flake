@@ -207,6 +207,7 @@ modules = {
 
 - `useGreetd { enableRegreet ? false, regreetCompositor ? "hyprland", regreetPrimaryMonitor ? null, enableAutoLogin ? false, autoLoginSession ? "uwsm-hyprland", enableSilentSession ? enableAutoLogin }`
   Enables `greetd` for either Regreet or autologin.
+  The Hyprland Regreet compositor configuration is generated as Lua.
   `enableSilentSession` clears the text console and redirects the greetd-launched session command output to the journal instead of tty output.
   `regreetPrimaryMonitor` should look like `{ name = "DP-3"; res = "1920x1080@200"; }`.
   Assertion: at least one of `enableRegreet` or `enableAutoLogin` must be true.
@@ -333,7 +334,9 @@ modules = {
   Enables Hypridle with DPMS off, lock, and suspend listeners.
 
 - `hyprland.useHyprland { enableXWayland ? true, monitors ? null, workspaces ? null, followMouse ? 1, pointerSpeed ? 0, enableMouseAcceleration ? false, disableHardwareCursors ? false, noCursorWarps ? true }`
-  Enables Hyprland and UWSM, exports Wayland/IME session variables, starts `fcitx5`, and applies monitor/workspace/input/cursor settings.
+  Enables Hyprland and UWSM, generates `hyprland.lua` through Home Manager, exports Wayland/IME session variables, starts `fcitx5`, and applies monitor/workspace/input/cursor settings.
+  `monitors` must be a list of `hl.monitor` spec attrsets such as `{ output = "DP-3"; mode = "1920x1080@200"; position = "0x0"; scale = 1; }`.
+  `workspaces` must be a list of `hl.workspace_rule` spec attrsets such as `{ workspace = "1"; monitor = "DP-3"; default = true; persistent = true; layout = "master"; }`.
   If a `hyprland` flake input is present in `specialArgs`, it uses that package and matching portal.
 
 - `hyprland.useHyprlock {}`
@@ -378,7 +381,7 @@ modules = {
   Binds `gsr-save-replay`.
 
 - `hyprland.keybinds.useScreenOff { key ? "SUPER SHIFT, O", delaySeconds ? 1 }`
-  Binds a delayed `hyprctl dispatch dpms toggle`.
+  Binds a delayed Lua `hl.dsp.dpms` toggle.
 
 - `hyprland.keybinds.useHyprshot { key ? "Print" }`
   Binds region capture to `Print` and active-window capture to `Alt+Print`.
@@ -393,11 +396,13 @@ modules = {
 ```nix
 {
   monitorName = "eDP-1";
-  defaultSetup = "eDP-1, 3456x2160@60, 0x0, 1.6";
-  toggleSetup = "eDP-1, 3456x2160@120, 0x0, 1.6";
+  defaultSetup = { output = "eDP-1"; mode = "3456x2160@60"; position = "0x0"; scale = 1.6; };
+  toggleSetup = { output = "eDP-1"; mode = "3456x2160@120"; position = "0x0"; scale = 1.6; };
   key = "SUPER SHIFT, P";
 }
 ```
+
+  `defaultSetup` and `toggleSetup` must be `hl.monitor` spec attrsets; the helper applies them through `hyprctl eval`.
 
 #### `modules.desktop.hyprland.touchpad`
 
@@ -417,7 +422,7 @@ modules = {
   Assertion: one of the wallpaper forms must resolve to a non-empty config.
 
 - `hyprland.wallpaper.useLinuxWallpaperEngine { wallpapers, fps ? 60 }`
-  Starts Linux Wallpaper Engine via Hyprland `exec-once` and installs a restart helper.
+  Starts Linux Wallpaper Engine from the Lua `hyprland.start` event and installs a restart helper.
   Its silent mode uses SDL's dummy audio backend so muted wallpapers do not occupy a PipeWire sink.
   `wallpapers` entries should look like `{ screen = "DP-3"; wallpaper = "2798192282"; }`.
   Assertion: `wallpapers` must not be empty.

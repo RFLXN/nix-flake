@@ -1,5 +1,5 @@
 { key ? "SUPER, D" }:
-{ pkgs, username, ... }:
+{ hyprLua, pkgs, username, ... }:
 let
   toggleLauncher = pkgs.writeShellScriptBin "rflxn-shell-launcher-toggle" ''
     set -euo pipefail
@@ -22,6 +22,6 @@ let
 in
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings.bind = [
-    "${key}, exec, ${toggleLauncher}/bin/rflxn-shell-launcher-toggle"
+    (hyprLua.execBind key "${toggleLauncher}/bin/rflxn-shell-launcher-toggle")
   ];
 }

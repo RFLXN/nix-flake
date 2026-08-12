@@ -1,6 +1,6 @@
 {
   useDefaults = { mod ? "SUPER", subMod ? "SUPER SHIFT" }:
-    { pkgs, username, ... }:
+    { hyprLua, pkgs, username, ... }:
     let
       hyprSmartStep = pkgs.writeShellScriptBin "hypr-smart-step" ''
         set -euo pipefail
@@ -60,7 +60,7 @@
             before_w="$(printf '%s' "$active_window_json" | "$jq" -r '.size[0] // 0')"
             before_h="$(printf '%s' "$active_window_json" | "$jq" -r '.size[1] // 0')"
 
-            "$hyprctl" dispatch resizeactive "$dx" "$dy" >/dev/null
+            "$hyprctl" dispatch "hl.dsp.window.resize({ x = $dx, y = $dy, relative = true })" >/dev/null
 
             after_window_json="$("$hyprctl" -j activewindow 2>/dev/null || true)"
             after_w="$(printf '%s' "$after_window_json" | "$jq" -r '.size[0] // 0')"
@@ -71,10 +71,10 @@
             if [ "$floating" != "true" ] && [ "$before_w" = "$after_w" ] && [ "$before_h" = "$after_h" ]; then
               case "$direction" in
                 left|up)
-                  "$hyprctl" dispatch splitratio -0.05 >/dev/null
+                  "$hyprctl" dispatch 'hl.dsp.layout("splitratio -0.05")' >/dev/null
                   ;;
                 right|down)
-                  "$hyprctl" dispatch splitratio 0.05 >/dev/null
+                  "$hyprctl" dispatch 'hl.dsp.layout("splitratio 0.05")' >/dev/null
                   ;;
               esac
             fi
@@ -82,9 +82,9 @@
           swap-or-move)
             floating="$(printf '%s' "$active_window_json" | "$jq" -r '.floating // false')"
             if [ "$floating" = "true" ]; then
-              "$hyprctl" dispatch moveactive "$dx" "$dy" >/dev/null
+              "$hyprctl" dispatch "hl.dsp.window.move({ x = $dx, y = $dy, relative = true })" >/dev/null
             else
-              "$hyprctl" dispatch swapwindow "$swap_dir" >/dev/null
+              "$hyprctl" dispatch "hl.dsp.window.swap({ direction = \"$swap_dir\" })" >/dev/null
             fi
             ;;
           *)
@@ -97,65 +97,53 @@
       home-manager.users.${username} = {
         home.packages = [ hyprSmartStep ];
 
-        wayland.windowManager.hyprland.settings = {
-          "$mod" = "${mod}";
-          "$submod" = "${subMod}";
-          "$mleft" = "mouse:272";
-          "$mright" = "mouse:273";
-          "$mwheel" = "mouse:274";
+        wayland.windowManager.hyprland.settings.bind = [
+          # Window management
+          (hyprLua.bind "${mod}, Q" "hl.dsp.window.close()")
+          (hyprLua.bind "${mod}, V" ''hl.dsp.window.float({ action = "toggle" })'')
+          (hyprLua.bind "${mod}, F" "hl.dsp.window.fullscreen()")
+          (hyprLua.bind "${mod}, mouse_down" ''hl.dsp.layout("move -col")'')
+          (hyprLua.bind "${mod}, mouse_up" ''hl.dsp.layout("move +col")'')
 
-          bind = [
-            # Window management
-            "$mod, Q, killactive"
-            "$mod, V, togglefloating"
-            "$mod, F, fullscreen"
-            "$mod, mouse_down, layoutmsg, move -col"
-            "$mod, mouse_up, layoutmsg, move +col"
+          # Workspace navigation
+          (hyprLua.bind "${mod}, bracketleft" ''hl.dsp.focus({ workspace = "m-1" })'')
+          (hyprLua.bind "${mod}, bracketright" ''hl.dsp.focus({ workspace = "m+1" })'')
+          (hyprLua.bind "${mod}, 1" ''hl.dsp.focus({ workspace = "1" })'')
+          (hyprLua.bind "${mod}, 2" ''hl.dsp.focus({ workspace = "2" })'')
+          (hyprLua.bind "${mod}, 3" ''hl.dsp.focus({ workspace = "3" })'')
+          (hyprLua.bind "${mod}, 4" ''hl.dsp.focus({ workspace = "4" })'')
+          (hyprLua.bind "${mod}, 5" ''hl.dsp.focus({ workspace = "5" })'')
+          (hyprLua.bind "${mod}, 6" ''hl.dsp.focus({ workspace = "6" })'')
+          (hyprLua.bind "${mod}, 7" ''hl.dsp.focus({ workspace = "7" })'')
 
-            # Workspace navigation
-            "$mod, bracketleft, workspace, m-1"
-            "$mod, bracketright, workspace, m+1"
-            "$mod, 1, workspace, 1"
-            "$mod, 2, workspace, 2"
-            "$mod, 3, workspace, 3"
-            "$mod, 4, workspace, 4"
-            "$mod, 5, workspace, 5"
-            "$mod, 6, workspace, 6"
-            "$mod, 7, workspace, 7"
-
-            # Move current window to workspace
-            "$submod, bracketleft, movetoworkspacesilent, m-1"
-            "$submod, bracketright, movetoworkspacesilent, m+1"
-            "$submod, 1, movetoworkspacesilent, 1"
-            "$submod, 2, movetoworkspacesilent, 2"
-            "$submod, 3, movetoworkspacesilent, 3"
-            "$submod, 4, movetoworkspacesilent, 4"
-            "$submod, 5, movetoworkspacesilent, 5"
-            "$submod, 6, movetoworkspacesilent, 6"
-            "$submod, 7, movetoworkspacesilent, 7"
-            "$submod, 8, movetoworkspacesilent, 8"
-          ];
+          # Move current window to workspace
+          (hyprLua.bind "${subMod}, bracketleft" ''hl.dsp.window.move({ workspace = "m-1", follow = false })'')
+          (hyprLua.bind "${subMod}, bracketright" ''hl.dsp.window.move({ workspace = "m+1", follow = false })'')
+          (hyprLua.bind "${subMod}, 1" ''hl.dsp.window.move({ workspace = "1", follow = false })'')
+          (hyprLua.bind "${subMod}, 2" ''hl.dsp.window.move({ workspace = "2", follow = false })'')
+          (hyprLua.bind "${subMod}, 3" ''hl.dsp.window.move({ workspace = "3", follow = false })'')
+          (hyprLua.bind "${subMod}, 4" ''hl.dsp.window.move({ workspace = "4", follow = false })'')
+          (hyprLua.bind "${subMod}, 5" ''hl.dsp.window.move({ workspace = "5", follow = false })'')
+          (hyprLua.bind "${subMod}, 6" ''hl.dsp.window.move({ workspace = "6", follow = false })'')
+          (hyprLua.bind "${subMod}, 7" ''hl.dsp.window.move({ workspace = "7", follow = false })'')
+          (hyprLua.bind "${subMod}, 8" ''hl.dsp.window.move({ workspace = "8", follow = false })'')
 
           # Repeat while the key is held.
-          binde = [
-            # 5% directional resize
-            "$mod, left, exec, ${hyprSmartStep}/bin/hypr-smart-step resize left"
-            "$mod, right, exec, ${hyprSmartStep}/bin/hypr-smart-step resize right"
-            "$mod, up, exec, ${hyprSmartStep}/bin/hypr-smart-step resize up"
-            "$mod, down, exec, ${hyprSmartStep}/bin/hypr-smart-step resize down"
+          (hyprLua.execBindWith "${mod}, left" "${hyprSmartStep}/bin/hypr-smart-step resize left" { repeating = true; })
+          (hyprLua.execBindWith "${mod}, right" "${hyprSmartStep}/bin/hypr-smart-step resize right" { repeating = true; })
+          (hyprLua.execBindWith "${mod}, up" "${hyprSmartStep}/bin/hypr-smart-step resize up" { repeating = true; })
+          (hyprLua.execBindWith "${mod}, down" "${hyprSmartStep}/bin/hypr-smart-step resize down" { repeating = true; })
 
-            # Tiled: swap direction. Floating: move by 5%.
-            "$submod, left, exec, ${hyprSmartStep}/bin/hypr-smart-step swap-or-move left"
-            "$submod, right, exec, ${hyprSmartStep}/bin/hypr-smart-step swap-or-move right"
-            "$submod, up, exec, ${hyprSmartStep}/bin/hypr-smart-step swap-or-move up"
-            "$submod, down, exec, ${hyprSmartStep}/bin/hypr-smart-step swap-or-move down"
-          ];
+          # Tiled: swap direction. Floating: move by 5%.
+          (hyprLua.execBindWith "${subMod}, left" "${hyprSmartStep}/bin/hypr-smart-step swap-or-move left" { repeating = true; })
+          (hyprLua.execBindWith "${subMod}, right" "${hyprSmartStep}/bin/hypr-smart-step swap-or-move right" { repeating = true; })
+          (hyprLua.execBindWith "${subMod}, up" "${hyprSmartStep}/bin/hypr-smart-step swap-or-move up" { repeating = true; })
+          (hyprLua.execBindWith "${subMod}, down" "${hyprSmartStep}/bin/hypr-smart-step swap-or-move down" { repeating = true; })
 
-          bindm = [
-            "$mod, $mleft, movewindow"
-            "$mod, $mright, resizewindow"
-          ];
-        };
+          # Mouse movement and resize.
+          (hyprLua.bindWith "${mod}, mouse:272" "hl.dsp.window.drag()" { mouse = true; })
+          (hyprLua.bindWith "${mod}, mouse:273" "hl.dsp.window.resize()" { mouse = true; })
+        ];
       };
     };
   

@@ -8,7 +8,7 @@
   volumeStep ? "5%",
   wireplumberPackage ? null,
 }:
-{ lib, pkgs, username, ... }:
+{ hyprLua, lib, pkgs, username, ... }:
 let
   playerctl =
     if playerctlPackage == null then
@@ -24,24 +24,27 @@ in
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings = {
     # Repeat volume changes while the key is held, and keep them available while locked.
-    bindel = [
-      ", XF86AudioRaiseVolume, exec, ${wireplumber}/bin/wpctl set-volume -l ${maxVolume} ${sink} ${volumeStep}+"
-      ", XF86AudioLowerVolume, exec, ${wireplumber}/bin/wpctl set-volume ${sink} ${volumeStep}-"
-    ];
-
-    bindl =
+    bind =
       [
-        ", XF86AudioMute, exec, ${wireplumber}/bin/wpctl set-mute ${sink} toggle"
-        ", XF86AudioPlay, exec, ${playerctl}/bin/playerctl play-pause"
-        ", XF86AudioPause, exec, ${playerctl}/bin/playerctl play-pause"
-        ", XF86AudioNext, exec, ${playerctl}/bin/playerctl next"
-        ", XF86AudioPrev, exec, ${playerctl}/bin/playerctl previous"
+        (hyprLua.execBindWith ", XF86AudioRaiseVolume" "${wireplumber}/bin/wpctl set-volume -l ${maxVolume} ${sink} ${volumeStep}+" {
+          locked = true;
+          repeating = true;
+        })
+        (hyprLua.execBindWith ", XF86AudioLowerVolume" "${wireplumber}/bin/wpctl set-volume ${sink} ${volumeStep}-" {
+          locked = true;
+          repeating = true;
+        })
+        (hyprLua.execBindWith ", XF86AudioMute" "${wireplumber}/bin/wpctl set-mute ${sink} toggle" { locked = true; })
+        (hyprLua.execBindWith ", XF86AudioPlay" "${playerctl}/bin/playerctl play-pause" { locked = true; })
+        (hyprLua.execBindWith ", XF86AudioPause" "${playerctl}/bin/playerctl play-pause" { locked = true; })
+        (hyprLua.execBindWith ", XF86AudioNext" "${playerctl}/bin/playerctl next" { locked = true; })
+        (hyprLua.execBindWith ", XF86AudioPrev" "${playerctl}/bin/playerctl previous" { locked = true; })
       ]
       ++ lib.optionals enableMicMute [
-        ", XF86AudioMicMute, exec, ${wireplumber}/bin/wpctl set-mute ${source} toggle"
+        (hyprLua.execBindWith ", XF86AudioMicMute" "${wireplumber}/bin/wpctl set-mute ${source} toggle" { locked = true; })
       ]
       ++ lib.optionals enableStop [
-        ", XF86AudioStop, exec, ${playerctl}/bin/playerctl stop"
+        (hyprLua.execBindWith ", XF86AudioStop" "${playerctl}/bin/playerctl stop" { locked = true; })
       ];
   };
 }

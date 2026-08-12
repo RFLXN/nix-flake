@@ -1,7 +1,7 @@
 { key ? "ALT, F9" }:
-{ username, ... }:
+{ hyprLua, username, ... }:
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings.bind = [
-    "${key}, exec, gsr-save-replay"
+    (hyprLua.execBind key "gsr-save-replay")
   ];
 }

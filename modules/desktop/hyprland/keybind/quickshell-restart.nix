@@ -1,7 +1,7 @@
 { key ? "SUPER, backslash" }:
-{ username, ... }:
+{ hyprLua, username, ... }:
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings.bind = [
-    "${key}, exec, systemctl --user restart rflxn-shell.service"
+    (hyprLua.execBind key "systemctl --user restart rflxn-shell.service")
   ];
 }

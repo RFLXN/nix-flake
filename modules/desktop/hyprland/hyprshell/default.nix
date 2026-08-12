@@ -1,12 +1,12 @@
 { modifier ? "alt" }:
-{ pkgs, username, ... }@args:
+{ hyprLua, pkgs, username, ... }@args:
 let
   system = pkgs.stdenv.hostPlatform.system;
   hyprshellInput = args.hyprshell or null;
   hyprshellPackage = if hyprshellInput != null then hyprshellInput.packages.${system}.default else pkgs.hyprshell;
 in {
   home-manager.users.${username} = {
-    wayland.windowManager.hyprland.settings.exec-once = [ "hyprshell run" ];
+    wayland.windowManager.hyprland.settings.on = [ (hyprLua.onStart [ "hyprshell run" ]) ];
 
     services.hyprshell = {
       enable = true;

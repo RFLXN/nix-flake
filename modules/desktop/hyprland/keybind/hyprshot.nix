@@ -1,8 +1,8 @@
 { key ? "Print" }:
-{ username, pkgs, ... }:
+{ hyprLua, username, pkgs, ... }:
 {
   home-manager.users.${username}.wayland.windowManager.hyprland.settings.bind = [
-    ", ${key}, exec, ${pkgs.hyprshot}/bin/hyprshot -m region --clipboard-only"
-    "Alt_L, ${key}, exec, ${pkgs.hyprshot}/bin/hyprshot -m window -m active --clipboard-only"
+    (hyprLua.execBind ", ${key}" "${pkgs.hyprshot}/bin/hyprshot -m region --clipboard-only")
+    (hyprLua.execBind "ALT, ${key}" "${pkgs.hyprshot}/bin/hyprshot -m window -m active --clipboard-only")
   ];
 }

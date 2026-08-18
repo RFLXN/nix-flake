@@ -2,10 +2,12 @@
   gaming = import ./gaming;
   jetbrains = import ./jetbrains;
   shell = import ./shell;
+  useAlsaUtils = import ./alsa-utils;
   useAyugram = import ./ayugram;
   useBlueman = import ./blueman;
   useClaudeCode = import ./claude-code;
   useCodex = import ./codex;
+  useCodexAuth = import ./codex-auth;
   useCodexDesktop = import ./codex-desktop;
   useCommonTools = import ./common-tools;
   useChrome = import ./chrome;

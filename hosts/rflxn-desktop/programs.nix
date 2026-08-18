@@ -27,10 +27,12 @@
     (jetbrains.useWebstorm { enableZshAlias = true; })
     (shell.useShell {})
     (shell.useZsh {})
+    (useAlsaUtils {})
     (useAyugram {})
     (useBlueman {})
     (useClaudeCode {})
     (useCodex {})
+    (useCodexAuth {})
     (useCodexDesktop { quitOnClose = true; })
     (useCommonTools {})
     (useChromium {})
@@ -71,7 +73,7 @@
     })
     (useSpotify {
       withAlsaExclusive = {
-        enable = true;
+        enable = false;
         pipewire-target = "alsa_output.usb-Topping_E30-00.HiFi__Headphones__sink";
         profile = "hifi";
         rate = 44100;

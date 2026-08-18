@@ -507,6 +507,9 @@ modules = {
 
 ### Other `modules.programs` exports
 
+- `useAlsaUtils {}`
+  Installs the ALSA command-line utilities.
+
 - `useAyugram {}`
   Installs AyuGram Desktop.
 
@@ -518,6 +521,9 @@ modules = {
 
 - `useCodex {}`
   Installs Codex CLI from the `codex-cli-nix` flake input.
+
+- `useCodexAuth {}`
+  Installs a NixOS-compatible wrapper for `codex-auth` 0.2.10. It pins and patches the upstream Linux native binary, provides Node.js 24 for API refreshes, and keeps the current system `PATH` available for invoking Codex CLI.
 
 - `useCodexDesktop { quitOnClose ? false }`
   Enables the upstream Codex Desktop Linux Home Manager module from the `codex-desktop` flake input.

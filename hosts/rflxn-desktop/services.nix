@@ -3,6 +3,7 @@
     (pipewire.useDenoisedMic {})
     (pipewire.useLowLatency {})
     (pipewire.usePipewire {})
+    /* Temporarily disabled; keep the profiles here so they are easy to restore.
     (pipewire.useProfileChanger {
       defaultProfile = "game";
       profiles = [
@@ -43,6 +44,7 @@
         }
       ];
     })
+    */
     (useDocker { isBtrfs = true; isRootless = true; })
     (useEasyEffects {})
     (useFlatpak {})

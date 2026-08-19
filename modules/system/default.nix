@@ -8,4 +8,5 @@
   useMe = import ./me;
   useNetworkManager = import ./network-manager;
   useZram = import ./zram;
+  useNtSync = import ./ntsync;
 }

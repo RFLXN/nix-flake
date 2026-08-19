@@ -34,5 +34,6 @@
       })
       (useNetworkManager { useWifi = true; })
       (useZram {})
+      (useNtSync {})
     ]);
 }

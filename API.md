@@ -373,6 +373,9 @@ modules = {
 - `hyprland.keybinds.useDefaults { mod ? "SUPER", subMod ? "SUPER SHIFT" }`
   Adds the repo's default Hyprland keybind pack, including workspace movement and the `hypr-smart-step` helper for tiled/floating resize and movement.
 
+- `hyprland.keybinds.useDankLinuxLauncher { key ? "SUPER, D", package ? null }`
+  Opens the DankMaterialShell launcher through the `spotlight toggle` IPC call.
+
 - `hyprland.keybinds.useQuickShellLauncher { key ? "SUPER, D" }`
   Binds `rflxn-shell-launcher-toggle`, which targets the running `rflxn-shell.service` Quickshell instance by PID and calls `launcher.toggle`.
 

@@ -7,7 +7,7 @@
       flavor = "mono";
       accent = "fog";
     };
-    cornerRadius = 4;
+    cornerRadius = 18;
     fontFamily = "Pretendard";
     fontWeight = 300;
     fontScale = 1.5;
@@ -15,8 +15,24 @@
     animationSpeed = 2;
     springBounce = 0;
 
+    clockFormat = "12h";
+    showSeconds = true;
+    clockDateFormat = "yyyy-MM-dd";
+    lockDateFormat = "yyyy-MM-dd";
+    weatherEnabled = false;
+
     lockAtStartup = true;
     loginctlLockIntegration = true;
+    lockScreenShowSystemIcons = false;
+    lockScreenShowProfileImage = false;
+    lockScreenShowMediaPlayer = false;
+    lockScreenNotificationMode = 2;
+    lockScreenWallpaperPath = "/home/rflxn/Pictures/main-wallpaper.jpg";
+    lockScreenFontFamily = "Pretendard Light";
+
+    dankLauncherV2Size = "large";
+    dankLauncherV2ShowSourceBadges = false;
+    dankLauncherV2ShowFooter = false;
 
     barConfigs = [
       {
@@ -61,12 +77,12 @@
           "systemTray"
           "controlCenterButton"
         ];
-        spacing = 32;
+        spacing = 0;
         transparency = 1;
         widgetTransparency = 1;
         bottomGap = 0;
         innerPadding = 12;
-        widgetPadding = 7;
+        widgetPadding = 8;
         barInsetPadding = 16;
         barLengthPadding = 0;
         popupGapsAuto = true;
@@ -140,7 +156,7 @@
             enabled = true;
           }
         ];
-        spacing = 32;
+        spacing = 0;
         innerPadding = 12;
         barLengthPadding = 0;
         bottomGap = 0;

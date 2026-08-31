@@ -147,6 +147,7 @@
       };
     };
   
+  useDankLinuxLauncher = import ./dank-linux-launcher.nix;
   useQuickShellLauncher = import ./quickshell-launcher.nix;
   useQuickShellRestart = import ./quickshell-restart.nix;
   useKitty = import ./kitty.nix;

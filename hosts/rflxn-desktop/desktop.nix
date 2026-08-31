@@ -20,6 +20,7 @@ in
       blurPasses = 3;
     })
     (hyprland.cursors.useRosePineCursor {})
+    (hyprland.keybinds.useDankLinuxLauncher {})
     (hyprland.keybinds.useDefaults {})
     (hyprland.keybinds.useGsrSaveReplay {})
     (hyprland.keybinds.useHyprshot {})

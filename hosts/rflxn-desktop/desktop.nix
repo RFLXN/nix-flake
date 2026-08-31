@@ -1,4 +1,8 @@
-{ lib, pkgs, modules, username, ... }: {
+{ modules, username, ... }:
+let
+  dankLinux = import ./dank-linux.nix;
+in
+{
   imports = with modules.desktop; [
     (gtk.theme.usePapirusIcon {})
     (gtk.theme.useMatcha {
@@ -16,81 +20,13 @@
       blurPasses = 3;
     })
     (hyprland.cursors.useRosePineCursor {})
-    (hyprland.keybinds.useQuickShellLauncher {})
-    (hyprland.keybinds.useQuickShellRestart { key = "SUPER, backslash"; })
     (hyprland.keybinds.useDefaults {})
     (hyprland.keybinds.useGsrSaveReplay {})
     (hyprland.keybinds.useHyprshot {})
     (hyprland.keybinds.useKitty {})
     (hyprland.keybinds.useMediaFunctions {})
     (hyprland.keybinds.useScreenOff { key = "CTRL SHIFT, P"; })
-    (hyprland.useQuickShell {
-      configs = {
-        layouts = [
-          {
-            monitor = "DP-3";
-            widgets = {
-              left = [ "feed-hub" "window-title" ];
-              center = [ "workspaces" "datetime" ];
-              right = [ "system-controls" ];
-            };
-            menus = {
-              system-controls.programs = {
-                volume = {
-                  command = lib.getExe pkgs.pwvucontrol;
-                  rules = {
-                    float = true;
-                    size = [ 900 650 ];
-                    center = true;
-                  };
-                };
-                bluetooth = {
-                  command = "${pkgs.blueman}/bin/blueman-manager";
-                  rules = {
-                    float = true;
-                    size = [ 760 560 ];
-                    center = true;
-                  };
-                };
-                network = {
-                  command = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
-                  rules = {
-                    float = true;
-                    size = [ 880 640 ];
-                    center = true;
-                  };
-                };
-              };
-            };
-            components = [
-              "app-launcher-menu"
-              "calendar-menu"
-              "feed-hub-menu"
-              "system-controls-menu"
-              {
-                id = "notification-popups";
-                position = "bottom-left";
-                timeoutMs = 5000;
-                maxVisible = 3;
-              }
-              "global-menu-close-layer"
-            ];
-          }
-          {
-            monitor = "HDMI-A-1";
-            widgets = {
-              left = [ "datetime" ];
-              center = [ "workspaces" ];
-              right = [];
-            };
-            components = [
-              "calendar-menu"
-              "global-menu-close-layer"
-            ];
-          }
-        ];
-      };
-    })
+    (hyprland.useDankLinux dankLinux)
     (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
     (hyprland.useHyprland {
       followMouse = 0;
@@ -138,7 +74,6 @@
     })
     (hyprland.useXdgMenu {})
     (hyprland.useXdgUserDirs {})
-    (hyprland.useHyprlock {})
     (hyprland.useHyprpolkit {})
     (hyprland.useHyprshell {})
     (hyprland.wallpaper.useLinuxWallpaperEngine {

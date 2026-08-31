@@ -14,7 +14,7 @@
           claude-code
           codex-cli-nix
           codex-desktop
-          rflxn-shell
+          dank-material-shell
           xivlauncher-rb
           xivmitm-nix;
         inherit (shared) username;

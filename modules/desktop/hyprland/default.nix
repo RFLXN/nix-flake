@@ -7,6 +7,7 @@ in
   keybind = keybinds;
   keybinds = keybinds;
   touchpad = import ./touchpad;
+  useDankLinux = import ./dank-linux;
   useDarkMode = import ./dark-mode.nix;
   useHypridle = import ./hypridle;
   useHyprland = import ./use-hyprland.nix;

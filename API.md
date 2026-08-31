@@ -40,6 +40,7 @@ Required input-backed modules:
 | `modules.system.boot.grub.theme.useDistroTheme` | `distro-grub-themes` |
 | `modules.system.useImpermanence` | `impermanence` |
 | `modules.desktop.plasma6.usePlasma6` | `plasma-manager` |
+| `modules.desktop.hyprland.useDankLinux` | `dank-material-shell` |
 | `modules.desktop.hyprland.useQuickShell` | `rflxn-shell` |
 | `modules.desktop.hyprland.useHyprland` | optional `hyprland` input, otherwise falls back to `pkgs.hyprland` |
 | `modules.desktop.hyprland.useHyprshell` | optional `hyprshell` input, otherwise falls back to `pkgs.hyprshell` |
@@ -322,6 +323,10 @@ modules = {
 
 - `hyprland.appearance { gapSize ? 5, borderSize ? 2, rounding ? 5, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
   Applies the repo's default Hyprland window decoration, animation, dwindle, and scrolling settings.
+
+- `hyprland.useDankLinux { package ? null, settings ? {}, systemdTarget ? null, theme ? null }`
+  Enables DankMaterialShell through Home Manager and declaratively manages the supplied DMS settings.
+  When `theme` is set, its `id` selects the managed theme path under `~/.config/DankMaterialShell/themes/`.
 
 - `hyprland.useQuickShell { configs ? null, package ? null, quickshellPackage ? null, runtimePackages ? null, systemdTarget ? null }`
   Imports the `rflxn-shell` NixOS bridge module and enables `home-manager.users.${username}.services.rflxn-shell`.

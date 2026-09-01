@@ -29,7 +29,6 @@
     (shell.useZsh {})
     (useAlsaUtils {})
     (useAyugram {})
-    (useBlueman {})
     (useClaudeCode {})
     (useCodex {})
     (useCodexAuth {})
@@ -57,11 +56,9 @@
     (useLibreOffice {})
     (useMoonlight {})
     (useNixIndex {})
-    (useNmApplet {})
     (useObsidian {})
     (useObsStudio {})
     (usePeaZip {})
-    (usePwvucontrol {})
     (useShotcut {})
     (useSshClient {
       settings.rflxn-server = {

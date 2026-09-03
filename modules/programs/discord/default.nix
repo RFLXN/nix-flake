@@ -1,5 +1,8 @@
 { }:
 { pkgs, ... }:
+/*
+for wayland ime bug fixing
+
 let
   discord-ime = pkgs.discord.overrideAttrs (_old: {
     desktopItem = pkgs.makeDesktopItem {
@@ -14,6 +17,7 @@ let
     };
   });
 in
+*/
 {
-  environment.systemPackages = [ discord-ime ];
+  environment.systemPackages = [ pkgs.discord ];
 }

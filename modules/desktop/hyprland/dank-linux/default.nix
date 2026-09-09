@@ -1,6 +1,7 @@
 {
   lockScreenPasswordField ? null,
   package ? null,
+  session ? { },
   settings ? { },
   systemdTarget ? null,
   theme ? null,
@@ -133,6 +134,7 @@ in
     programs.dank-material-shell = {
       enable = true;
       package = dmsPackage;
+      inherit session;
       settings = settings // lib.optionalAttrs (theme != null) {
         currentThemeName = "custom";
         customThemeFile = "/home/${username}/.config/${themeConfigPath}";
@@ -155,6 +157,10 @@ in
           text = builtins.toJSON theme;
         };
       };
+
+    xdg.stateFile = lib.optionalAttrs (session != { }) {
+      "DankMaterialShell/session.json".force = true;
+    };
 
     systemd.user.services.dms.Service.Environment = [ "DMS_DISABLE_POLKIT=1" ];
   };

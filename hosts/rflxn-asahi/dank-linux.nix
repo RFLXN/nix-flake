@@ -1,4 +1,9 @@
 {
+  session = {
+    configVersion = 4;
+    wallpaperPath = "/home/rflxn/Pictures/main-wallpaper.jpg";
+  };
+
   lockScreenPasswordField = {
     width = 420;
     height = 56;
@@ -31,6 +36,9 @@
     clockDateFormat = "yyyy-MM-dd";
     lockDateFormat = "yyyy-MM-dd";
     weatherEnabled = false;
+
+    wallpaperFillMode = "Fill";
+    screenPreferences.wallpaper = [ "eDP-1" ];
 
     lockAtStartup = true;
     loginctlLockIntegration = true;
@@ -81,7 +89,11 @@
             enabled = true;
           }
           "systemTray"
-          "controlCenterButton"
+          {
+            id = "controlCenterButton";
+            enabled = true;
+            showBatteryIcon = true;
+          }
         ];
         spacing = 0;
         transparency = 1;

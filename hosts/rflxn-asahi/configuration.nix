@@ -1,4 +1,8 @@
-{ config, lib, pkgs, username, shared, modules, ... }: {
+{ config, pkgs, username, shared, modules, ... }:
+let
+  dankLinux = import ./dank-linux.nix;
+in
+{
   imports =
     # Desktop
     (with modules.desktop; [
@@ -18,8 +22,7 @@
         blurPasses = 3;
       })
       (hyprland.cursors.useRosePineCursor {})
-      (hyprland.keybinds.useQuickShellLauncher {})
-      (hyprland.keybinds.useQuickShellRestart { key = "SUPER, backslash"; })
+      (hyprland.keybinds.useDankLinuxLauncher {})
       (hyprland.keybinds.useDefaults {})
       (hyprland.keybinds.useKitty {})
       (hyprland.keybinds.useMediaFunctions {})
@@ -35,51 +38,8 @@
       })
       (hyprland.touchpad.gestures.useWorkspaces {})
       (hyprland.touchpad.useDefaults {})
-      (hyprland.useQuickShell {
-        configs = {
-          layouts = [
-            {
-              monitor = "eDP-1";
-              widgets = {
-                left = [ "feed-hub" "window-title" ];
-                center = [ "workspaces" "datetime" ];
-                right = [ "system-controls" ];
-              };
-              menus = {
-                system-controls.programs = {
-                  volume = {
-                    command = lib.getExe pkgs.pwvucontrol;
-                    rules = { float = true; size = [ 900 650 ]; center = true; };
-                  };
-                  bluetooth = {
-                    command = "${pkgs.blueman}/bin/blueman-manager";
-                    rules = { float = true; size = [ 760 560 ]; center = true; };
-                  };
-                  network = {
-                    command = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
-                    rules = { float = true; size = [ 880 640 ]; center = true; };
-                  };
-                };
-              };
-              components = [
-                "app-launcher-menu"
-                "calendar-menu"
-                "feed-hub-menu"
-                "system-controls-menu"
-                {
-                  id = "notification-popups";
-                  position = "bottom-left";
-                  timeoutMs = 5000;
-                  maxVisible = 3;
-                }
-                "global-menu-close-layer"
-              ];
-            }
-          ];
-        };
-      })
+      (hyprland.useDankLinux dankLinux)
       (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
-      (hyprland.useHypridle {})
       (hyprland.useHyprland {
         followMouse = 0;
         pointerSpeed = -0.25;
@@ -99,7 +59,6 @@
       })
       (hyprland.useXdgMenu {})
       (hyprland.useXdgUserDirs {})
-      (hyprland.useHyprlock {})
       (hyprland.useHyprpolkit {})
       (hyprland.useHyprshell {})
       (hyprland.windowRules.useDefaults {})
@@ -147,10 +106,7 @@
           };
         };
       })
-      (useTailscale {
-        enableSystemTray = true;
-        openFirewall = true;
-      })
+      (useTailscale { openFirewall = true; })
     ]) ++
 
     # Programs
@@ -159,7 +115,6 @@
       (jetbrains.useWebstorm { enableZshAlias = true; })
       (shell.useShell {})
       (shell.useZsh {})
-      (useBlueman {})
       (useClaudeCode {})
       (useCodex {})
       (useCodexDesktop { quitOnClose = true; })
@@ -187,7 +142,6 @@
       (useThunderbird {})
       (useVscode {})
       (usePeaZip {})
-      (usePwvucontrol {})
       (useWaylandUtils {})
     ]) ++
 

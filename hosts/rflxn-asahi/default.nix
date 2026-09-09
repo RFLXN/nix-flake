@@ -13,7 +13,7 @@
           claude-code
           codex-cli-nix
           codex-desktop
-          rflxn-shell
+          dank-material-shell
           battery-logger;
         inherit (shared) username;
         defaultPersistPath = "/persist";

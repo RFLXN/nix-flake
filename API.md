@@ -324,9 +324,10 @@ modules = {
 - `hyprland.appearance { gapSize ? 5, borderSize ? 2, rounding ? 5, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
   Applies the repo's default Hyprland window decoration, animation, dwindle, and scrolling settings.
 
-- `hyprland.useDankLinux { package ? null, settings ? {}, systemdTarget ? null, theme ? null }`
+- `hyprland.useDankLinux { lockScreenPasswordField ? null, package ? null, settings ? {}, systemdTarget ? null, theme ? null }`
   Enables DankMaterialShell through Home Manager and declaratively manages the supplied DMS settings.
   When `theme` is set, its `id` selects the managed theme path under `~/.config/DankMaterialShell/themes/`.
+  When `lockScreenPasswordField` is set, it patches the packaged DMS lock screen with declarative `width`, `height`, `radius`, `backgroundColor`, `backgroundOpacity`, `borderColor`, `focusBorderColor`, and `showLockIcon` values.
 
 - `hyprland.useQuickShell { configs ? null, package ? null, quickshellPackage ? null, runtimePackages ? null, systemdTarget ? null }`
   Imports the `rflxn-shell` NixOS bridge module and enables `home-manager.users.${username}.services.rflxn-shell`.

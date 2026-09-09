@@ -51,12 +51,7 @@
         name = "Main Bar";
         enabled = true;
         position = 0;
-        screenPreferences = [
-          {
-            name = "DP-3";
-            model = "TFG27F20P";
-          }
-        ];
+        screenPreferences = [ "eDP-1" ];
         showOnLastDisplay = true;
         leftWidgets = [
           "launcherButton"
@@ -113,108 +108,6 @@
         gothCornersEnabled = true;
         gothCornerRadiusOverride = true;
         gothCornerRadiusValue = 23;
-      }
-      {
-        id = "bar1788104656727";
-        name = "Bar 2";
-        enabled = true;
-        position = 0;
-        screenPreferences = [
-          {
-            name = "HDMI-A-1";
-            model = "VG275";
-          }
-        ];
-        showOnLastDisplay = false;
-        leftWidgets = [
-          {
-            id = "runningApps";
-            enabled = true;
-            runningAppsCompactMode = true;
-            runningAppsGroupByApp = false;
-            runningAppsCurrentWorkspace = true;
-            runningAppsCurrentMonitor = false;
-          }
-        ];
-        centerWidgets = [ ];
-        rightWidgets = [
-          {
-            id = "cpuUsage";
-            enabled = true;
-            minimumWidth = true;
-          }
-          {
-            id = "cpuTemp";
-            enabled = true;
-            minimumWidth = true;
-          }
-          {
-            id = "memUsage";
-            enabled = true;
-            minimumWidth = true;
-            showInGb = true;
-            showSwap = false;
-          }
-          {
-            id = "gpuTemp";
-            enabled = true;
-            selectedGpuIndex = 1;
-            pciId = "1002:13c0";
-            minimumWidth = true;
-          }
-          {
-            id = "network_speed_monitor";
-            enabled = true;
-          }
-        ];
-        spacing = 0;
-        innerPadding = 12;
-        barLengthPadding = 0;
-        bottomGap = 0;
-        attachToScreenEdge = true;
-        transparency = 1;
-        widgetTransparency = 1;
-        squareCorners = false;
-        noBackground = false;
-        gothCornersEnabled = true;
-        gothCornerRadiusOverride = true;
-        gothCornerRadiusValue = 23;
-        borderEnabled = false;
-        borderColor = "surfaceText";
-        borderOpacity = 1;
-        borderThickness = 1;
-        widgetOutlineEnabled = false;
-        widgetOutlineColor = "primary";
-        widgetOutlineOpacity = 1;
-        widgetOutlineThickness = 1;
-        widgetPadding = 7;
-        maximizeWidgetIcons = false;
-        maximizeWidgetText = false;
-        removeWidgetPadding = false;
-        fontScale = 1;
-        iconScale = 1;
-        autoHide = false;
-        autoHideStrict = false;
-        autoHideDelay = 250;
-        showOnWindowsOpen = false;
-        openOnOverview = false;
-        visible = true;
-        popupGapsAuto = true;
-        popupGapsManual = 4;
-        maximizeDetection = true;
-        useOverlayLayer = false;
-        scrollEnabled = true;
-        scrollXBehavior = "column";
-        scrollYBehavior = "workspace";
-        hoverPopouts = false;
-        hoverPopoutDelay = 150;
-        shadowIntensity = 0;
-        shadowOpacity = 60;
-        shadowDirectionMode = "inherit";
-        shadowDirection = "top";
-        shadowColorMode = "default";
-        shadowCustomColor = "#000000";
-        barInsetPadding = 16;
       }
     ];
   };

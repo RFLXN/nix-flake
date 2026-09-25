@@ -32,6 +32,8 @@
     lockDateFormat = "yyyy-MM-dd";
     weatherEnabled = false;
 
+    screenPreferences.wallpaper = [ ];
+
     lockAtStartup = true;
     loginctlLockIntegration = true;
     lockScreenShowSystemIcons = false;

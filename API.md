@@ -324,8 +324,9 @@ modules = {
 - `hyprland.appearance { gapSize ? 5, borderSize ? 2, rounding ? 5, activeBorderColor ? "rgb(89b4fa)", inactiveBorderColor ? "rgb(585b70)", enableAnimations ? true, enableBlur ? true, activeOpacity ? 0.94, inactiveOpacity ? 0.86, fullscreenOpacity ? 1.0, blurSize ? 8, blurPasses ? 2 }`
   Applies the repo's default Hyprland window decoration, animation, dwindle, and scrolling settings.
 
-- `hyprland.useDankLinux { lockScreenPasswordField ? null, package ? null, session ? {}, settings ? {}, systemdTarget ? null, theme ? null }`
+- `hyprland.useDankLinux { batteryChargeLimit ? null, lockScreenPasswordField ? null, package ? null, session ? {}, settings ? {}, systemdTarget ? null, theme ? null }`
   Enables DankMaterialShell through Home Manager and declaratively manages the supplied DMS settings.
+  `batteryChargeLimit` accepts an integer from 50 to 100. It sets DMS's `settings.batteryChargeLimit` and enables the `dms-battery-charge-limit` system oneshot, which applies the same limit at boot and when the configured value changes during `nixos-rebuild switch`. The helper discovers batteries by sysfs type (including `macsmc-battery`) and reads back the actual thresholds. Unsupported or mismatched values fail the service, with an attempt to restore previous limits, rather than reporting success. Inspect the result with `journalctl -u dms-battery-charge-limit`. This uses native hardware limits; it does not patch the DMS UI or install a userspace charging loop. A null value leaves hardware limits unmanaged.
   When `session` is set, it declaratively manages DMS machine-local state such as the wallpaper path.
   When `theme` is set, its `id` selects the managed theme path under `~/.config/DankMaterialShell/themes/`.
   When `lockScreenPasswordField` is set, it patches the packaged DMS lock screen with declarative `width`, `height`, `radius`, `backgroundColor`, `backgroundOpacity`, `borderColor`, `focusBorderColor`, and `showLockIcon` values.

@@ -1,4 +1,5 @@
 {
+  batteryChargeLimit ? null,
   lockScreenPasswordField ? null,
   package ? null,
   session ? { },
@@ -102,6 +103,10 @@ let
     + "                        height: ${if passwordField.showLockIcon then "20" else "0"}\n"
     + "                        visible: ${if passwordField.showLockIcon then "true" else "false"}";
 
+  batteryChargeHelper = pkgs.writeScript "dms-battery-charge-limit" (
+    "#!${pkgs.python3}/bin/python3\n" + builtins.readFile ./battery-charge-limit.py
+  );
+
   dmsPackage =
     assert passwordFieldAssertions;
     if passwordField == null then
@@ -128,6 +133,28 @@ let
   themeConfigPath = "DankMaterialShell/themes/${themeId}/theme.json";
 in
 {
+  assertions = [
+    {
+      assertion = batteryChargeLimit == null || (
+        lib.isInt batteryChargeLimit && batteryChargeLimit >= 50 && batteryChargeLimit <= 100
+      );
+      message = "hyprland.useDankLinux: batteryChargeLimit must be null or an integer between 50 and 100.";
+    }
+  ];
+
+  # One Nix value configures both the DMS UI and the hardware. A changed
+  # ExecStart restarts this oneshot during nixos-rebuild switch.
+  systemd.services.dms-battery-charge-limit = lib.mkIf (batteryChargeLimit != null) {
+    description = "Apply and verify the declarative DMS battery charge limit";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-udev-trigger.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${batteryChargeHelper} --limit ${toString batteryChargeLimit}";
+    };
+  };
+
   home-manager.users.${username} = {
     imports = [ dank-material-shell.homeModules.dank-material-shell ];
 
@@ -135,7 +162,9 @@ in
       enable = true;
       package = dmsPackage;
       inherit session;
-      settings = settings // lib.optionalAttrs (theme != null) {
+      settings = settings // lib.optionalAttrs (batteryChargeLimit != null) {
+        inherit batteryChargeLimit;
+      } // lib.optionalAttrs (theme != null) {
         currentThemeName = "custom";
         customThemeFile = "/home/${username}/.config/${themeConfigPath}";
       };
@@ -148,7 +177,7 @@ in
     };
 
     xdg.configFile =
-      lib.optionalAttrs (settings != { }) {
+      lib.optionalAttrs (settings != { } || batteryChargeLimit != null) {
         "DankMaterialShell/settings.json".force = true;
       }
       // lib.optionalAttrs (theme != null) {

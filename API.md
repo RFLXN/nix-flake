@@ -536,9 +536,10 @@ modules = {
 - `useCodexAuth {}`
   Installs a NixOS-compatible wrapper for `codex-auth` 0.2.10. It pins and patches the upstream Linux native binary, provides Node.js 24 for API refreshes, and keeps the current system `PATH` available for invoking Codex CLI.
 
-- `useCodexDesktop { quitOnClose ? false }`
+- `useCodexDesktop { quitOnClose ? false, enableComputerUse ? false }`
   Enables the upstream Codex Desktop Linux Home Manager module from the `codex-desktop` flake input.
   When `quitOnClose` is enabled, prevents the final Codex window from being hidden to the system tray and exits the application when that window is closed.
+  When `enableComputerUse` is enabled, bundles the local Linux Computer Use backend before applying the optional close-window patch, enables AT-SPI accessibility and the `ydotool` service with uinput support, and grants the main user access to the daemon socket and direct pointer input through `/dev/uinput`. After applying the configuration and logging in again, enable Settings → Computer use → Any App in the desktop app. Remote control is not enabled by this option.
 
 - `useCommonTools {}`
   Installs the repo's common CLI toolkit.

@@ -32,7 +32,10 @@
     (useClaudeCode {})
     (useCodex {})
     (useCodexAuth {})
-    (useCodexDesktop { quitOnClose = true; })
+    (useCodexDesktop {
+      quitOnClose = true;
+      enableComputerUse = true;
+    })
     (useCommonTools {})
     (useChromium {})
     (useDirenv {})

@@ -1,7 +1,10 @@
-{ quitOnClose ? false }:
-{ pkgs, username, codex-cli-nix, codex-desktop, ... }:
+{ quitOnClose ? false, enableComputerUse ? false }:
+{ config, lib, pkgs, username, codex-cli-nix, codex-desktop, ... }:
 let
   system = pkgs.stdenv.hostPlatform.system;
+  basePackage = codex-desktop.packages.${system}.codex-desktop.override {
+    enableComputerUseUi = enableComputerUse;
+  };
   withQuitOnClose =
     package:
     package.overrideAttrs (old: {
@@ -69,11 +72,19 @@ let
     });
   codexDesktopPackage =
     if quitOnClose then
-      withQuitOnClose codex-desktop.packages.${system}.codex-desktop
+      withQuitOnClose basePackage
     else
       null;
 in
 {
+  hardware.uinput.enable = lib.mkIf enableComputerUse true;
+  programs.ydotool.enable = lib.mkIf enableComputerUse true;
+  services.gnome.at-spi2-core.enable = lib.mkIf enableComputerUse true;
+  users.users.${username}.extraGroups = lib.optionals enableComputerUse [
+    config.programs.ydotool.group
+    config.users.groups.uinput.name
+  ];
+
   home-manager.users.${username} = {
     imports = [
       codex-desktop.homeManagerModules.default
@@ -82,6 +93,7 @@ in
     programs.codexDesktopLinux = {
       enable = true;
       package = codexDesktopPackage;
+      computerUseUi.enable = enableComputerUse;
       remoteControl.package = codex-cli-nix.packages.${system}.default;
     };
   };

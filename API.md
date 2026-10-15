@@ -329,7 +329,7 @@ modules = {
   `batteryChargeLimit` accepts an integer from 50 to 100. It sets DMS's `settings.batteryChargeLimit` and enables the `dms-battery-charge-limit` system oneshot, which applies the same limit at boot and when the configured value changes during `nixos-rebuild switch`. The helper discovers batteries by sysfs type (including `macsmc-battery`) and reads back the actual thresholds. Unsupported or mismatched values fail the service, with an attempt to restore previous limits, rather than reporting success. Inspect the result with `journalctl -u dms-battery-charge-limit`. This uses native hardware limits; it does not patch the DMS UI or install a userspace charging loop. A null value leaves hardware limits unmanaged.
   When `session` is set, it declaratively manages DMS machine-local state such as the wallpaper path.
   When `theme` is set, its `id` selects the managed theme path under `~/.config/DankMaterialShell/themes/`.
-  When `lockScreenPasswordField` is set, it patches the packaged DMS lock screen with declarative `width`, `height`, `radius`, `backgroundColor`, `backgroundOpacity`, `borderColor`, `focusBorderColor`, and `showLockIcon` values.
+  When `lockScreenPasswordField` is set, it patches DMS 1.7's `LockAuthWidget.qml` with declarative `width`, `height`, `radius`, `backgroundColor`, `backgroundOpacity`, `borderColor`, `focusBorderColor`, and `showLockIcon` values. The authentication widget keeps its screen-width limit and style-dependent visibility. The build fails if the expected upstream expressions change instead of silently skipping customization.
 
 - `hyprland.useQuickShell { configs ? null, package ? null, quickshellPackage ? null, runtimePackages ? null, systemdTarget ? null }`
   Imports the `rflxn-shell` NixOS bridge module and enables `home-manager.users.${username}.services.rflxn-shell`.
@@ -454,6 +454,13 @@ modules = {
 
 - `hyprland.windowRules.useFixedVesktop { workspace }`
   Pins Vesktop to a workspace by class match.
+
+- `hyprland.windowRules.useHidden { match, workspace ? "hidden" }`
+  Silently opens matching windows in `special:<workspace>`, blocks focus and activation/fullscreen requests, and makes all opacity states fully transparent with blur, shadows, decorations, and animations disabled.
+  `match` is a non-empty Hyprland Lua window-rule match attribute set; use stable, narrow selectors such as `initial_class`, `initial_title`, and `xwayland`.
+  `workspace` is the special workspace name without `special:` and must contain only letters, digits, underscores, or hyphens.
+  Dynamic hiding rules also affect existing matching windows on reload; workspace placement and event suppression are static rules that apply when a window opens. Move existing windows separately if necessary.
+  This hides the window without terminating its process; it does not remove entries from third-party task switchers or provide a security boundary.
 
 ## `modules.programs`
 

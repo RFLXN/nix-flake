@@ -65,44 +65,6 @@ let
       && lib.assertMsg (builtins.isBool passwordField.showLockIcon)
         "hyprland.useDankLinux: lockScreenPasswordField.showLockIcon must be a boolean";
 
-  passwordLayoutOriginal = "spacing: Theme.spacingM\n            width: 380";
-  passwordLayoutReplacement = "spacing: Theme.spacingM\n            width: ${toString passwordField.width}";
-
-  passwordFieldStyleOriginal =
-    "Layout.fillWidth: true\n"
-    + "                    Layout.preferredHeight: 60\n"
-    + "                    radius: Theme.cornerRadius\n"
-    + "                    color: Theme.withAlpha(Theme.surfaceContainer, 0.9)\n"
-    + "                    border.color: passwordField.activeFocus ? Theme.primary : Qt.rgba(1, 1, 1, 0.3)";
-
-  passwordFieldStyleReplacement =
-    "Layout.fillWidth: true\n"
-    + "                    Layout.preferredHeight: ${toString passwordField.height}\n"
-    + "                    radius: ${toString passwordField.radius}\n"
-    + "                    color: Theme.withAlpha(${builtins.toJSON passwordField.backgroundColor}, ${
-      toString passwordField.backgroundOpacity
-    })\n"
-    + "                    border.color: passwordField.activeFocus ? ${
-      builtins.toJSON passwordField.focusBorderColor
-    } : ${builtins.toJSON passwordField.borderColor}";
-
-  lockIconOriginal =
-    "id: lockIconContainer\n"
-    + "                        anchors.left: parent.left\n"
-    + "                        anchors.leftMargin: Theme.spacingM\n"
-    + "                        anchors.verticalCenter: parent.verticalCenter\n"
-    + "                        width: 20\n"
-    + "                        height: 20";
-
-  lockIconReplacement =
-    "id: lockIconContainer\n"
-    + "                        anchors.left: parent.left\n"
-    + "                        anchors.leftMargin: Theme.spacingM\n"
-    + "                        anchors.verticalCenter: parent.verticalCenter\n"
-    + "                        width: ${if passwordField.showLockIcon then "20" else "0"}\n"
-    + "                        height: ${if passwordField.showLockIcon then "20" else "0"}\n"
-    + "                        visible: ${if passwordField.showLockIcon then "true" else "false"}";
-
   batteryChargeHelper = pkgs.writeScript "dms-battery-charge-limit" (
     "#!${pkgs.python3}/bin/python3\n" + builtins.readFile ./battery-charge-limit.py
   );
@@ -114,13 +76,21 @@ let
     else
       baseDmsPackage.overrideAttrs (oldAttrs: {
         postInstall = (oldAttrs.postInstall or "") + ''
-          lockScreenContent="$out/share/quickshell/dms/Modules/Lock/LockScreenContent.qml"
-          chmod u+w "$lockScreenContent"
+          # DMS 1.7 split authentication out of LockScreenContent.qml.
+          lockAuthWidget="$out/share/quickshell/dms/Modules/Lock/Widgets/LockAuthWidget.qml"
+          chmod u+w "$lockAuthWidget"
 
-          substituteInPlace "$lockScreenContent" \
-            --replace-fail ${lib.escapeShellArg passwordLayoutOriginal} ${lib.escapeShellArg passwordLayoutReplacement} \
-            --replace-fail ${lib.escapeShellArg passwordFieldStyleOriginal} ${lib.escapeShellArg passwordFieldStyleReplacement} \
-            --replace-fail ${lib.escapeShellArg lockIconOriginal} ${lib.escapeShellArg lockIconReplacement}
+          substituteInPlace "$lockAuthWidget" \
+            --replace-fail 'LockMetrics.passwordRowWidth' ${lib.escapeShellArg (toString passwordField.width)} \
+            --replace-fail 'LockMetrics.fieldHeight' ${lib.escapeShellArg (toString passwordField.height)} \
+            --replace-fail 'radius: root.style === "expressive" ? Theme.cornerRadiusXL : Theme.fullRadius(width, height)' \
+              ${lib.escapeShellArg "radius: ${toString passwordField.radius}"} \
+            --replace-fail 'return root.style === "expressive" ? Theme.surfaceContainerHigh : Theme.cardSurface;' \
+              ${lib.escapeShellArg "return Theme.withAlpha(${builtins.toJSON passwordField.backgroundColor}, ${toString passwordField.backgroundOpacity});"} \
+            --replace-fail 'border.color: focusRingShown ? Theme.focusRingColor : Theme.outlineMedium' \
+              ${lib.escapeShellArg "border.color: passwordField.activeFocus ? ${builtins.toJSON passwordField.focusBorderColor} : ${builtins.toJSON passwordField.borderColor}"} \
+            --replace-fail 'visible: !root.dots && !root.ring && !root.minimal' \
+              ${lib.escapeShellArg "visible: ${lib.boolToString passwordField.showLockIcon} && !root.dots && !root.ring && !root.minimal"}
         '';
       });
 

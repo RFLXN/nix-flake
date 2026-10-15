@@ -88,6 +88,15 @@ in
     (hyprland.windowRules.useFixedMopiMopi { workspace = "8"; })
     (hyprland.windowRules.useFixedSpotify { workspace = "8"; })
     (hyprland.windowRules.useFixedVesktop { workspace = "8"; })
+    (hyprland.windowRules.useHidden {
+      workspace = "nexon-helper";
+      # The untitled helper shares its class with the visible Nexon Plug window.
+      match = {
+        initial_class = "^(steam_app_default)$";
+        initial_title = "^$";
+        xwayland = true;
+      };
+    })
     (qt.theme.usePapirusIcon {})
     (qt.theme.useMatcha {
       kvantumReduceWindowOpacity = 20;

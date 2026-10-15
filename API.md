@@ -455,11 +455,12 @@ modules = {
 - `hyprland.windowRules.useFixedVesktop { workspace }`
   Pins Vesktop to a workspace by class match.
 
-- `hyprland.windowRules.useHidden { match, workspace ? "hidden" }`
-  Silently opens matching windows in `special:<workspace>`, blocks focus and activation/fullscreen requests, and makes all opacity states fully transparent with blur, shadows, decorations, and animations disabled.
-  `match` is a non-empty Hyprland Lua window-rule match attribute set; use stable, narrow selectors such as `initial_class`, `initial_title`, and `xwayland`.
+- `hyprland.windowRules.useHidden { initialClass, processArgv0, initialTitle ? "", workspace ? "hidden" }`
+  Isolates XWayland windows only when their initial class, initial title, and `/proc/<pid>/cmdline` argv[0] all match exactly. Missing/unreadable process information leaves the window untouched. Class and executable must be non-empty strings; title may be empty. Requires `useHyprland`'s `hyprLua` helper.
+  A Lua `window.open_early` handler tags verified windows before initial focus/render. Tag-scoped dynamic rules disable focus, focus-on-activation, opacity, blur, shadows, decorations, and animations. The `window.open` handler moves the initialized window to `special:<workspace>` without following it; this avoids relying on static rules that have already run in Hyprland 0.56.
   `workspace` is the special workspace name without `special:` and must contain only letters, digits, underscores, or hyphens.
-  Dynamic hiding rules also affect existing matching windows on reload; workspace placement and event suppression are static rules that apply when a window opens. Move existing windows separately if necessary.
+  Existing windows are reconciled on reload, and windows moved out are returned. If the reserved workspace is activated (including by a switcher), a deferred event handler closes it so an invisible special-workspace overlay cannot intercept normal workspace clicks. Other special workspaces are unaffected. Use a distinct workspace for each instance.
+  The monitor close call uses Hyprland 0.56's Lua API. Existing windows receive the same dynamic hiding and workspace guard immediately.
   This hides the window without terminating its process; it does not remove entries from third-party task switchers or provide a security boundary.
 
 ## `modules.programs`

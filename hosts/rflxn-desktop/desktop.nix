@@ -90,12 +90,9 @@ in
     (hyprland.windowRules.useFixedVesktop { workspace = "8"; })
     (hyprland.windowRules.useHidden {
       workspace = "nexon-helper";
-      # The untitled helper shares its class with the visible Nexon Plug window.
-      match = {
-        initial_class = "^(steam_app_default)$";
-        initial_title = "^$";
-        xwayland = true;
-      };
+      initialClass = "steam_app_default";
+      initialTitle = "";
+      processArgv0 = ''C:\Nexon\NexonPlug\NexonPlug.exe'';
     })
     (qt.theme.usePapirusIcon {})
     (qt.theme.useMatcha {

@@ -1,10 +1,14 @@
-{ initialClass, processArgv0, initialTitle ? "", workspace ? "hidden" }:
+{ initialClass, processArgv0, initialTitle ? "", xwayland ? true, workspace ? "hidden" }:
 { hyprLua, lib, username, ... }:
 let
   tag = "hidden-${workspace}";
 in
 {
   assertions = [
+    {
+      assertion = builtins.isBool xwayland;
+      message = "hyprland.windowRules.useHidden: xwayland must be a boolean.";
+    }
     {
       assertion = builtins.isString initialClass && initialClass != ""
         && builtins.isString initialTitle
@@ -23,7 +27,7 @@ in
         local setup = (function()
           ${builtins.readFile ./hidden.lua}
         end)()
-        setup(${hyprLua.toLua { inherit initialClass initialTitle processArgv0 workspace tag; }})
+        setup(${hyprLua.toLua { inherit initialClass initialTitle processArgv0 xwayland workspace tag; }})
       end
     '';
 

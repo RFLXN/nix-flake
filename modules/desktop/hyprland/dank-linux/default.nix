@@ -100,7 +100,7 @@ let
     else
       theme.id or (throw "hyprland.useDankLinux: theme.id is required when theme is set");
 
-  themeConfigPath = "DankMaterialShell/themes/${themeId}/theme.json";
+  themeConfigPath = "dms/themes/${themeId}/theme.json";
 in
 {
   assertions = [
@@ -148,7 +148,7 @@ in
 
     xdg.configFile =
       lib.optionalAttrs (settings != { } || batteryChargeLimit != null) {
-        "DankMaterialShell/settings.json".force = true;
+        "dms/settings.json".force = true;
       }
       // lib.optionalAttrs (theme != null) {
         ${themeConfigPath} = {
@@ -158,7 +158,7 @@ in
       };
 
     xdg.stateFile = lib.optionalAttrs (session != { }) {
-      "DankMaterialShell/session.json".force = true;
+      "dms/session.json".force = true;
     };
 
     systemd.user.services.dms.Service.Environment = [ "DMS_DISABLE_POLKIT=1" ];

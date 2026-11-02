@@ -9,6 +9,7 @@
   useCodex = import ./codex;
   useCodexAuth = import ./codex-auth;
   useCodexDesktop = import ./codex-desktop;
+  useAntigravity = import ./antigravity;
   useCommonTools = import ./common-tools;
   useChrome = import ./chrome;
   useChromium = import ./chromium;
@@ -42,6 +43,7 @@
   useTauon = import ./tauon;
   useThunderbird = import ./thunderbird;
   useVesktop = import ./vesktop;
+  useVim = import ./vim;
   useVscode = import ./vscode;
   useWaylandUtils = import ./wayland-utils;
 }

@@ -36,6 +36,7 @@
       quitOnClose = true;
       enableComputerUse = true;
     })
+    (useAntigravity {})
     (useCommonTools {})
     (useChromium {})
     (useDirenv {})
@@ -82,6 +83,7 @@
     })
     (useTauon {})
     (useThunderbird {})
+    (useVim {})
     (useVscode {})
     (useWaylandUtils {})
     (useGptOauthServer {})

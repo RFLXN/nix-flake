@@ -26,7 +26,7 @@ in
     (hyprland.keybinds.useHyprshot {})
     (hyprland.keybinds.useKitty {})
     (hyprland.keybinds.useMediaFunctions {})
-    (hyprland.keybinds.useScreenOff { key = "CTRL SHIFT, P"; })
+    (hyprland.keybinds.useScreenOff { key = "SUPER CTRL, P"; })
     (hyprland.useDankLinux dankLinux)
     (hyprland.useDarkMode { qtUseGtkPlatformTheme = false; })
     (hyprland.useHyprland {
@@ -89,9 +89,17 @@ in
     (hyprland.windowRules.useFixedSpotify { workspace = "8"; })
     (hyprland.windowRules.useFixedVesktop { workspace = "8"; })
     (hyprland.windowRules.useHidden {
-      workspace = "nexon-helper";
+      workspace = "nexon-helper-xwayland";
       initialClass = "steam_app_default";
       initialTitle = "";
+      xwayland = true;
+      processArgv0 = ''C:\Nexon\NexonPlug\NexonPlug.exe'';
+    })
+    (hyprland.windowRules.useHidden {
+      workspace = "nexon-helper";
+      initialClass = "nexonplug.exe";
+      initialTitle = "";
+      xwayland = false;
       processArgv0 = ''C:\Nexon\NexonPlug\NexonPlug.exe'';
     })
     (qt.theme.usePapirusIcon {})

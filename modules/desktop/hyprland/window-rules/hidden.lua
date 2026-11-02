@@ -3,7 +3,7 @@ return function(options)
     local pendingClose = false
 
     local function isTarget(window)
-        if not window or not window.xwayland
+        if not window or window.xwayland ~= options.xwayland
             or window.initial_class ~= options.initialClass
             or window.initial_title ~= options.initialTitle then
             return false

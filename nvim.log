@@ -1,0 +1,8 @@
+WRN 2026-10-26T20:21:34.553 ?.2        server_start:197: Failed to start server: operation not permitted: /run/user/1000/nvim.2.0
+WRN 2026-10-26T20:21:42.657 ?.2        server_start:197: Failed to start server: operation not permitted: /run/user/1000/nvim.2.0
+WRN 2026-10-26T20:22:11.139 ?.2        server_start:197: Failed to start server: operation not permitted: /run/user/1000/nvim.2.0
+WRN 2026-10-26T20:22:58.908 ?.2        server_start:197: Failed to start server: operation not permitted: /run/user/1000/nvim.2.0
+WRN 2026-10-26T20:23:53.503 ?.2        server_start:197: Failed to start server: operation not permitted: /run/user/1000/nvim.2.0
+WRN 2026-10-26T20:25:32.684 ?.2        server_start:197: Failed to start server: operation not permitted: /run/user/1000/nvim.2.0
+WRN 2026-10-26T20:26:13.091 ?.2        server_start:197: Failed to start server: operation not permitted: /tmp/rflxn-gui-keys-test/editor.sock
+WRN 2026-10-26T20:27:25.136 ?.2        server_start:197: Failed to start server: operation not permitted: /run/user/1000/nvim.2.0

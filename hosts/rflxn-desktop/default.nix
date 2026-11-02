@@ -14,6 +14,7 @@
           claude-code
           codex-cli-nix
           codex-desktop
+          antigravity-nix
           dank-material-shell
           xivlauncher-rb
           xivmitm-nix;

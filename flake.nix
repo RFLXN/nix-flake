@@ -42,6 +42,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    antigravity-nix = {
+      url = "github:jacopone/antigravity-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     rflxn-shell = {
       url = "github:RFLXN/rflxn-shell";
       inputs.nixpkgs.follows = "nixpkgs";

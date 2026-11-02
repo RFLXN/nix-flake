@@ -327,8 +327,8 @@ modules = {
 - `hyprland.useDankLinux { batteryChargeLimit ? null, lockScreenPasswordField ? null, package ? null, session ? {}, settings ? {}, systemdTarget ? null, theme ? null }`
   Enables DankMaterialShell through Home Manager and declaratively manages the supplied DMS settings.
   `batteryChargeLimit` accepts an integer from 50 to 100. It sets DMS's `settings.batteryChargeLimit` and enables the `dms-battery-charge-limit` system oneshot, which applies the same limit at boot and when the configured value changes during `nixos-rebuild switch`. The helper discovers batteries by sysfs type (including `macsmc-battery`) and reads back the actual thresholds. Unsupported or mismatched values fail the service, with an attempt to restore previous limits, rather than reporting success. Inspect the result with `journalctl -u dms-battery-charge-limit`. This uses native hardware limits; it does not patch the DMS UI or install a userspace charging loop. A null value leaves hardware limits unmanaged.
-  When `session` is set, it declaratively manages DMS machine-local state such as the wallpaper path.
-  When `theme` is set, its `id` selects the managed theme path under `~/.config/DankMaterialShell/themes/`.
+  When `session` is set, it declaratively manages DMS session state such as the wallpaper path under `~/.local/state/dms/session.json`.
+  When `theme` is set, its `id` selects the managed theme path under `~/.config/dms/themes/`.
   When `lockScreenPasswordField` is set, it patches DMS 1.7's `LockAuthWidget.qml` with declarative `width`, `height`, `radius`, `backgroundColor`, `backgroundOpacity`, `borderColor`, `focusBorderColor`, and `showLockIcon` values. The authentication widget keeps its screen-width limit and style-dependent visibility. The build fails if the expected upstream expressions change instead of silently skipping customization.
 
 - `hyprland.useQuickShell { configs ? null, package ? null, quickshellPackage ? null, runtimePackages ? null, systemdTarget ? null }`
@@ -455,8 +455,8 @@ modules = {
 - `hyprland.windowRules.useFixedVesktop { workspace }`
   Pins Vesktop to a workspace by class match.
 
-- `hyprland.windowRules.useHidden { initialClass, processArgv0, initialTitle ? "", workspace ? "hidden" }`
-  Isolates XWayland windows only when their initial class, initial title, and `/proc/<pid>/cmdline` argv[0] all match exactly. Missing/unreadable process information leaves the window untouched. Class and executable must be non-empty strings; title may be empty. Requires `useHyprland`'s `hyprLua` helper.
+- `hyprland.windowRules.useHidden { initialClass, processArgv0, initialTitle ? "", xwayland ? true, workspace ? "hidden" }`
+  Isolates windows only when their backend (`xwayland`), initial class, initial title, and `/proc/<pid>/cmdline` argv[0] all match exactly. Set `xwayland = false` for native Wayland applications, including Wine's Wayland driver. Missing/unreadable process information leaves the window untouched. Class and executable must be non-empty strings; title may be empty; `xwayland` must be a boolean. Requires `useHyprland`'s `hyprLua` helper.
   A Lua `window.open_early` handler tags verified windows before initial focus/render. Tag-scoped dynamic rules disable focus, focus-on-activation, opacity, blur, shadows, decorations, and animations. The `window.open` handler moves the initialized window to `special:<workspace>` without following it; this avoids relying on static rules that have already run in Hyprland 0.56.
   `workspace` is the special workspace name without `special:` and must contain only letters, digits, underscores, or hyphens.
   Existing windows are reconciled on reload, and windows moved out are returned. If the reserved workspace is activated (including by a switcher), a deferred event handler closes it so an invisible special-workspace overlay cannot intercept normal workspace clicks. Other special workspaces are unaffected. Use a distinct workspace for each instance.
@@ -652,6 +652,14 @@ modules = {
 
 - `useVscode {}`
   Installs VS Code.
+
+- `useVim { enableGui ? true }`
+  Configures Neovim through integrated Home Manager and optionally installs the Neovide GUI with a Nerd Font. Neovide explicitly launches the Home Manager configured Neovim package.
+  Nix installs all plugins, Tree-sitter parsers, language servers, and formatters; no Lazy/Mason runtime installation is used. Includes a file tree, project search, completion, Git changes and LazyGit, GitHub PR/issue integration through Octo and the existing `gh` login, and manual formatting.
+  The desktop-style layout has clickable File/Edit/View/Go/Code/Git/Help menus, file tabs with modified indicators, a persistent left sidebar with Files/Git/Open selectors, and a bottom status bar and terminal. File closing preserves the sidebar and prompts to save/discard/cancel; file paths and choices use floating dialogs. A searchable command palette is available through the Help menu.
+  Neovide uses GUI editing controls: file buffers start in Insert mode, Shift+navigation and mouse dragging select text, and Ctrl+A/C/X/V/Z/Y provide selection, clipboard, undo, and redo. Ctrl+N/O/S/W, Ctrl+Tab, Ctrl+F/H, and Ctrl+Shift+P handle files, tabs, search/replace, and the command palette. F4 also opens the command palette; rflxn-desktop uses Super+Ctrl+P for screen power to avoid a conflict. Esc still enters Normal mode. Terminal Neovim retains modal editing controls. Alt+1/2/3 switches sidebar views, and F1 opens the usage guide.
+  Language servers cover JavaScript/TypeScript, Python, Java, Nix, Lua, Bash, JSON, HTML/CSS, C/C++, Rust, and Go. JDT LS gets a separate writable cache directory per project. Project runtimes and dependencies should still be supplied by the project's environment; editor tools are appended to PATH.
+  Launch `neovide` for the GUI or `nvim` in a terminal. `F1` opens the local quick-start guide; Space is the leader key. This module leaves the default editor, existing VS Code installation, and MIME associations unchanged. User state remains under the user's XDG directories, covered by this repository's `/home` persistence.
 
 - `useWaylandUtils {}`
   Installs `wl-clipboard` and `wayland-utils`.

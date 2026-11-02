@@ -79,15 +79,15 @@ This keeps reusable behavior independent of host names, makes differences visibl
 
 ### `rflxn-desktop`
 
-- AMD `x86_64-linux` desktop with Hyprland, UWSM, greetd autologin, QuickShell, and a two-monitor workspace layout.
-- Uses EFI GRUB with Plymouth, the latest nixpkgs kernel, Btrfs impermanence, NetworkManager, zram, and AMD GPU overdrive.
+- AMD `x86_64-linux` desktop with Hyprland, UWSM, greetd autologin, DankMaterialShell, and a two-monitor workspace layout.
+- Uses EFI GRUB with Plymouth (no Secure Boot), the latest nixpkgs kernel, the `ntsync` kernel module, Btrfs impermanence, NetworkManager, zram, and AMD GPU overdrive.
 - Includes desktop applications, development tools, Steam/Wine tooling, EasyEffects, GPU Screen Recorder, FFXIV tooling, Syncthing, and Tailscale.
 - Composition is split into `desktop.nix`, `programs.nix`, `services.nix`, and `systems.nix` under [`hosts/rflxn-desktop`](./hosts/rflxn-desktop).
 
 ### `rflxn-asahi`
 
 - Apple Silicon `aarch64-linux` laptop using the `nixos-apple-silicon` module.
-- Uses Hyprland on the built-in `eDP-1` display, including touchpad gestures and a `60 Hz`/`120 Hz` monitor toggle.
+- Uses Hyprland with DankMaterialShell on the built-in `eDP-1` display, including touchpad gestures and a `60 Hz`/`120 Hz` monitor toggle.
 - Uses systemd-boot with five retained configurations, Btrfs impermanence, NetworkManager Wi-Fi, zram, and an enabled stateful firewall.
 - Includes Apple peripheral firmware, aarch64 Widevine support, Syncthing, and Tailscale.
 - The specialized composition is kept mainly in [`hosts/rflxn-asahi/configuration.nix`](./hosts/rflxn-asahi/configuration.nix).

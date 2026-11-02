@@ -45,6 +45,7 @@ Required input-backed modules:
 | `modules.desktop.hyprland.useHyprland` | optional `hyprland` input, otherwise falls back to `pkgs.hyprland` |
 | `modules.desktop.hyprland.useHyprshell` | optional `hyprshell` input, otherwise falls back to `pkgs.hyprshell` |
 | `modules.programs.useClaudeCode` | `claude-code` |
+| `modules.programs.useAntigravity` | `antigravity-nix` |
 | `modules.programs.useCodex` | `codex-cli-nix` |
 | `modules.programs.useCodexDesktop` | `codex-desktop` |
 | `modules.programs.useFirefox { enableWidevine = true; }` | optional `aarch64-widevine` on Asahi |
@@ -141,6 +142,7 @@ modules = {
 
 - `boot.useLanzaboote { persistPath ? null }`
   Enables Lanzaboote, disables direct `systemd-boot`, installs `sbctl`, and persists `/var/lib/sbctl` when a persistence path is available.
+  Not currently imported by any host; Secure Boot is no longer used.
 
 - `boot.usePlymouth { theme ? "breeze", enableQuietBoot ? true }`
   Enables Plymouth and optionally sets quiet boot kernel/initrd flags.
@@ -184,6 +186,9 @@ modules = {
 
 - `useNetworkManager { useWifi ? false, persistPath ? null }`
   Enables NetworkManager, adds the user to `networkmanager`, optionally enables `iwd`-backed Wi-Fi, and persists NetworkManager state when a persistence path is available.
+
+- `useNtSync {}`
+  Loads the `ntsync` kernel module at boot (`boot.kernelModules`) for Wine/Proton NT synchronization primitives.
 
 - `useZram { memoryPercent ? 25, priority ? 10 }`
   Enables zram swap with configurable memory percentage and priority.
@@ -334,6 +339,7 @@ modules = {
 - `hyprland.useQuickShell { configs ? null, package ? null, quickshellPackage ? null, runtimePackages ? null, systemdTarget ? null }`
   Imports the `rflxn-shell` NixOS bridge module and enables `home-manager.users.${username}.services.rflxn-shell`.
   Pass `configs` to render host-specific monitor, widget, menu, and overlay placement into the packaged Quickshell config.
+  Not currently imported by any host; both Hyprland hosts use `useDankLinux` instead.
 
 - `hyprland.useDarkMode { qtUseGtkPlatformTheme ? true }`
   Enables `dconf`, sets GNOME dark mode preference, and optionally exports `QT_QPA_PLATFORMTHEME=gtk3`.
@@ -528,6 +534,9 @@ modules = {
 
 - `useAlsaUtils {}`
   Installs the ALSA command-line utilities.
+
+- `useAntigravity {}`
+  Installs Google Antigravity from the `antigravity-nix` flake input: the default package, `google-antigravity-ide`, and `google-antigravity-cli`, via `environment.systemPackages`.
 
 - `useAyugram {}`
   Installs AyuGram Desktop.

@@ -53,6 +53,7 @@
     (useKeyd { settings = import ./keyd-configs.nix; })
     (useRemovableStorageAutoMount {})
     (useRtkit {})
+    (useSpotifySoloist { keyFile = "/persist/secrets/spotify-soloist.key"; })
     (useSyncthing {
       serviceLevel = "user";
       devices = { inherit (shared.syncthing-devices) rflxn-server; };

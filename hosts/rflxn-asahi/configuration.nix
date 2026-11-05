@@ -95,6 +95,7 @@ in
       (useLibinput {})
       (useRemovableStorageAutoMount {})
       (useRtkit {})
+      (useSpotifySoloist { keyFile = "/persist/secrets/spotify-soloist.key"; })
       (useSyncthing {
         serviceLevel = "user";
         devices = { inherit (shared.syncthing-devices) rflxn-server; };

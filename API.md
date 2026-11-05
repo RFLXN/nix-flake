@@ -760,6 +760,10 @@ modules = {
   `directories` should look like `{ data = "/home/rflxn/data"; }`.
   Assertion: `directories` must not be empty.
 
+- `useSpotifySoloist { keyFile, deviceName ? null, initialVolume ? null, pipewireDevice ? null, cacheSize ? null, websocketAddress ? null, verbose ? false, extraArgs ? [] }`
+  Runs Spotify Soloist, the headless Spotify Connect receiver, as a `spotify-soloist` systemd user service bound to `graphical-session.target`, so audio goes through the user's PipeWire session. The upstream `services.soloist` module is intentionally not used because it requires system-wide PipeWire. The service reads the Soloist developer API key from `keyFile` at start time; the file must be readable by the repo user. `deviceName` defaults to `networking.hostName`. Also installs `soloist` for `soloist ctl`. State and cache live under `~/.local/share/soloist` and `~/.cache/soloist`, which are covered by the persisted `/home`, so the module does not add persistence entries.
+  Assertions: `keyFile` must be an absolute path, `initialVolume` must be 0–100, `cacheSize` must be 0 or ≥ 100, `websocketAddress` must be `ADDR:PORT`, and PipeWire must be enabled.
+
 - `useSsh { persistPath ? null, allowPasswordLogin ? false }`
   Enables OpenSSH, controls password auth, disables root login, and persists host keys when a persistence path is available.
 

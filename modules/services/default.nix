@@ -19,6 +19,7 @@ in {
   useRemovableStorageAutoMount = import ./removable-storage-auto-mount;
   useRtkit = import ./rtkit;
   useSamba = import ./samba;
+  useSpotifySoloist = import ./spotify-soloist;
   useSsh = import ./ssh;
   useSyncthing = import ./syncthing;
   useTailscale = import ./tailscale;

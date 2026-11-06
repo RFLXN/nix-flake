@@ -30,6 +30,7 @@
     (useAlsaUtils {})
     (useAyugram {})
     (useClaudeCode {})
+    (useClaudeDesktop {})
     (useCodex {})
     (useCodexAuth {})
     (useCodexDesktop {

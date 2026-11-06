@@ -6,6 +6,7 @@
   useAyugram = import ./ayugram;
   useBlueman = import ./blueman;
   useClaudeCode = import ./claude-code;
+  useClaudeDesktop = import ./claude-desktop;
   useCodex = import ./codex;
   useCodexAuth = import ./codex-auth;
   useCodexDesktop = import ./codex-desktop;

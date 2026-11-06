@@ -45,6 +45,7 @@ Required input-backed modules:
 | `modules.desktop.hyprland.useHyprland` | optional `hyprland` input, otherwise falls back to `pkgs.hyprland` |
 | `modules.desktop.hyprland.useHyprshell` | optional `hyprshell` input, otherwise falls back to `pkgs.hyprshell` |
 | `modules.programs.useClaudeCode` | `claude-code` |
+| `modules.programs.useClaudeDesktop` | `claude-desktop` |
 | `modules.programs.useAntigravity` | `antigravity-nix` |
 | `modules.programs.useCodex` | `codex-cli-nix` |
 | `modules.programs.useCodexDesktop` | `codex-desktop` |
@@ -546,6 +547,9 @@ modules = {
 
 - `useClaudeCode {}`
   Applies the Claude Code overlay, installs the package, configures the Home Manager module, and uses a runtime `npx` wrapper for the status line.
+
+- `useClaudeDesktop { withFhs ? true, enableWayland ? false }`
+  Applies the `claude-desktop` flake input overlay (aaddrick/claude-desktop-debian, a repackage of Anthropic's official Linux `.deb`) and installs Claude Desktop. With `withFhs = true` it installs `claude-desktop-fhs`, the FHS-wrapped variant that provides node, uv, docker, and similar tools for MCP servers; otherwise it installs the plain `claude-desktop` package. `enableWayland = true` sets `CLAUDE_USE_WAYLAND=1` as a session variable so the launcher uses native Wayland. App state lives under `~/.config/Claude`, which is covered by the persisted `/home`.
 
 - `useCodex {}`
   Installs Codex CLI from the `codex-cli-nix` flake input.

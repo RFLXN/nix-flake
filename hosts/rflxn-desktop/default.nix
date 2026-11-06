@@ -12,6 +12,7 @@
           lanzaboote
           distro-grub-themes
           claude-code
+          claude-desktop
           codex-cli-nix
           codex-desktop
           antigravity-nix

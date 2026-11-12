@@ -1,7 +1,7 @@
 {  }:
 { username, ... }:
 let
-  inherit (import ./utils.nix) mkMimeDefaults;
+  inherit (import ./utils.nix) mkMimeDefaults mkMimeApps;
 
   writerMimeTypes = [
     "application/docbook+xml"
@@ -142,9 +142,5 @@ let
     // (mkMimeDefaults "math.desktop" mathMimeTypes)
     // (mkMimeDefaults "base.desktop" baseMimeTypes);
 in {
-  home-manager.users.${username}.xdg.mimeApps = {
-    enable = true;
-    defaultApplications = mimeDefaults;
-    associations.added = mimeDefaults;
-  };
+  home-manager.users.${username}.xdg.mimeApps = mkMimeApps mimeDefaults;
 }

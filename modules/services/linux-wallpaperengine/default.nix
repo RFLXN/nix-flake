@@ -1,5 +1,5 @@
 # This service requires Wallpaper Engine Installation from Steam
-{ wallpapers, fps ? 60, bindToPlasma ? false }:
+{ wallpapers, fps ? 60 }:
 { pkgs, lib, username, ... }:
 let
   wallpaperArgs = lib.concatMapStringsSep " " (w: "--screen-root ${w.screen} --bg ${w.wallpaper}") wallpapers;
@@ -24,10 +24,7 @@ in {
     systemd.user.services.linux-wallpaperengine = {
       Unit = {
         Description = "Linux Wallpaper Engine";
-        After = [ "graphical-session.target" ]
-          ++ lib.optionals bindToPlasma [ "plasma-plasmashell.service" ];
-        BindsTo = []
-          ++ lib.optionals bindToPlasma [ "plasma-plasmashell.service" ];
+        After = [ "graphical-session.target" ];
         PartOf = [ "graphical-session.target" ];
       };
 

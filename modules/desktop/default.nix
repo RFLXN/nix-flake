@@ -1,14 +1,9 @@
-let
-  defaultApps = import ./default-apps;
-in
 {
-  defaultApps = defaultApps;
+  defaultApps = import ./default-apps;
   gtk = import ./gtk;
   hyprland = import ./hyprland;
   logind = import ./logind;
-  plasma6 = import ./plasma6;
   qt = import ./qt;
   useGreetd = import ./greetd;
-  useSddm = import ./sddm;
   xdgPortal = import ./xdg-portal;
 }

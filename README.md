@@ -120,6 +120,8 @@ sudo chmod 0600 /persist/secrets/rflxn.hashedPassword
 
 The desktop requires the common password secret and its machine-specific storage layout. Its XivMitm route also assumes gateway `192.168.100.100` on interface `eno1`.
 
+At run time, the Spotify Soloist user service reads its developer API key from `/persist/secrets/spotify-soloist.key`. The file must be readable by the user; the build does not depend on it.
+
 ```bash
 # Build only
 nix build .#nixosConfigurations.rflxn-desktop.config.system.build.toplevel
@@ -154,6 +156,8 @@ sudo nixos-rebuild switch --flake 'path:.#rflxn-asahi'
 ```
 
 Firmware is device-specific. Replace `firmware.cpio` with the target Mac's copy before building for another Apple Silicon machine.
+
+Like the desktop, this host runs Spotify Soloist and expects its API key at `/persist/secrets/spotify-soloist.key` at run time.
 
 ### `rflxn-server`
 

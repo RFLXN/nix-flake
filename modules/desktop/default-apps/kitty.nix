@@ -1,7 +1,7 @@
 {  }:
 { username, ... }:
 let
-  inherit (import ./utils.nix) mkMimeDefaults;
+  inherit (import ./utils.nix) mkMimeDefaults mkMimeApps;
   kittyMimeTypes = [
     "application/x-sh"
     "application/x-shellscript"
@@ -18,10 +18,6 @@ in {
       mimeType = kittyMimeTypes;
     };
 
-    xdg.mimeApps = {
-      enable = true;
-      defaultApplications = mkMimeDefaults "kitty-shellscript.desktop" kittyMimeTypes;
-      associations.added = mkMimeDefaults "kitty-shellscript.desktop" kittyMimeTypes;
-    };
+    xdg.mimeApps = mkMimeApps (mkMimeDefaults "kitty-shellscript.desktop" kittyMimeTypes);
   };
 }

@@ -81,8 +81,10 @@ let
           chmod u+w "$lockAuthWidget"
 
           substituteInPlace "$lockAuthWidget" \
-            --replace-fail 'LockMetrics.passwordRowWidth' ${lib.escapeShellArg (toString passwordField.width)} \
-            --replace-fail 'LockMetrics.fieldHeight' ${lib.escapeShellArg (toString passwordField.height)} \
+            --replace-fail 'Math.min(LockMetrics.passwordRowWidth, (lockHost?.width ?? LockMetrics.passwordRowWidth) - Theme.spacingXL * 2)' \
+              ${lib.escapeShellArg "Math.min(${toString passwordField.width}, (lockHost?.width ?? ${toString passwordField.width}) - Theme.spacingXL * 2)"} \
+            --replace-fail 'Layout.preferredHeight: root.ring ? 0 : LockMetrics.fieldHeight' \
+              ${lib.escapeShellArg "Layout.preferredHeight: root.ring ? 0 : ${toString passwordField.height}"} \
             --replace-fail 'radius: root.style === "expressive" ? Theme.cornerRadiusXL : Theme.fullRadius(width, height)' \
               ${lib.escapeShellArg "radius: ${toString passwordField.radius}"} \
             --replace-fail 'return root.style === "expressive" ? Theme.surfaceContainerHigh : Theme.cardSurface;' \
@@ -118,10 +120,16 @@ in
     description = "Apply and verify the declarative DMS battery charge limit";
     wantedBy = [ "multi-user.target" ];
     after = [ "systemd-udev-trigger.service" ];
+    # The battery driver may not have probed yet when udev-trigger finishes, so
+    # retry a few times instead of staying failed until the next boot.
+    startLimitIntervalSec = 120;
+    startLimitBurst = 6;
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
       ExecStart = "${batteryChargeHelper} --limit ${toString batteryChargeLimit}";
+      Restart = "on-failure";
+      RestartSec = 10;
     };
   };
 

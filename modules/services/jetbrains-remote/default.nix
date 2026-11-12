@@ -1,7 +1,7 @@
 { ides ? [] }:
-{ pkgs, username, ... }: {
+{ username, ... }: {
   home-manager.users.${username}.programs.jetbrains-remote = {
     enable = true;
-    ides = ides;
+    inherit ides;
   };
 }

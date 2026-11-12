@@ -2,14 +2,13 @@
 {
   config,
   lib,
-  defaultPersistPath ? null,
+  defaultPersistPath,
   username,
   ...
 }:
 let
   path = if persistPath != null then persistPath else defaultPersistPath;
-  configuredGroup = lib.attrByPath [ "users" "users" username "group" ] "" config;
-  primaryGroup = if configuredGroup != "" then configuredGroup else "users";
+  primaryGroup = config.users.users.${username}.group;
 
   shareSettings = lib.mapAttrs (_name: directory: {
     path = toString directory;
@@ -23,33 +22,29 @@ let
     "directory mask" = "0755";
   }) directories;
 in
-lib.mkMerge [
-  {
-    assertions = [
+{
+  assertions = [
+    {
+      assertion = directories != {};
+      message = "useSamba requires at least one entry in `directories`.";
+    }
+  ];
+
+  services.samba = {
+    enable = true;
+    openFirewall = false;
+    nmbd.enable = true;
+    winbindd.enable = false;
+    settings =
       {
-        assertion = directories != {};
-        message = "useSamba requires at least one entry in `directories`.";
+        global = {
+          security = "user";
+          "map to guest" = "never";
+          "invalid users" = [ "root" ];
+        };
       }
-    ];
+      // shareSettings;
+  };
 
-    services.samba = {
-      enable = true;
-      openFirewall = false;
-      nmbd.enable = true;
-      winbindd.enable = false;
-      settings =
-        {
-          global = {
-            security = "user";
-            "map to guest" = "never";
-            "invalid users" = [ "root" ];
-          };
-        }
-        // shareSettings;
-    };
-  }
-
-  (lib.mkIf (path != null) {
-    environment.persistence.${path}.directories = [ "/var/lib/samba" ];
-  })
-]
+  environment.persistence.${path}.directories = [ "/var/lib/samba" ];
+}

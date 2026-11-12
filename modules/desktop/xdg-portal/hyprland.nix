@@ -1,16 +1,11 @@
 { useQtTheme ? false, enableGtkFallback ? true }:
-{ config, pkgs, lib, ... }:
-let
-  hyprlandPortal =
-    if config.programs.hyprland.enable
-    then config.programs.hyprland.portalPackage
-    else pkgs.xdg-desktop-portal-hyprland;
-in {
+{ config, pkgs, lib, ... }: {
   xdg.portal = {
     enable = true;
+    # programs.hyprland already installs its own portal and the GTK portal.
     extraPortals =
       lib.optionals (!config.programs.hyprland.enable) (
-        [ hyprlandPortal ]
+        [ pkgs.xdg-desktop-portal-hyprland ]
         ++ lib.optionals enableGtkFallback [ pkgs.xdg-desktop-portal-gtk ]
       )
       ++ lib.optionals useQtTheme [ pkgs.kdePackages.xdg-desktop-portal-kde ];

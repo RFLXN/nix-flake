@@ -1,5 +1,5 @@
 { stateVersion ? "25.11", backupCommand ? null }:
-{ pkgs, lib, username, home-manager, ... }: {
+{ lib, username, home-manager, ... }: {
   imports = [ home-manager.nixosModules.home-manager ];
   home-manager = {
     useGlobalPkgs = true;

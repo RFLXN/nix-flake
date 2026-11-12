@@ -4,7 +4,6 @@ in {
   inherit nginx;
 
   pipewire = import ./pipewire;
-  useBatteryLogger = import ./battery-logger;
   useDocker = import ./docker;
   useDeluge = import ./deluge;
   useEasyEffects = import ./easyeffects;

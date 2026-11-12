@@ -3,7 +3,7 @@
   enableSystemTray ? false,
   openFirewall ? false,
 }:
-{ lib, pkgs, username, defaultPersistPath ? null, ... }:
+{ lib, pkgs, username, defaultPersistPath, ... }:
 let
   path = if persistPath != null then persistPath else defaultPersistPath;
 in
@@ -13,6 +13,8 @@ lib.mkMerge [
       enable = true;
       inherit openFirewall;
     };
+
+    environment.persistence.${path}.directories = [ "/var/lib/tailscale" ];
   }
   (lib.mkIf enableSystemTray {
     services.tailscale.extraSetFlags = [ "--operator=${username}" ];
@@ -30,8 +32,5 @@ lib.mkMerge [
         RestartSec = "5s";
       };
     };
-  })
-  (lib.mkIf (path != null) {
-    environment.persistence.${path}.directories = [ "/var/lib/tailscale" ];
   })
 ]

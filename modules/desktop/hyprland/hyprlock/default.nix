@@ -32,23 +32,6 @@
           }
         ];
 
-        # background rectangle
-        /* shape = [
-          {
-            monitor = "";
-            size = "320, 55";
-            color = "rgba(255, 255, 255, .2)";
-            rounding = -1;
-            border_size = 0;
-            border_color = "rgba(255, 255, 255, 1)";
-            rotate = 0;
-            xray = false;
-            position = "170, -140";
-            halign = "left";
-            valign = "center";
-          }
-        ]; */
-
         # password input
         input-field = [
           {

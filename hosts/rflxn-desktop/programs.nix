@@ -1,4 +1,4 @@
-{ modules, ... }: {
+{ modules, shared, ... }: {
   imports = with modules.programs; [
     (gaming.useLsfgVk {})
     (gaming.useLutris {})
@@ -50,7 +50,7 @@
       ];
     })
     (useFirefox {})
-    (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
+    (useGit shared.git)
     (useHaruna {})
     (useHyprshot {})
     (useK3b {})

@@ -14,7 +14,6 @@ in
   useHyprlock = import ./hyprlock;
   useHyprpolkit = import ./hyprpolkit.nix;
   useHyprshell = import ./hyprshell;
-  useQuickShell = import ./quickshell;
   useTrayBridge = import ./tray-bridge.nix;
   useXdgMenu = import ./xdg-menu.nix;
   useXdgUserDirs = import ./xdg-user-dirs.nix;

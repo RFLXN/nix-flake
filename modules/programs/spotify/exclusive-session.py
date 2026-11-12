@@ -151,16 +151,22 @@ def disconnect_target(
     pw_link: str,
     target_id: int,
     suspended: set[LinkPorts],
-    protected_nodes: set[int] | None = None,
+    protect_spotify: bool = False,
 ) -> int:
-    protected = protected_nodes or set()
-    before = len(suspended)
-    for _attempt in range(20):
-        links = [
+    def disconnectable(graph: list[dict[str, Any]]) -> list[Any]:
+        # Work out which nodes are Spotify's own stream from the same snapshot
+        # the links come from; a stale set would cut a stream that appeared
+        # in between.
+        protected = spotify_exclusive_node_ids(graph) if protect_spotify else set()
+        return [
             link
-            for link in target_links(pipewire_dump(pw_dump), target_id)
+            for link in target_links(graph, target_id)
             if link.output_node not in protected and link.input_node not in protected
         ]
+
+    before = len(suspended)
+    for _attempt in range(20):
+        links = disconnectable(pipewire_dump(pw_dump))
         if not links:
             return len(suspended) - before
         for link in links:
@@ -168,14 +174,7 @@ def disconnect_target(
             run([pw_link, "-d", str(link.link_id)], check=False)
         time.sleep(0.05)
 
-    graph = pipewire_dump(pw_dump)
-    remaining = len(
-        [
-            link
-            for link in target_links(graph, target_id)
-            if link.output_node not in protected and link.input_node not in protected
-        ]
-    )
+    remaining = len(disconnectable(pipewire_dump(pw_dump)))
     raise SessionError(
         f"PipeWire target kept {remaining} non-exclusive link(s) after disconnecting them"
     )
@@ -514,13 +513,35 @@ def run_session(args: argparse.Namespace) -> int:
                     raise SessionError(f"PulseAudio sink not found: {name}")
             initial_inputs = pulse_sink_inputs(args.pactl)
             original_default = default_pulse_sink(args.pactl)
+            if original_default == args.parking_target:
+                # Left behind by a session that could not clean up. Never
+                # restore the silent parking sink as the default.
+                print(
+                    "spotify-alsa: default sink was still the parking sink; "
+                    f"restoring {args.target} as default on exit",
+                    file=sys.stderr,
+                )
+                original_default = args.target
         elif initial_links:
             raise SessionError(
                 f"PipeWire target already has {len(initial_links)} link(s); "
                 f"stop other clients using {args.target}"
             )
 
+        def forward_signal(signum: int, _frame: Any) -> None:
+            if child is not None and child.poll() is None:
+                child.send_signal(signum)
+            elif child is None:
+                # Not started yet: unwind through the finally block so the
+                # routing changes made so far are reverted.
+                raise SessionError(f"interrupted by signal {signum} before Spotify started")
+
         try:
+            # Install the handlers before touching the audio routing, so a
+            # signal at any point still runs the cleanup below.
+            for signum in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+                signal.signal(signum, forward_signal)
+
             if args.suspend_existing:
                 set_default_pulse_sink(args.pactl, args.parking_target)
                 parked = park_target_pulse_inputs(
@@ -562,13 +583,6 @@ def run_session(args: argparse.Namespace) -> int:
             except OSError as error:
                 raise SessionError(f"Could not start Spotify: {error}") from error
 
-            def forward_signal(signum: int, _frame: Any) -> None:
-                if child is not None and child.poll() is None:
-                    child.send_signal(signum)
-
-            for signum in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
-                signal.signal(signum, forward_signal)
-
             monitor_failures = 0
             while True:
                 try:
@@ -583,13 +597,12 @@ def run_session(args: argparse.Namespace) -> int:
                             args.parking_target,
                             moved_inputs,
                         )
-                        current_graph = pipewire_dump(args.pw_dump)
                         disconnect_target(
                             args.pw_dump,
                             args.pw_link,
                             target_id,
                             suspended,
-                            spotify_exclusive_node_ids(current_graph),
+                            protect_spotify=True,
                         )
                         monitor_failures = 0
                     except SessionError as error:
@@ -606,14 +619,23 @@ def run_session(args: argparse.Namespace) -> int:
                 except subprocess.TimeoutExpired:
                     child.kill()
                     child.wait()
-            restore_pulse_session(
-                args.pactl,
-                args.parking_target,
-                original_default,
-                initial_inputs,
-                moved_inputs,
+            # Each step runs even if the previous one failed (for example on a
+            # hung pactl), so one error cannot leave the rest unrestored.
+            cleanup_steps = (
+                lambda: restore_pulse_session(
+                    args.pactl,
+                    args.parking_target,
+                    original_default,
+                    initial_inputs,
+                    moved_inputs,
+                ),
+                lambda: restore_links(args.pw_dump, args.pw_link, suspended),
             )
-            restore_links(args.pw_dump, args.pw_link, suspended)
+            for step in cleanup_steps:
+                try:
+                    step()
+                except Exception as error:  # noqa: BLE001
+                    print(f"spotify-alsa: cleanup step failed: {error}", file=sys.stderr)
 
 
 def main() -> int:

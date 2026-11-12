@@ -3,12 +3,15 @@ let
   toLua = lib.generators.toLua { };
   lua = lib.generators.mkLuaInline;
 
+  # "MODS, key" (Hyprlang style) becomes "MOD + MOD + key". A value without a
+  # comma is a bare key with no modifiers.
   keyFromHyprlang =
     key:
     let
       parts = map lib.strings.trim (lib.splitString "," key);
-      mods = if parts == [ ] then "" else builtins.elemAt parts 0;
-      keyName = if builtins.length parts >= 2 then builtins.elemAt parts 1 else key;
+      hasMods = builtins.length parts >= 2;
+      mods = if hasMods then builtins.elemAt parts 0 else "";
+      keyName = builtins.elemAt parts (if hasMods then 1 else 0);
       modifierParts = builtins.filter (part: part != "") (lib.splitString " " mods);
     in
     lib.concatStringsSep " + " (modifierParts ++ [ keyName ]);

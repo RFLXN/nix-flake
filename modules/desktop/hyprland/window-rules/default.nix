@@ -1,16 +1,18 @@
+let
+  useFixed = import ./fixed.nix;
+  fixedClass = class: { workspace }: useFixed { inherit class workspace; };
+in
 {
-  useDefaults = {  }:
+  # Kept as an explicit, currently empty, starting point for shared rules.
+  useDefaults = { }:
   { username, ... }: {
-    home-manager.users.${username}.wayland.windowManager.hyprland.settings = {
-      window_rule = [
-        #"match:class .*, float on"
-        #"match:floating 1, size (monitor_w*0.6) (monitor_h*0.6), center on"
-      ];
-    };
+    home-manager.users.${username}.wayland.windowManager.hyprland.settings.window_rule = [ ];
   };
-  useFixedDiscord = import ./fixed-discord.nix;
-  useFixedMopiMopi = import ./fixed-mopimopi.nix;
-  useFixedSpotify = import ./fixed-spotify.nix;
-  useFixedVesktop = import ./fixed-vesktop.nix;
+
+  inherit useFixed;
+  useFixedDiscord = fixedClass "^(discord)$";
+  useFixedMopiMopi = fixedClass "^(chrome-proxy\\.iinact\\.com__overlay_mopimopi_-Default)$";
+  useFixedSpotify = fixedClass "^(spotify)$";
+  useFixedVesktop = fixedClass "^(vesktop)$";
   useHidden = import ./hidden.nix;
 }

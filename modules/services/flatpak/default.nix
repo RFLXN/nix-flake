@@ -1,11 +1,10 @@
 { persistPath ? null }:
-{ lib, defaultPersistPath ? null, ... }:
+{ defaultPersistPath, ... }:
 let
   path = if persistPath != null then persistPath else defaultPersistPath;
 in
-lib.mkMerge [
-  { services.flatpak.enable = true; }
-  (lib.mkIf (path != null) {
-    environment.persistence.${path}.directories = [ "/var/lib/flatpak" ];
-  })
-]
+{
+  services.flatpak.enable = true;
+
+  environment.persistence.${path}.directories = [ "/var/lib/flatpak" ];
+}

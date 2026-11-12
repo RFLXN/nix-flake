@@ -1,6 +1,6 @@
 { config, pkgs, username, shared, modules, ... }:
 let
-  dankLinux = import ./dank-linux.nix;
+  dankLinux = import ./dank-linux.nix { inherit username; };
 in
 {
   imports =
@@ -85,9 +85,6 @@ in
     # Services
     (with modules.services; [
       (pipewire.usePipewire {})
-      #(useBatteryLogger {
-      #  batteryDeviceName = "macsmc-battery";
-      #})
       (useDocker { isBtrfs = true; isRootless = true; })
       (useFlatpak {})
       (useHomeManager { backupCommand = "${pkgs.trash-cli}/bin/trash"; })
@@ -132,7 +129,7 @@ in
         ];
       })
       (useFirefox { enableWidevine = true; })
-      (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
+      (useGit shared.git)
       (useHaruna {})
       (useKcalc {})
       (useKitty {})
@@ -149,7 +146,7 @@ in
     # Hardware
     (with modules.hardware; [
       (useBluetooth {})
-      (useGraphics { enable32Bit = false; })
+      (useGraphics {})
     ]) ++
 
     # System
@@ -205,6 +202,5 @@ in
       then path
       else throw "Asahi firmware not found at hosts/rflxn-asahi/firmware/. Extract your firmware there.";
 
-  system.copySystemConfiguration = false;
   system.stateVersion = "25.11";
 }

@@ -21,6 +21,21 @@ let
               kde.kio-extras
             ]} \
             --run '${lib.getExe' kde.kservice "kbuildsycoca6"} >/dev/null 2>&1 || true'
+
+          # D-Bus and systemd activation (for example "show in folder" from a
+          # browser) start Dolphin by absolute store path, which would bypass
+          # the wrapper. Point those unit files at the wrapped binary.
+          for unit in \
+            share/dbus-1/services/org.kde.dolphin.FileManager1.service \
+            share/systemd/user/plasma-dolphin.service
+          do
+            if [ -e "$out/$unit" ]; then
+              target="$(readlink -f "$out/$unit")"
+              rm "$out/$unit"
+              substitute "$target" "$out/$unit" \
+                --replace-fail ${lib.escapeShellArg "${kde.dolphin}/bin/dolphin"} "$out/bin/dolphin"
+            fi
+          done
         '';
       }
     else

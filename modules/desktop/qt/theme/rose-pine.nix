@@ -16,7 +16,12 @@ let
   };
 
   allowedAccents = [ "rose" "pine" "foam" "gold" "iris" "love" ];
-  kvantumTheme = "${variantPrefixes.${variant}}-${accent}";
+  # The theme name becomes a home.file attribute name, which is forced before
+  # module assertions are reported, so an invalid variant has to throw here.
+  variantPrefix =
+    variantPrefixes.${variant}
+      or (throw "qt.theme.useRosePine: variant must be one of \"main\", \"moon\", or \"dawn\".");
+  kvantumTheme = "${variantPrefix}-${accent}";
   themeSourcePath =
     if useOverlay
     then "${pkgs.rose-pine-kvantum}/share/Kvantum/${kvantumTheme}"
@@ -91,11 +96,6 @@ in
     })
   ];
 
-  # Ensure Qt apps launched outside Home Manager shell init still receive
-  # the expected platform-theme override (e.g. from Hyprland or rofi).
-  /* environment.sessionVariables = {
-    QT_QPA_PLATFORMTHEME = lib.mkDefault "qt5ct";
-  }; */
   environment.systemPackages = with pkgs; [
     libsForQt5.qt5ct
     qt6Packages.qt6ct

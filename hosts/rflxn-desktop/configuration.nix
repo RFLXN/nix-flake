@@ -1,4 +1,4 @@
-{ config, lib, pkgs, username, shared, modules, ... }: {
+{ shared, ... }: {
   imports = [
     ./desktop.nix
     ./services.nix
@@ -22,6 +22,5 @@
 
   networking.firewall.enable = false;
 
-  system.copySystemConfiguration = false;
   system.stateVersion = "25.11";
 }

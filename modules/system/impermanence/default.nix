@@ -5,7 +5,7 @@
   files ? [],
   enableWipeRoot ? true,
 }:
-{ lib, pkgs, utils, impermanence, defaultPersistPath ? null, ... }:
+{ lib, pkgs, utils, impermanence, defaultPersistPath, ... }:
 let
   rootDevice = "/dev/disk/by-uuid/${rootUuid}";
   rootDeviceUnit = "${utils.escapeSystemdPath rootDevice}.device";
@@ -29,7 +29,11 @@ in
       description = "Replace Btrfs root subvolume";
       wantedBy = [ "sysroot.mount" ];
       wants = [ rootDeviceUnit ];
-      after = [ rootDeviceUnit ];
+      # Never replace @root before a hibernation image had its chance to resume.
+      after = [
+        rootDeviceUnit
+        "systemd-hibernate-resume.service"
+      ];
       before = [
         "sysroot.mount"
         "shutdown.target"
@@ -117,7 +121,7 @@ in
         old_root=
         if [[ -e /btrfs_tmp/@root ]]; then
           mkdir -p /btrfs_tmp/old_roots
-          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/@root)" "+%Y-%m-%-d_%H:%M:%S")
+          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/@root)" "+%Y-%m-%d_%H:%M:%S")
           old_root="/btrfs_tmp/old_roots/$timestamp"
           counter=1
           while [[ -e "$old_root" ]]; do
@@ -172,6 +176,9 @@ in
       "/var/log"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
+      # Persistent=true timers (nix.gc, nix.optimise, fstrim) keep their last-run
+      # stamps here; without them a missed run is never caught up.
+      "/var/lib/systemd/timers"
     ] ++ directories;
     files = [ "/etc/machine-id" ] ++ files;
   };

@@ -1,6 +1,16 @@
 { settings ? [] }:
-{ hyprLua, pkgs, lib, username, ... }:
+{ config, hyprLua, pkgs, lib, username, ... }:
 let
+  # Rounded refresh rate from an hl.monitor mode such as "3456x2160@120" or
+  # "1920x1080@59.94"; null when the mode carries no rate.
+  refreshOf =
+    setup:
+    let
+      mode = setup.mode or null;
+      rate = if lib.isString mode then builtins.match ".*@([0-9]+(\\.[0-9]+)?)" mode else null;
+    in
+    if rate == null then null else builtins.floor (builtins.fromJSON (builtins.head rate) + 0.5);
+
   toggles = lib.imap0 (
     index:
     {
@@ -12,31 +22,22 @@ let
     let
       defaultLua = "hl.monitor(${hyprLua.toLua defaultSetup})";
       toggleLua = "hl.monitor(${hyprLua.toLua toggleSetup})";
-      scriptName = "hypr-toggle-monitor-setup-${toString index}-${pkgs.lib.strings.sanitizeDerivationName monitorName}";
+      scriptName = "hypr-toggle-monitor-setup-${toString index}-${lib.strings.sanitizeDerivationName monitorName}";
       package = pkgs.writeShellScriptBin scriptName ''
         set -euo pipefail
 
-        hyprctl='${pkgs.hyprland}/bin/hyprctl'
-        awk='${pkgs.gawk}/bin/awk'
-        sed='${pkgs.gnused}/bin/sed'
+        hyprctl='${config.programs.hyprland.package}/bin/hyprctl'
+        jq='${pkgs.jq}/bin/jq'
 
-        current_mode_line="$("$hyprctl" monitors all | "$awk" -v monitor='${monitorName}' '$1 == "Monitor" && $2 == monitor { getline; print; exit }')"
-        if [ -z "$current_mode_line" ]; then
+        # Panels report rates like 59.94 or 119.88, so compare rounded values.
+        current_refresh="$("$hyprctl" -j monitors all | "$jq" -r --arg monitor ${lib.escapeShellArg monitorName} \
+          'first(.[] | select(.name == $monitor) | .refreshRate | round) // empty')"
+        if [ -z "$current_refresh" ]; then
           exit 1
         fi
 
-        current_refresh="$(printf '%s' "$current_mode_line" | "$sed" -n 's/.*@\([0-9.]\+\).*/\1/p')"
-        default_refresh="$(printf '%s' '${defaultSetup.mode}' | "$sed" -n 's/.*@\([0-9.]\+\).*/\1/p')"
-        toggle_refresh="$(printf '%s' '${toggleSetup.mode}' | "$sed" -n 's/.*@\([0-9.]\+\).*/\1/p')"
-
-        current_major="''${current_refresh%%.*}"
-        default_major="''${default_refresh%%.*}"
-        toggle_major="''${toggle_refresh%%.*}"
-
-        if [ "$current_major" = "$toggle_major" ]; then
+        if [ "$current_refresh" = ${lib.escapeShellArg (toString (refreshOf toggleSetup))} ]; then
           target_lua=${lib.escapeShellArg defaultLua}
-        elif [ "$current_major" = "$default_major" ]; then
-          target_lua=${lib.escapeShellArg toggleLua}
         else
           target_lua=${lib.escapeShellArg toggleLua}
         fi
@@ -49,16 +50,34 @@ let
   ) settings;
 in
 {
-  assertions = lib.imap0 (
-    index: entry: {
-      assertion =
+  assertions = lib.concatLists (lib.imap0 (
+    index: entry:
+    let
+      prefix = "hyprland.keybinds.useToggleMonitorSetup: settings[${toString index}]";
+      hasSetups =
         entry ? defaultSetup
         && entry ? toggleSetup
         && lib.isAttrs entry.defaultSetup
         && lib.isAttrs entry.toggleSetup;
-      message = "hyprland.keybinds.useToggleMonitorSetup: settings[${toString index}].defaultSetup and toggleSetup must be hl.monitor spec attrsets.";
-    }
-  ) settings;
+    in
+    [
+      {
+        assertion = hasSetups;
+        message = "${prefix}.defaultSetup and toggleSetup must be hl.monitor spec attrsets.";
+      }
+      {
+        # The script tells the two setups apart by refresh rate only.
+        assertion =
+          !hasSetups
+          || (
+            refreshOf entry.defaultSetup != null
+            && refreshOf entry.toggleSetup != null
+            && refreshOf entry.defaultSetup != refreshOf entry.toggleSetup
+          );
+        message = "${prefix}: both setups need a mode with an explicit refresh rate (for example \"1920x1080@60\"), and the two rates must differ.";
+      }
+    ]
+  ) settings);
 
   home-manager.users.${username} = {
     home.packages = map (toggle: toggle.package) toggles;

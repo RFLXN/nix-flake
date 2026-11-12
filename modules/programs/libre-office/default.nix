@@ -2,8 +2,8 @@
 { pkgs, ... }:
 let
   libreofficeDefaultTheme = pkgs.symlinkJoin {
-    name = "libreoffice-qt-fresh-default-theme";
-    paths = [ pkgs.libreoffice-qt-fresh ];
+    name = "libreoffice-qt-default-theme";
+    paths = [ pkgs.libreoffice-qt ];
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       # Force LO to use Qt6 backend while bypassing global qtct/kvantum overrides.

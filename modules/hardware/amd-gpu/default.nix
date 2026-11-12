@@ -1,16 +1,11 @@
 {
-  enable32Bit ? true,
   enableOverdrive ? false
 }:
 { ... }: {
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  hardware.amdgpu = {
+    initrd.enable = true;
+    overdrive.enable = enableOverdrive;
+  };
 
   services.xserver.videoDrivers = [ "amdgpu" ];
-
-  hardware.amdgpu.overdrive.enable = enableOverdrive;
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = enable32Bit;
-  };
 }

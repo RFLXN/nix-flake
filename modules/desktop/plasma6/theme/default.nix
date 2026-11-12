@@ -1,3 +1,0 @@
-{
-  useLeaf = import ./leaf;
-}

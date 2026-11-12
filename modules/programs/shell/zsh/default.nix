@@ -1,10 +1,14 @@
 { }:
 { pkgs, lib, username, ... }: {
-  environment.shells = [ pkgs.zsh ];
-
   users.users.${username}.shell = pkgs.zsh;
 
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    # oh-my-zsh runs compinit and Powerlevel10k sets the prompt from the user's
+    # zshrc, so skip the system-wide copies of both.
+    enableGlobalCompInit = false;
+    promptInit = "";
+  };
 
   home-manager.users.${username}.programs.zsh = {
     enable = true;
@@ -19,7 +23,7 @@
 
     initContent = lib.mkOrder 1000 ''
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-      ${builtins.readFile ./p10k.zsh}
+      source ${./p10k.zsh}
     '';
   };
 }

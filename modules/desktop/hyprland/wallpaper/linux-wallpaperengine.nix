@@ -1,11 +1,15 @@
 { wallpapers, fps ? 60 }:
 { hyprLua, pkgs, lib, username, ... }:
 let
-  wallpaperArgs = lib.concatMapStringsSep " " (w: "--screen-root ${w.screen} --bg ${w.wallpaper}") wallpapers;
+  wallpaperArgs = lib.concatMapStringsSep " " (
+    w: "--screen-root ${lib.escapeShellArg w.screen} --bg ${lib.escapeShellArg w.wallpaper}"
+  ) wallpapers;
   wallpaperCommand = "${pkgs.coreutils}/bin/env SDL_AUDIODRIVER=dummy SDL_AUDIO_DRIVER=dummy ${pkgs.linux-wallpaperengine}/bin/linux-wallpaperengine --fps ${toString fps} --silent ${wallpaperArgs}";
 
   restart-wallpaper = pkgs.writeShellScriptBin "restart-wallpaper" ''
-    pkill -x linux-wallpaperengine >/dev/null 2>&1 || true
+    # The kernel truncates process names to 15 characters, so -x has to match
+    # the truncated name; the full name never matches.
+    ${pkgs.procps}/bin/pkill -x linux-wallpaper >/dev/null 2>&1 || true
     ${wallpaperCommand} &
   '';
   restart-wallpaper-desktop = pkgs.makeDesktopItem {

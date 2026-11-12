@@ -46,6 +46,11 @@ let
     else if regreetCompositor == "cage" then "${lib.getExe pkgs.cage} -s -- ${lib.getExe regreetPkg}"
     else regreetCompositor;
 
+  autoLoginSessionConfig = {
+    command = resolvedAutoLoginCommand;
+    user = username;
+  };
+
   regreetExitCommand = "${lib.getExe regreetPkg}; hyprctl dispatch 'hl.dsp.exit()'";
   greeterHyprlandConfig = ''
     ${lib.optionalString (regreetPrimaryMonitor != null) ''
@@ -95,20 +100,26 @@ in {
 
   services.greetd = {
     enable = true;
+    # NixOS turns this off when initial_session is set, because a restarted
+    # greetd logs in again. That is exactly what autologin wants here.
+    restart = lib.mkIf enableAutoLogin true;
     settings = {
-      default_session = if enableAutoLogin then {
-        command = resolvedAutoLoginCommand;
-        user = username;
-      } else {
+      # With autologin there is no greeter on purpose: the session logs
+      # straight back in after logout and the desktop shell's own lock screen
+      # (for example DMS with lockAtStartup) acts as the login prompt.
+      default_session = if enableAutoLogin then autoLoginSessionConfig else {
         command = regreetSessionCommand;
         user = "greeter";
       };
+    }
+    # greetd gives default_session the logind class "greeter", which cannot be
+    # locked (loginctl lock-session, lid switch, shell lock integration). The
+    # first login after boot therefore runs as initial_session, which is a
+    # regular user session. A re-login after logout goes through
+    # default_session and is a greeter-class session again.
+    // lib.optionalAttrs enableAutoLogin {
+      initial_session = autoLoginSessionConfig;
     };
-  };
-
-  systemd.services.greetd.serviceConfig = lib.mkIf enableSilentSession {
-    StandardOutput = "journal";
-    StandardError = "journal";
   };
 
   environment.systemPackages = lib.optionals enableRegreet [ regreetPkg ];

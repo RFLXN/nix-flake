@@ -1,9 +1,9 @@
 { key ? "SUPER SHIFT, O", delaySeconds ? 1 }:
-{ hyprLua, username, pkgs, ... }:
+{ config, hyprLua, username, pkgs, ... }:
 let
   screenOff = pkgs.writeShellScriptBin "hypr-screen-off" ''
     ${pkgs.coreutils}/bin/sleep ${toString delaySeconds}
-    ${pkgs.hyprland}/bin/hyprctl dispatch 'hl.dsp.dpms({ action = "toggle" })'
+    ${config.programs.hyprland.package}/bin/hyprctl dispatch 'hl.dsp.dpms({ action = "toggle" })'
   '';
 in
 {

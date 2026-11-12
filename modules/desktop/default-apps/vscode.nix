@@ -27,11 +27,7 @@
 }:
 { username, ... }:
 let
-  inherit (import ./utils.nix) mkMimeDefaults;
+  inherit (import ./utils.nix) mkMimeDefaults mkMimeApps;
 in {
-  home-manager.users.${username}.xdg.mimeApps = {
-    enable = true;
-    defaultApplications = mkMimeDefaults "code.desktop" mimeTypes;
-    associations.added = mkMimeDefaults "code.desktop" mimeTypes;
-  };
+  home-manager.users.${username}.xdg.mimeApps = mkMimeApps (mkMimeDefaults "code.desktop" mimeTypes);
 }

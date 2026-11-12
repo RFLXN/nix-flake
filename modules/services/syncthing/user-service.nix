@@ -1,7 +1,7 @@
 {
   devices,
   folders,
-  webHost ? "0.0.0.0",
+  webHost ? "127.0.0.1",
   webPort ? 8384
 }:
 { username, ... }: {

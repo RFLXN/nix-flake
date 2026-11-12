@@ -10,7 +10,6 @@
         scroll_factor = 0.25;
         disable_while_typing = true;
         clickfinger_behavior = 1;
-        # tap_button_map = "lrm";
         tap_to_click = false;
         tap_and_drag = true;
         middle_button_emulation = false;

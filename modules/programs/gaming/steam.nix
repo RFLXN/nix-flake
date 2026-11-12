@@ -7,10 +7,16 @@
     capSysNice = false;
   };
 
-  services.ananicy = {
+  # ananicy is only here to renice gamescope.
+  services.ananicy = lib.mkIf enableGamescope {
     enable = true;
     package = pkgs.ananicy-cpp;
-    rulesProvider = pkgs.ananicy-cpp;
+    # ananicy-cpp ships no rules; pointing rulesProvider at it would copy the
+    # whole package (binary included) into /etc/ananicy.d. Provide an empty
+    # rule set and rely on extraRules.
+    rulesProvider = pkgs.runCommand "ananicy-no-default-rules" { } ''
+      mkdir -p $out/etc/ananicy.d/00-default
+    '';
     extraRules = [
       {
         "name" = "gamescope";

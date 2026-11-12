@@ -65,7 +65,7 @@
     (useCodex {})
     (useCommonTools {})
     (useDirenv {})
-    (useGit { name = "RFLXN"; email = "solid2113@naver.com"; })
+    (useGit shared.git)
     (useNixIndex {})
 
   ]) ++ (with modules.system; [

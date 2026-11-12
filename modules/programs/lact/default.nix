@@ -1,14 +1,17 @@
-{ enableDaemon ? true }:
-{ pkgs, lib, ... }: {
-  environment.systemPackages = [ pkgs.lact ];
+{ enableDaemon ? true, persistPath ? null }:
+{ pkgs, lib, defaultPersistPath, ... }:
+let
+  path = if persistPath != null then persistPath else defaultPersistPath;
+in
+lib.mkMerge [
+  {
+    # The NixOS module installs the package and runs the upstream lactd unit.
+    services.lact.enable = enableDaemon;
 
-  systemd.services.lact = lib.mkIf enableDaemon {
-    description = "AMDGPU Control Daemon";
-    after = [ "multi-user.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.lact}/bin/lact daemon";
-    };
-    enable = true;
-  };
-}
+    environment.systemPackages = lib.optionals (!enableDaemon) [ pkgs.lact ];
+  }
+  (lib.mkIf enableDaemon {
+    # lactd keeps fan curves and tuning in /etc/lact/config.yaml.
+    environment.persistence.${path}.directories = [ "/etc/lact" ];
+  })
+]

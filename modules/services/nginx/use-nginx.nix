@@ -1,7 +1,7 @@
 {
   upstreams ? {},
 }:
-{ lib, ... }:
+{ ... }:
 {
   services.nginx = {
     enable = true;

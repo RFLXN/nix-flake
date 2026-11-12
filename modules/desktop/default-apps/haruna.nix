@@ -1,7 +1,7 @@
 {  }:
 { username, ... }:
 let
-  inherit (import ./utils.nix) mkMimeDefaults;
+  inherit (import ./utils.nix) mkMimeDefaults mkMimeApps;
   harunaMimeTypes = [
     "audio/aac"
     "audio/ac3"
@@ -24,9 +24,5 @@ let
     "video/x-ms-wmv"
   ];
 in {
-  home-manager.users.${username}.xdg.mimeApps = {
-    enable = true;
-    defaultApplications = mkMimeDefaults "org.kde.haruna.desktop" harunaMimeTypes;
-    associations.added = mkMimeDefaults "org.kde.haruna.desktop" harunaMimeTypes;
-  };
+  home-manager.users.${username}.xdg.mimeApps = mkMimeApps (mkMimeDefaults "org.kde.haruna.desktop" harunaMimeTypes);
 }

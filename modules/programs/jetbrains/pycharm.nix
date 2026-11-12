@@ -1,12 +1,16 @@
 { enableZshAlias ? false }:
-{ lib, pkgs, username, ... }: lib.mkMerge [
+{ lib, pkgs, username, ... }:
+let
+  package = pkgs.jetbrains.pycharm;
+in
+lib.mkMerge [
   {
-    environment.systemPackages = [ pkgs.jetbrains.pycharm-professional ];
+    environment.systemPackages = [ package ];
   }
   (lib.mkIf enableZshAlias {
     home-manager.users.${username}.programs.zsh.initContent = ''
       pycharm() {
-        (nohup /run/current-system/sw/bin/pycharm-professional "$@" >/dev/null 2>&1 &)
+        (nohup ${lib.getExe package} "$@" >/dev/null 2>&1 &)
       }
     '';
   })

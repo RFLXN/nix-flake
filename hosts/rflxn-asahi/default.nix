@@ -13,8 +13,7 @@
           claude-code
           codex-cli-nix
           codex-desktop
-          dank-material-shell
-          battery-logger;
+          dank-material-shell;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };

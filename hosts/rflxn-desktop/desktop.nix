@@ -21,7 +21,7 @@ in
     })
     (hyprland.cursors.useRosePineCursor {})
     (hyprland.keybinds.useDankLinuxLauncher {})
-    (hyprland.keybinds.useDefaults {})
+    (hyprland.keybinds.useDefaults { moveWorkspaceCount = 8; })
     (hyprland.keybinds.useGsrSaveReplay {})
     (hyprland.keybinds.useHyprshot {})
     (hyprland.keybinds.useKitty {})

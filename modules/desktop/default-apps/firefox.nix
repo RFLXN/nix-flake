@@ -8,11 +8,7 @@
 }:
 { username, ... }:
 let
-  inherit (import ./utils.nix) mkMimeDefaults;
+  inherit (import ./utils.nix) mkMimeDefaults mkMimeApps;
 in {
-  home-manager.users.${username}.xdg.mimeApps = {
-    enable = true;
-    defaultApplications = mkMimeDefaults "firefox.desktop" mimeTypes;
-    associations.added = mkMimeDefaults "firefox.desktop" mimeTypes;
-  };
+  home-manager.users.${username}.xdg.mimeApps = mkMimeApps (mkMimeDefaults "firefox.desktop" mimeTypes);
 }

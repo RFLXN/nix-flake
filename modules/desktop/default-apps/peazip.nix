@@ -1,7 +1,7 @@
 {  }:
 { username, ... }:
 let
-  inherit (import ./utils.nix) mkMimeDefaults;
+  inherit (import ./utils.nix) mkMimeDefaults mkMimeApps;
   peazipMimeTypes = [
     "application/bzip2"
     "application/gzip"
@@ -69,9 +69,5 @@ let
     "application/zstd"
   ];
 in {
-  home-manager.users.${username}.xdg.mimeApps = {
-    enable = true;
-    defaultApplications = mkMimeDefaults "peazip-extract.desktop" peazipMimeTypes;
-    associations.added = mkMimeDefaults "peazip-extract.desktop" peazipMimeTypes;
-  };
+  home-manager.users.${username}.xdg.mimeApps = mkMimeApps (mkMimeDefaults "peazip-extract.desktop" peazipMimeTypes);
 }

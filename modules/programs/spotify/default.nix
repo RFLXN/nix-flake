@@ -71,10 +71,15 @@ lib.mkMerge [
     home-manager.users.${username} = {
       home.activation.configureSpotifyQt = lib.mkIf isAarch64Linux (
         config.home-manager.users.${username}.lib.dag.entryAfter [ "writeBoundary" ] ''
-          CONFIG_FILE="/home/${username}/.config/kraxarn/spotify-qt.json"
+          CONFIG_FILE="$HOME/.config/kraxarn/spotify-qt.json"
           if [ -f "$CONFIG_FILE" ]; then
-            ${pkgs.jq}/bin/jq '.Spotify.path = "${pkgs.librespot}/bin/librespot" | .Spotify.start_client = true' "$CONFIG_FILE" > "$CONFIG_FILE.tmp"
-            mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
+            # A broken config file must not abort the whole activation.
+            if ${pkgs.jq}/bin/jq '.Spotify.path = "${pkgs.librespot}/bin/librespot" | .Spotify.start_client = true' "$CONFIG_FILE" > "$CONFIG_FILE.tmp"; then
+              mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
+            else
+              rm -f "$CONFIG_FILE.tmp"
+              echo "spotify-qt.json could not be updated; leaving it untouched" >&2
+            fi
           fi
         ''
       );

@@ -13,7 +13,7 @@
   postSaveScript ? null,
   outputDir ? null,
 }:
-{ config, lib, pkgs, username, ... }:
+{ config, lib, pkgs, utils, username, ... }:
 let
   recorder = config.programs.gpu-screen-recorder.package;
   outputPath = if outputDir != null then outputDir else "/home/${username}/Videos/replays";
@@ -100,8 +100,14 @@ in
 
     serviceConfig = {
       Type = "simple";
-      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p -- ${lib.escapeShellArg outputPath}";
-      ExecStart = "${lib.getExe recorder} ${lib.escapeShellArgs recorderArgs}";
+      # systemd parses these lines itself (no shell), so use its own escaping.
+      ExecStartPre = utils.escapeSystemdExecArgs [
+        "${pkgs.coreutils}/bin/mkdir"
+        "-p"
+        "--"
+        outputPath
+      ];
+      ExecStart = utils.escapeSystemdExecArgs ([ (lib.getExe recorder) ] ++ recorderArgs);
       KillSignal = "SIGINT";
       Restart = "on-failure";
       RestartSec = "5s";

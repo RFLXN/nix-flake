@@ -40,8 +40,9 @@ in {
       done
     '';
   } // lib.optionalAttrs enableZshIntegration {
-    programs.zsh.initContent = lib.mkAfter ''
-      # ForgeCode must load before zsh-syntax-highlighting.
+    # ForgeCode must load before zsh-syntax-highlighting, which Home Manager
+    # sources at order 1200 (mkAfter would be 1500).
+    programs.zsh.initContent = lib.mkOrder 1100 ''
       if [[ -x ${forgeBin} ]]; then
         eval "$(${forgeBin} zsh plugin 2>/dev/null || true)"
         eval "$(${forgeBin} zsh theme 2>/dev/null || true)"

@@ -1,9 +1,10 @@
+{ username }:
 {
   batteryChargeLimit = 90;
 
   session = {
     configVersion = 4;
-    wallpaperPath = "/home/rflxn/Pictures/main-wallpaper.jpg";
+    wallpaperPath = "/home/${username}/Pictures/main-wallpaper.jpg";
   };
 
   lockScreenPasswordField = {

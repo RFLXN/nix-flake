@@ -1,33 +1,36 @@
 {
   devices,
   folders,
-  webHost ? "0.0.0.0",
+  webHost ? "127.0.0.1",
   webPort ? 8384,
   persistPath ? null
 }:
-{ lib, username, defaultPersistPath ? null, ... }:
+{ config, username, defaultPersistPath, ... }:
 let
   path = if persistPath != null then persistPath else defaultPersistPath;
   dataDir = "/var/lib/syncthing";
-  guiAddress = "${webHost}:${toString webPort}";
+  group = config.users.users.${username}.group;
 in
-lib.mkMerge [
-  {
-    services.syncthing = {
-      enable = true;
+{
+  services.syncthing = {
+    enable = true;
+    user = username;
+    inherit group dataDir;
+    guiAddress = "${webHost}:${toString webPort}";
+    settings = { inherit devices folders; };
+  };
+
+  # Syncthing runs as the repo user, so the persisted directory must not be
+  # created root-owned on a fresh install.
+  environment.persistence.${path}.directories = [
+    {
+      directory = dataDir;
       user = username;
-      group = "users";
-      inherit dataDir;
-      inherit guiAddress;
-      settings = { inherit devices folders; };
-    };
-  }
-  (lib.mkIf (path != null) {
-    environment.persistence.${path}.directories = [ dataDir ];
-    # Ensure syncthing waits for bind mount
-    systemd.services.syncthing = {
-      after = [ "var-lib-syncthing.mount" ];
-      requires = [ "var-lib-syncthing.mount" ];
-    };
-  })
-]
+      inherit group;
+      mode = "0700";
+    }
+  ];
+
+  # Wait for the persistence bind mount.
+  systemd.services.syncthing.unitConfig.RequiresMountsFor = [ dataDir ];
+}

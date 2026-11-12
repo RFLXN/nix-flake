@@ -1,5 +1,5 @@
 { quitOnClose ? false, enableComputerUse ? false }:
-{ config, lib, pkgs, username, codex-cli-nix, codex-desktop, ... }:
+{ config, lib, pkgs, username, codex-desktop, ... }:
 let
   system = pkgs.stdenv.hostPlatform.system;
   basePackage = codex-desktop.packages.${system}.codex-desktop.override {
@@ -94,7 +94,6 @@ in
       enable = true;
       package = codexDesktopPackage;
       computerUseUi.enable = enableComputerUse;
-      remoteControl.package = codex-cli-nix.packages.${system}.default;
     };
   };
 }

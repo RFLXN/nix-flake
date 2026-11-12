@@ -9,7 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -28,9 +32,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    aarch64-widevine.url = "github:epetousis/nixos-aarch64-widevine";
+    aarch64-widevine = {
+      url = "github:epetousis/nixos-aarch64-widevine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    claude-code.url = "github:sadjow/claude-code-nix";
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     claude-desktop = {
       url = "github:aaddrick/claude-desktop-debian";
@@ -52,20 +62,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    rflxn-shell = {
-      url = "github:RFLXN/rflxn-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     dank-material-shell = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    battery-logger.url = "github:RFLXN/simple-battery-logger";
-
     xivlauncher-rb = {
       url = "github:RFLXN/XIVLauncher.Core/RB-patched";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     xivmitm-nix = {
@@ -83,6 +87,11 @@
       username = "rflxn";
       timezone = "Asia/Seoul";
       locale = "en_US.UTF-8";
+
+      git = {
+        name = "RFLXN";
+        email = "solid2113@naver.com";
+      };
 
       syncthing-devices = {
         rflxn-server = { id = "TWGALLT-3IIATII-6SL3P34-L5RTUHA-KDIJHHP-CV3F5XL-77R3272-FKASKAN"; };

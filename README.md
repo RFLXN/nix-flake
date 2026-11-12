@@ -46,7 +46,7 @@ Calling the first layer returns a regular NixOS module, so hosts can compose con
 }
 ```
 
-`flake.nix` imports the module tree once and passes it to every host as `specialArgs.modules`. It also passes shared values such as `username`, locale, timezone, Syncthing device IDs, and `defaultPersistPath`.
+`flake.nix` imports the module tree once and passes it to every host as `specialArgs.modules`. It also passes shared values such as `username`, locale, timezone, the Git identity, Syncthing device IDs, and `defaultPersistPath`.
 
 ### Why this structure is used
 

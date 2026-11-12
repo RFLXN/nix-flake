@@ -20,6 +20,7 @@ in
       blurPasses = 3;
     })
     (hyprland.cursors.useRosePineCursor {})
+    (hyprland.keybinds.useAudioModeToggle {})
     (hyprland.keybinds.useDankLinuxLauncher {})
     (hyprland.keybinds.useDefaults { moveWorkspaceCount = 8; })
     (hyprland.keybinds.useGsrSaveReplay {})

@@ -28,7 +28,7 @@ return function(options)
         for _, monitor in ipairs(hl.get_monitors()) do
             local special = monitor.active_special_workspace
             if special and special.name == workspace then
-                -- Hyprland 0.56: an empty options table closes the overlay.
+                -- Hyprland 0.57: an empty options table closes the overlay.
                 monitor:set_special_workspace({})
             end
         end
@@ -54,7 +54,7 @@ return function(options)
         scheduleClose()
     end
 
-    -- In 0.56 this event follows static rules but precedes initial focus/render.
+    -- In 0.57 this event follows static rules but precedes initial focus/render.
     -- Apply dynamic rules here; move only once the window is fully initialized.
     hl.on("window.open_early", tagTarget)
     hl.on("window.open", isolate)

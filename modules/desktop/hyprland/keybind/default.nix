@@ -1,5 +1,6 @@
 {
   useDefaults = import ./defaults.nix;
+  useAudioModeToggle = import ./audio-mode-toggle.nix;
   useDankLinuxLauncher = import ./dank-linux-launcher.nix;
   useKitty = import ./kitty.nix;
   useGsrSaveReplay = import ./gsr-save-replay.nix;

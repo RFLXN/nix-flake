@@ -73,15 +73,7 @@
         IdentitiesOnly = true;
       };
     })
-    (useSpotify {
-      withAlsaExclusive = {
-        enable = false;
-        pipewire-target = "alsa_output.usb-Topping_E30-00.HiFi__Headphones__sink";
-        profile = "hifi";
-        rate = 44100;
-        suspend-existing = true;
-      };
-    })
+    (useSpotify {})
     (useTauon {})
     (useThunderbird {})
     (useVim {})

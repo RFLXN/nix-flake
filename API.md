@@ -208,7 +208,7 @@ modules = {
 
 - `useGreetd { enableRegreet ? false, regreetCompositor ? "hyprland", regreetPrimaryMonitor ? null, enableAutoLogin ? false, autoLoginSession ? "uwsm-hyprland", enableSilentSession ? enableAutoLogin }`
   Enables `greetd` for either Regreet or autologin. When both are enabled, autologin wins and Regreet never runs; `regreetCompositor` and `regreetPrimaryMonitor` then have no effect on the session.
-  Autologin shows no greeter on purpose: the desktop shell's own lock screen (for example DMS with `lockAtStartup`) is expected to act as the login prompt. The autologin command is both greetd's `initial_session` and its `default_session`, so logging out logs straight back in.
+  Autologin shows no greeter on purpose: the desktop shell's own lock screen (for example DMS with `lockAtStartup`) is expected to act as the login prompt. The autologin command is both greetd's `initial_session` and its `default_session`, so logging out logs straight back in. `services.greetd.restart` is kept on, so a restarted greetd also logs in again.
   The first login after boot (`initial_session`) is a regular logind user session and can be locked through logind (`loginctl lock-session`, lid switch, shell lock integration). A re-login after logout goes through `default_session`, which greetd registers with the logind class `greeter`; that session cannot be locked through logind until the next boot.
   `autoLoginSession` accepts `"uwsm-hyprland"`, `"hyprland"`, or any other string, which is used as the raw session command.
   `regreetCompositor` accepts `"hyprland"`, `"cage"`, or any other string, which is used as the raw greeter command. The `"hyprland"` greeter runs `Hyprland -c /etc/greetd/hyprland.lua`, so Hyprland must be installed by another module.
@@ -240,7 +240,7 @@ modules = {
   Sets Haruna as default for the repo's built-in audio/video MIME list.
 
 - `defaultApps.useKitty {}`
-  Creates a hidden `kitty-shellscript.desktop` entry and associates shell-script MIME types with Kitty.
+  Creates a hidden `kitty-shellscript.desktop` entry and makes it the default for shell-script MIME types. The entry runs `kitty sh <file>`, so opening a shell script executes it in a Kitty window rather than showing it.
 
 - `defaultApps.useLibreOffice {}`
   Sets LibreOffice components as defaults for a large built-in set of office/document MIME types.
@@ -274,7 +274,7 @@ modules = {
   Packages `vinceliuice/Matcha-kde`, installs `qt6ct` and the Qt6 Kvantum style plugin, and configures Qt6 to use the Matcha Kvantum theme. Qt5 is not configured.
   The Kvantum theme is always the `sea` variant (`Matcha-sea` or `Matcha-sea-dark`); there is no `variant` argument.
   Sets `QT_QPA_PLATFORMTHEME=qt6ct` and `QT_STYLE_OVERRIDE=kvantum` at the system, Home Manager session, and systemd user levels, and writes the matching color scheme into `kdeglobals`. The values are plain definitions, so another module setting the same variables differently (for example `hyprland.useDarkMode` with its default `qtUseGtkPlatformTheme = true`) is an evaluation conflict rather than a silent override.
-  Allowed colors: `light`, `dark` (`standard` is not accepted here, unlike `gtk.theme.useMatcha`). An invalid color fails evaluation with that message.
+  Allowed colors: `light`, `dark` (`standard` is not accepted here, unlike `gtk.theme.useMatcha`). Any other value fails evaluation with an error naming the allowed colors.
   Assertion: `kvantumReduceWindowOpacity` must be between 0 and 100.
 
 - `qt.theme.usePapirusIcon { theme ? "Papirus-Dark" }`
@@ -286,7 +286,7 @@ modules = {
   Allowed variants: `main`, `moon`, `dawn`.
   Allowed accents: `rose`, `pine`, `foam`, `gold`, `iris`, `love`.
   The four `kvantum*` arguments only take effect through the overlay; with `useOverlay = false` they are ignored. The overlay replaces `pkgs.rose-pine-kvantum` for the whole system.
-  Assertion: `kvantumReduceWindowOpacity` must be between 0 and 100. An invalid `variant` fails evaluation directly.
+  Assertion: `kvantumReduceWindowOpacity` must be between 0 and 100. An invalid `variant` or `accent` fails evaluation with an error naming the allowed values.
 
 ### `modules.desktop.logind`
 
@@ -365,6 +365,9 @@ Helper scripts that call `hyprctl` take it from `config.programs.hyprland.packag
 - `hyprland.keybinds.useGsrSaveReplay { key ? "ALT, F9" }`
   Binds `gsr-save-replay`.
 
+- `hyprland.keybinds.useAudioModeToggle { key ? "SUPER, A" }`
+  Binds `audio-mode toggle`, the command installed by `services.pipewire.useAudioModes`.
+
 - `hyprland.keybinds.useScreenOff { key ? "SUPER SHIFT, O", delaySeconds ? 1 }`
   Binds a delayed Lua `hl.dsp.dpms` toggle.
 
@@ -439,10 +442,10 @@ Helper scripts that call `hyprctl` take it from `config.programs.hyprland.packag
 
 - `hyprland.windowRules.useHidden { initialClass, processArgv0, initialTitle ? "", xwayland ? true, workspace ? "hidden" }`
   Isolates windows only when their backend (`xwayland`), initial class, initial title, and `/proc/<pid>/cmdline` argv[0] all match exactly. Set `xwayland = false` for native Wayland applications, including Wine's Wayland driver. Missing/unreadable process information leaves the window untouched. Class and executable must be non-empty strings; title may be empty; `xwayland` must be a boolean. Requires `useHyprland`'s `hyprLua` helper.
-  A Lua `window.open_early` handler tags verified windows before initial focus/render. Tag-scoped dynamic rules disable focus, focus-on-activation, opacity, blur, shadows, decorations, and animations. The `window.open` handler moves the initialized window to `special:<workspace>` without following it; this avoids relying on static rules that have already run in Hyprland 0.56.
+  A Lua `window.open_early` handler tags verified windows before initial focus/render. Tag-scoped dynamic rules disable focus, focus-on-activation, opacity, blur, shadows, decorations, and animations. The `window.open` handler moves the initialized window to `special:<workspace>` without following it; this avoids relying on static rules that have already run in Hyprland 0.57.
   `workspace` is the special workspace name without `special:` and must contain only letters, digits, underscores, or hyphens.
   Existing windows are reconciled on reload, and windows moved out are returned. If the reserved workspace is activated (including by a switcher), a deferred event handler closes it so an invisible special-workspace overlay cannot intercept normal workspace clicks. Other special workspaces are unaffected. Use a distinct workspace for each instance.
-  The monitor close call uses Hyprland 0.56's Lua API. Existing windows receive the same dynamic hiding and workspace guard immediately.
+  The monitor close call uses Hyprland 0.57's Lua API. Existing windows receive the same dynamic hiding and workspace guard immediately.
   This hides the window without terminating its process; it does not remove entries from third-party task switchers or provide a security boundary.
 
 ## `modules.programs`
@@ -535,7 +538,6 @@ Helper scripts that call `hyprctl` take it from `config.programs.hyprland.packag
 
 - `useCodexDesktop { quitOnClose ? false, enableComputerUse ? false }`
   Enables the upstream Codex Desktop Linux Home Manager module from the `codex-desktop` flake input.
-
   When `quitOnClose` is enabled, prevents the final Codex window from being hidden to the system tray and exits the application when that window is closed.
   When `enableComputerUse` is enabled, bundles the local Linux Computer Use backend before applying the optional close-window patch, enables AT-SPI accessibility and the `ydotool` service with uinput support, and grants the main user access to the daemon socket and direct pointer input through `/dev/uinput`. After applying the configuration and logging in again, enable Settings → Computer use → Any App in the desktop app. Remote control is not enabled by this option.
 
@@ -555,7 +557,7 @@ Helper scripts that call `hyprctl` take it from `config.programs.hyprland.packag
   Installs the stock Discord package unchanged. The XWayland/fcitx desktop-entry override for IME behavior is kept in the file but commented out.
 
 - `useDolphin { withSilentKdeDeps ? false }`
-  Installs KDE Dolphin. When `withSilentKdeDeps = true`, wraps it with the KService, KDE CLI, and KIO data needed for working “Open With” handlers outside Plasma while suppressing cache rebuild output.
+  Installs KDE Dolphin. When `withSilentKdeDeps = true`, wraps it with the KService, KDE CLI, and KIO data needed for working “Open With” handlers outside Plasma while suppressing cache rebuild output. Dolphin's D-Bus (`org.freedesktop.FileManager1`) and systemd user service files are rewritten to start the wrapped binary, so activation such as a browser's "show in folder" uses the wrapper too.
 
 - `useEquibop { package ? null }`
   Installs Equibop and registers it as the default handler for `x-scheme-handler/discord`.
@@ -630,11 +632,8 @@ Helper scripts that call `hyprctl` take it from `config.programs.hyprland.packag
   Enables Home Manager SSH client config and writes OpenSSH blocks to `programs.ssh.settings`.
   When `enableDefaultConfig = false`, it writes the Home Manager legacy `Host *` defaults explicitly. A `"*"` entry in `settings` replaces that whole default block instead of being merged with it.
 
-- `useSpotify { withAlsaExclusive ? {} }`
+- `useSpotify {}`
   Installs Spotify on most systems, or `spotify-qt` plus `librespot` on `aarch64-linux`. On `aarch64-linux`, it patches `spotify-qt.json` if that file already exists; a file that cannot be parsed is left untouched.
-  Set `withAlsaExclusive = { enable = true; pipewire-target = "<sink node.name>"; profile ? null; rate ? 44100; suspend-existing ? false; parking-target ? "spotify-exclusive-park"; }` to additionally install the `spotify-alsa` command and the `Spotify: Alsa Exclusive` desktop entry. The command optionally activates a `pipewire-profile` and injects the exclusive target, clock, and DSP-bypass properties directly into Spotify's normal PulseAudio stream. With `suspend-existing = true`, the module creates a silent virtual parking sink. Existing PulseAudio-compatible streams are moved there, native PipeWire links are temporarily disconnected, and the parking sink becomes the default so clients opened during the session stay silent instead of taking the hardware target. The original default and stream routing are restored when Spotify exits or fails. This avoids restarting the shared `pipewire-pulse` server while still disabling remixing, resampling, fallback routing, and dither. Spotify's `FLOAT_LE` output is still converted to the hardware format by PipeWire.
-  `profile` is activated through the `pipewire-profile` command, which this module does not install; it comes from `modules.services.pipewire.useProfileChanger` and must be on `PATH` at run time.
-  Assertions when `enable = true`: the host must not be `aarch64-linux`, PipeWire with PulseAudio compatibility must be enabled, `pipewire-target` must be a sink node name without whitespace, `profile` must be null or a non-empty string, `rate` must be a positive integer, `suspend-existing` must be a boolean, and with `suspend-existing = true` the `parking-target` must be a valid sink node name different from `pipewire-target`.
 
 - `useTauon {}`
   Installs Tauon.
@@ -682,17 +681,20 @@ Helper scripts that call `hyprctl` take it from `config.programs.hyprland.packag
 - `services.pipewire.useDenoisedMic {}`
   Adds an `rnnoise` filter-chain source called `Noise Canceling Source`.
 
-- `services.pipewire.useLowLatency { defaultRate ? 48000, allowedRates ? [ 44100 48000 88200 96000 176400 192000 ], defaultQuantum ? 256, minQuantum ? 64, maxQuantum ? 2048 }`
-  Configures a flexible PipeWire clock range suitable for runtime profile switching.
-  Assertions require positive rates and ordered quantum bounds, and `allowedRates` must include `defaultRate`.
+- `services.pipewire.useLowLatency { quantum ? 64, defaultRate ? 48000, allowedRates ? [ 44100 48000 88200 96000 176400 192000 352800 384000 705600 768000 ], resampleQuality ? 10 }`
+  Pins the PipeWire graph to a small quantum for low output latency: `default.clock.quantum`, `min-quantum`, and `max-quantum` are all set to `quantum` (given at `defaultRate`; PipeWire scales it to keep the same duration at other rates). Pinning is needed because the graph otherwise runs at the smallest latency any client requests, so one client asking for a large buffer keeps it large.
+  Lowers the PulseAudio-compatibility minimums (`pulse.min.req`, `pulse.min.frag`, `pulse.min.quantum`) from their 256-frame default to the same quantum, so PulseAudio clients such as Wine/Proton and SDL games can request small buffers.
+  `allowedRates` lets the graph follow a stream's native sample rate, but only when the device is idle; an always-running stream (an effects chain, a recorder) keeps it at the current rate, and other streams are resampled.
+  `resampleQuality` (0–14, PipeWire's default is 4) is applied to native and PulseAudio client streams and to ALSA device nodes.
+  Assertions: `quantum` and `defaultRate` must be positive integers, `allowedRates` must be non-empty and include `defaultRate`, and `resampleQuality` must be from 0 to 14.
 
-- `services.pipewire.useProfileChanger { profiles, defaultProfile ? null }`
-  Installs the `pipewire-profile` CLI and a persistent StatusNotifierItem tray service.
-  Profile entries look like `{ name, label ? name, description ? label, icon ? "audio-card", rate ? null, quantum ? null, deviceProfiles ? [], startUserServices ? [], stopUserServices ? [] }`.
-  `deviceProfiles` entries look like `{ device, profile, required ? false }`, where `device` is a stable PipeWire `device.name`. A null clock value releases the corresponding PipeWire runtime override.
-  The selected profile is remembered and continuously enforced across PipeWire restarts and USB device reconnections.
-  `defaultProfile = null` selects the first entry in `profiles`.
-  Assertions: PipeWire must be enabled; `profiles` must not be empty; profile names must be unique and match `[A-Za-z0-9][A-Za-z0-9._-]*`; `label` and `icon` must be non-empty strings; `rate` and `quantum` must be null or positive integers; each `deviceProfiles` entry needs non-empty `device` and `profile` strings and a boolean `required`; `startUserServices` and `stopUserServices` must be lists of non-empty strings with no service in both; and `defaultProfile` must name one of the profiles.
+- `services.pipewire.useAudioModes { hifiQuantum ? 1024, hifiMinQuantum ? 256, hifiMaxQuantum ? 2048, hifiStopUserServices ? [] }`
+  Installs the `audio-mode` command (`audio-mode [gaming|hifi|toggle|status]`) and two launcher entries, `Audio Mode: Gaming` and `Audio Mode: Hi-Fi`. Each switch sends a desktop notification.
+  Gaming is the normal state: the PipeWire clock settings are whatever the daemon is configured with (for example by `useLowLatency`).
+  Hi-Fi stops the user services in `hifiStopUserServices` and replaces the pinned quantum with a relaxed range (`hifiMinQuantum` to `hifiMaxQuantum`, default `hifiQuantum`). With nothing left running permanently, the output device goes idle between streams and PipeWire reopens it at each stream's native sample rate, so no resampling happens for any rate in the daemon's allowed-rates list. List every service that keeps an audio stream open, such as an effects chain or a replay recorder.
+  Switching back to gaming restores the configured clock values and starts those services again.
+  The mode is per login session: it is a flag in `$XDG_RUNTIME_DIR`, so a new login starts in gaming mode. While Hi-Fi is selected, a systemd drop-in condition keeps the listed services from being started by restart policies, and the `audio-mode` user service reapplies the Hi-Fi clock settings whenever PipeWire restarts.
+  Assertions: PipeWire must be enabled, the three quantum values must be positive integers in ascending order, and `hifiStopUserServices` must be a list of unit names ending in `.service`.
 
 ### Other `modules.services` exports
 
@@ -811,7 +813,7 @@ These files exist in the tree but are not part of the exported `modules` API:
 - `modules/services/syncthing/system-service.nix` and `modules/services/syncthing/user-service.nix`
   The two branches selected by `useSyncthing`'s `serviceLevel`.
 
-Non-Nix assets read by their neighbouring module are likewise internal: `dank-linux/battery-charge-limit.py`, `hyprshell/styles.css`, and `window-rules/hidden.lua` under `modules/desktop/hyprland`; `claude-code/claude-powerline.json`, `kitty/kitty.conf`, `shell/zsh/p10k.zsh`, `spotify/exclusive-session.py`, and `vim/{init,layout,gui}.lua` under `modules/programs`; and `modules/services/pipewire/profile-changer.py`.
+Non-Nix assets read by their neighbouring module are likewise internal: `dank-linux/battery-charge-limit.py`, `hyprshell/styles.css`, and `window-rules/hidden.lua` under `modules/desktop/hyprland`; `claude-code/claude-powerline.json`, `kitty/kitty.conf`, `shell/zsh/p10k.zsh`, and `vim/{init,layout,gui}.lua` under `modules/programs`.
 
 ## Current API Constraints
 

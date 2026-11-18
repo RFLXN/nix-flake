@@ -35,5 +35,6 @@
       };
     })
     (useTailscale {})
+    (useTossConnector { settings.strict = false; })
   ];
 }

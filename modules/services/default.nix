@@ -22,5 +22,6 @@ in {
   useSsh = import ./ssh;
   useSyncthing = import ./syncthing;
   useTailscale = import ./tailscale;
+  useTossConnector = import ./toss-connector;
   useVscodeServer = import ./vscode-server;
 }

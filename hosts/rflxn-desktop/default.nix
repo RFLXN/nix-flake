@@ -18,7 +18,8 @@
           antigravity-nix
           dank-material-shell
           xivlauncher-rb
-          xivmitm-nix;
+          xivmitm-nix
+          toss-connector;
         inherit (shared) username;
         defaultPersistPath = "/persist";
       };

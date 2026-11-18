@@ -52,6 +52,7 @@ Modules requiring flake inputs in `specialArgs`:
 | `modules.programs.gaming.ffxiv.useFFXIV` | `xivlauncher-rb` |
 | `modules.programs.gaming.ffxiv.useXivMitmClientRoutes` / `useXivMitmGateway` | `xivmitm-nix` |
 | `modules.services.useHomeManager` | `home-manager` |
+| `modules.services.useTossConnector` | `toss-connector` |
 | `modules.services.useVscodeServer` | `vscode-server` |
 
 ## Export Tree
@@ -748,6 +749,13 @@ Helper scripts invoke `hyprctl` from `config.programs.hyprland.package` so they 
 
 - `useTailscale { persistPath ? null, enableSystemTray ? false, openFirewall ? false }`
   Enables Tailscale, optionally opens its UDP port in the firewall, optionally starts a user system-tray service (`--operator=${username}`), and persists `/var/lib/tailscale`.
+
+- `useTossConnector { autostart ? true, enableConsole ? true, path ? [], settings ? null }`
+  Imports the NixOS module from the `toss-connector` flake input (the touch-oriented-stream-shell repository) and enables `programs.toss-connector`, the PC-side daemon and CLI that links this machine to a TOSS deck.
+  Installs the `toss-connector` command (`toss-connector pair`, `toss-connector console`, and so on). With `autostart`, it also runs as a systemd user service started with `graphical-session.target`; without it, only the package is installed.
+  `enableConsole` controls the web console, which listens on `127.0.0.1:7880` only. `path` adds packages to the service's `PATH` for registered commands, on top of the system and user profiles.
+  `settings` is passed to `programs.toss-connector.config` (`{ strict ? true; permissions ? [ ]; commands ? [ ]; }`) and deployed as `/etc/toss-connector/managed.json`; the build fails on unknown permissions or malformed commands. `null` leaves permissions and commands to the user through the CLI or the web console.
+  The connector opens the connection to the deck itself (TCP 7879), so no firewall port is needed. Keys, pairings, and console tokens live in `~/.config/toss-connector`, covered by the persisted `/home`, so the module adds no persistence entries.
 
 - `useVscodeServer {}`
   Imports `nixos-vscode-server` and enables the VS Code Server service.

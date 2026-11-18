@@ -76,6 +76,11 @@
       url = "github:RFLXN/XivMitmLatencyMitigator-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    toss-connector = {
+      url = "github:RFLXN/touch-oriented-stream-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, ... }: let

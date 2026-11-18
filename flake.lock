@@ -548,6 +548,7 @@
         "impermanence": "impermanence",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
+        "toss-connector": "toss-connector",
         "vscode-server": "vscode-server",
         "xivlauncher-rb": "xivlauncher-rb",
         "xivmitm-nix": "xivmitm-nix"
@@ -566,6 +567,27 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "769156779b41e8787a46ca3d7d76443aaf68be6f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "toss-connector",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794733384,
+        "narHash": "sha256-VaXNWDU+9dXckN4BlZbrcYTTd9pIscLeiknbhHX4+lk=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "67f1944c7c99d8dbb57fa3d83043bc0a92cbcc56",
         "type": "github"
       },
       "original": {
@@ -646,6 +668,27 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "toss-connector": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay_2"
+      },
+      "locked": {
+        "lastModified": 1794971984,
+        "narHash": "sha256-kLX5RBi3dgipCUSC3k8OeMt39RvP2qwA8c8gfFHV8no=",
+        "owner": "RFLXN",
+        "repo": "touch-oriented-stream-shell",
+        "rev": "f92ba9c11971c8e9b1f5e97d3cf996fc1949cbbd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RFLXN",
+        "repo": "touch-oriented-stream-shell",
         "type": "github"
       }
     },
